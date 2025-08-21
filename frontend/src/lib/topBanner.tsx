@@ -1,30 +1,23 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import topBannerData from "@/models/topBannerData";
 
 interface TopBannerProps {
   background?: string;
   boxShadowColor?: string;
   href?: string;
   animation?: "slide" | "zoom";
-
-  // 🔥 Mobile / Desktop specific props
+  messages?: string[]; // Add messages prop for dynamic data
+  
+  // Mobile / Desktop specific props
   heightMobile?: string;
   heightDesktop?: string;
   fontWeightMobile?: number;
   fontWeightDesktop?: number;
-  fontSizeMobile?: number; // px
-  fontSizeDesktop?: number; // px
+  fontSizeMobile?: number;
+  fontSizeDesktop?: number;
   fontColorMobile?: string;
   fontColorDesktop?: string;
 }
-
-const allTexts = Object.entries(topBannerData)
-  .filter(([key, value]) => key.startsWith("data-") && value)
-  .map(([, value]) => value as string);
-
-const defaultHref =
-  topBannerData.url || "#";
 
 function getHeightDesktopClass(heightDesktop: string) {
   switch (heightDesktop) {
@@ -34,7 +27,6 @@ function getHeightDesktopClass(heightDesktop: string) {
       return "sm:h-9";
     case "h-10":
       return "sm:h-10";
-    // add other cases here if needed
     default:
       return "";
   }
@@ -43,9 +35,10 @@ function getHeightDesktopClass(heightDesktop: string) {
 export default function TopBanner({
   background = "linear-gradient(90deg, #F04F4B 0%, #FF7B54 100%)",
   boxShadowColor = "#F04F4B",
-  href = defaultHref,
+  href = "#", // Changed from defaultHref
   animation = "zoom",
-
+  messages = [], // Add default empty array for messages
+  
   heightMobile = "h-8",
   fontWeightMobile = 500,
   fontSizeMobile = 14,
@@ -59,19 +52,24 @@ export default function TopBanner({
   const [startIndex, setStartIndex] = useState(0);
   const [animating, setAnimating] = useState(false);
 
+  // Use dynamic messages from props instead of static topBannerData
+  const allTexts = messages.filter(msg => msg && msg.trim() !== "");
   const total = allTexts.length;
   const heightDesktopClass = getHeightDesktopClass(heightDesktop);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setAnimating(true);
-      setTimeout(() => {
-        setStartIndex((prev) => (prev + 1) % total);
-        setAnimating(false);
-      }, 500);
-    }, 3000);
+    // Only set up interval if there are messages to rotate
+    if (total > 0) {
+      const interval = setInterval(() => {
+        setAnimating(true);
+        setTimeout(() => {
+          setStartIndex((prev) => (prev + 1) % total);
+          setAnimating(false);
+        }, 500);
+      }, 3000);
 
-    return () => clearInterval(interval);
+      return () => clearInterval(interval);
+    }
   }, [total]);
 
   const getText = (offset: number) =>
@@ -85,6 +83,11 @@ export default function TopBanner({
       : animating
       ? "opacity-0 scale-90"
       : "opacity-100 scale-100";
+
+  // Don't render anything if there are no messages
+  if (total === 0) {
+    return null;
+  }
 
   return (
     <a

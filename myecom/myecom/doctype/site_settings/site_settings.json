@@ -5,10 +5,18 @@
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
+  "basic_setting_section",
   "show_top_banner",
   "column_break_hdqi",
   "show_mobile_logo",
-  "column_break_sszp"
+  "column_break_sszp",
+  "banner_url",
+  "banner_text_section",
+  "message_1",
+  "column_break_ytqs",
+  "message_2",
+  "column_break_vqkj",
+  "message_3"
  ],
  "fields": [
   {
@@ -30,6 +38,44 @@
   {
    "fieldname": "column_break_sszp",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "basic_setting_section",
+   "fieldtype": "Section Break",
+   "label": "Basic Setting"
+  },
+  {
+   "fieldname": "banner_text_section",
+   "fieldtype": "Section Break",
+   "label": "Banner Text"
+  },
+  {
+   "fieldname": "message_1",
+   "fieldtype": "Data",
+   "label": "Message 1"
+  },
+  {
+   "fieldname": "column_break_ytqs",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "message_2",
+   "fieldtype": "Data",
+   "label": "Message 2"
+  },
+  {
+   "fieldname": "column_break_vqkj",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "message_3",
+   "fieldtype": "Data",
+   "label": "Message 3"
+  },
+  {
+   "fieldname": "banner_url",
+   "fieldtype": "Data",
+   "label": "Banner Url"
   }
  ],
  "grid_page_length": 50,
@@ -37,7 +83,7 @@
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2025-08-21 18:05:59.368260",
+ "modified": "2025-08-22 00:46:45.432470",
  "modified_by": "Administrator",
  "module": "Myecom",
  "name": "Site Settings",

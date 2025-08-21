@@ -1,11 +1,16 @@
 import axios from 'axios';
 
-const DOMAIN = process.env.DOMAIN;
+const DOMAIN = process.env.DOMAIN; // e.g., http://localhost:8000
 const BASE_URL = `${DOMAIN}/api/method/myecom.api`;
 
-interface SiteSettingsResponse {
+export interface SiteSettingsResponse {
   show_top_banner: number;
   show_mobile_logo: number;
+  banner_url?: string | null;
+}
+
+export interface BannerMessage {
+  banner_message: string;
 }
 
 export async function getSiteSettings(): Promise<SiteSettingsResponse | null> {
@@ -26,6 +31,7 @@ export async function getSiteSettings(): Promise<SiteSettingsResponse | null> {
       return {
         show_top_banner: message.show_top_banner,
         show_mobile_logo: message.show_mobile_logo,
+        banner_url: message?.banner_url ?? null,
       };
     }
 
@@ -33,5 +39,24 @@ export async function getSiteSettings(): Promise<SiteSettingsResponse | null> {
   } catch (error) {
     console.error('Axios API error:', error);
     return null;
+  }
+}
+
+export async function getBannerMessages(): Promise<string[]> {
+  try {
+    const response = await axios.get(`${BASE_URL}.banner_message.get_banner_message`, {
+      withCredentials: true,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    const messagesArray = response.data.message?.messages || [];
+    return messagesArray
+      .map((msg: any) => msg.banner_message)
+      .filter((msg: string) => msg && msg.trim() !== "");
+  } catch (error) {
+    console.error('Error fetching banner messages:', error);
+    return [];
   }
 }

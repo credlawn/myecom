@@ -66,7 +66,7 @@ export default function HeadTop({ settings }: HeadTopProps) {
 
   return (
     <div className="max-h-[100dvh] overflow-visible">
-      {settings.showBanner === 1 && <TopBanner />}
+      {settings.showBanner === 1 && <TopBanner href={settings.url} messages={settings.bannerMessages} />}
 
       <header className="relative">
         <div className="container-main flex items-center border-b-[0.5px] border-solid border-gray-300_01 bg-white h-13 px-4">
