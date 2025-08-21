@@ -112,7 +112,7 @@ export default function HeadTop({ settings }: HeadTopProps) {
               <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
             </div>
 
-            {/* Center: Logo */}
+            {/* Mobile: Logo */}
             <div className="flex justify-center flex-1">
               {settings.showMobileLogo === 1 && <LogoMobile />}
             </div>
