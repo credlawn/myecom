@@ -55,7 +55,7 @@ export async function getBannerMessages(): Promise<string[]> {
 
     const messagesArray = response.data.message?.messages || [];
     return messagesArray
-      .map((msg: any) => msg.banner_message)
+      .map((msg: { banner_message: string }) => msg.banner_message)
       .filter((msg: string) => msg && msg.trim() !== "");
   } catch (error) {
     console.error('Error fetching banner messages:', error);
