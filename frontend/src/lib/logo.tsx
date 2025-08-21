@@ -1,26 +1,40 @@
+import Image from 'next/image';
+
 export const Logo = () => (
-  <img
-    alt="shop-with-u"
-    loading="lazy"
-    className="h-[36px] object-contain"
-    src="/images/logo.png"
-  />
+  <div className="h-[36px] w-[120px] relative">
+    <Image
+      alt="wow-logo"
+      fill
+      sizes="120px"
+      className="object-contain"
+      src="/images/logo.png"
+      priority={true}
+    />
+  </div>
 );
 
 export const LogoSidebar = () => (
-  <img
-    alt="shop-with-us"
-    loading="lazy"
-    className="aspect-[100/48] w-[100px] object-contain"
-    src="/images/logo.png"
-  />
+  <div className="w-[100px] h-[48px] relative">
+    <Image
+      alt="wow-logo"
+      fill
+      sizes="100px"
+      className="object-contain"
+      src="/images/logo.png"
+      priority={false}
+    />
+  </div>
 );
 
 export const LogoMobile = () => (
-  <img
-    alt="shop-with-us"
-    loading="lazy"
-    className="aspect-[100/48] h-[68px] object-contain"
-    src="/images/logo.png"
-  />
+  <div className="h-[68px] w-[142px] relative">
+    <Image
+      alt="wow-logo"
+      fill
+      sizes="142px"
+      className="object-contain"
+      src="/images/logo.png"
+      priority={false}
+    />
+  </div>
 );

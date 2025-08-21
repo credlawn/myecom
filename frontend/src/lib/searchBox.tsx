@@ -19,16 +19,16 @@ const SearchBox = forwardRef<HTMLDivElement, SearchBoxProps>(
     const [isDeleting, setIsDeleting] = useState(false);
     const [typingSpeed, setTypingSpeed] = useState(150);
 
-    const placeholders = [
-      "Type Here to Search...",
-      "Search for Ubtan...",
-      "Find Face Wash...",
-      "Discover Hair Oil...",
-      "Explore Skincare..."
-    ];
-
     // Animated placeholder
     useEffect(() => {
+      const placeholders = [
+        "Type Here to Search...",
+        "Search for Ubtan...",
+        "Find Face Wash...",
+        "Discover Hair Oil...",
+        "Explore Skincare..."
+      ];
+
       const handleTyping = () => {
         const current = placeholders[placeholderIndex];
         
@@ -50,7 +50,7 @@ const SearchBox = forwardRef<HTMLDivElement, SearchBoxProps>(
 
       const timer = setTimeout(handleTyping, typingSpeed);
       return () => clearTimeout(timer);
-    }, [currentPlaceholder, isDeleting, placeholderIndex, placeholders, typingSpeed]);
+    }, [currentPlaceholder, isDeleting, placeholderIndex, typingSpeed]);
 
     // Debounced search
     useEffect(() => {

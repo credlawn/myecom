@@ -1,4 +1,4 @@
-import { HamburgerIcon, UserIcon, CartIcon, ArrowDownIcon, SearchIcon } from "@/lib/icons";
+import { ArrowDownIcon } from "@/lib/icons";
 
 export const NavItems = () => (
     <div className="flex flex-1 justify-left pl-20">

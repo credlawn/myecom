@@ -1,6 +1,6 @@
 "use client";
 
-import { HamburgerIcon, UserIcon, CartIcon, ArrowDownIcon, SearchIcon } from "@/lib/icons";
+import { HamburgerIcon, UserIcon, CartIcon, SearchIcon } from "@/lib/icons";
 import { Logo, LogoMobile } from "@/lib/logo";
 import TopBanner from "@/lib/topBanner";
 import SearchBox from "@/lib/searchBox";
