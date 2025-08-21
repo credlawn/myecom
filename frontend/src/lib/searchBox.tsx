@@ -4,14 +4,14 @@ import { SearchIcon } from "@/lib/icons";
 import { useState, useEffect, forwardRef } from "react";
 
 interface SearchBoxProps {
-  placeholder?: string;
+
   onSearch?: (query: string) => void;
   className?: string;
   onFocus?: () => void;
 }
 
 const SearchBox = forwardRef<HTMLDivElement, SearchBoxProps>(
-  ({ placeholder = "Search...", onSearch, className = "", onFocus }, ref) => {
+  ({ onSearch, className = "", onFocus }, ref) => {
     const [searchQuery, setSearchQuery] = useState("");
     const [searchResults, setSearchResults] = useState<string[]>([]);
     const [currentPlaceholder, setCurrentPlaceholder] = useState("");

@@ -51,9 +51,7 @@ export async function getBannerMessages(): Promise<string[]> {
       },
     });
 
-    interface BannerMessage {
-      banner_message: string;
-    }
+
 
     const messagesArray = response.data.message?.messages || [];
     return messagesArray
