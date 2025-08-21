@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const DOMAIN = 'http://localhost:8000';
+const DOMAIN = process.env.DOMAIN;
 const BASE_URL = `${DOMAIN}/api/method/myecom.api`;
 
 interface SiteSettingsResponse {
