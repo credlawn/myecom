@@ -1,6 +1,6 @@
 export const Logo = () => (
   <img
-    alt="shop-with-us"
+    alt="shop-with-u"
     loading="lazy"
     className="h-[36px] object-contain"
     src="/images/logo.png"
