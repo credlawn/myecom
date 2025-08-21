@@ -1,0 +1,68 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-08-21 14:53:09.216591",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "show_top_banner",
+  "column_break_hdqi",
+  "show_mobile_logo",
+  "column_break_sszp"
+ ],
+ "fields": [
+  {
+   "default": "0",
+   "fieldname": "show_top_banner",
+   "fieldtype": "Check",
+   "label": "Show Top Banner"
+  },
+  {
+   "fieldname": "column_break_hdqi",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "show_mobile_logo",
+   "fieldtype": "Check",
+   "label": "Show Mobile Logo"
+  },
+  {
+   "fieldname": "column_break_sszp",
+   "fieldtype": "Column Break"
+  }
+ ],
+ "grid_page_length": 50,
+ "hide_toolbar": 1,
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2025-08-21 18:05:59.368260",
+ "modified_by": "Administrator",
+ "module": "Myecom",
+ "name": "Site Settings",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "Guest",
+   "share": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}
