@@ -7,4 +7,5 @@ export default async function Page() {
   return <HeadTop settings={settings} />;
 }
 
-export const revalidate = 60;
+export const dynamic = "force-dynamic";
+
