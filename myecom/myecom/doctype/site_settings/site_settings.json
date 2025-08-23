@@ -11,12 +11,10 @@
   "show_mobile_logo",
   "column_break_sszp",
   "banner_url",
-  "banner_text_section",
-  "message_1",
-  "column_break_ytqs",
-  "message_2",
-  "column_break_vqkj",
-  "message_3"
+  "section_break_hrlg",
+  "logo_url",
+  "column_break_gjxs",
+  "column_break_tfpp"
  ],
  "fields": [
   {
@@ -45,37 +43,26 @@
    "label": "Basic Setting"
   },
   {
-   "fieldname": "banner_text_section",
-   "fieldtype": "Section Break",
-   "label": "Banner Text"
-  },
-  {
-   "fieldname": "message_1",
-   "fieldtype": "Data",
-   "label": "Message 1"
-  },
-  {
-   "fieldname": "column_break_ytqs",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "message_2",
-   "fieldtype": "Data",
-   "label": "Message 2"
-  },
-  {
-   "fieldname": "column_break_vqkj",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "message_3",
-   "fieldtype": "Data",
-   "label": "Message 3"
-  },
-  {
    "fieldname": "banner_url",
    "fieldtype": "Data",
    "label": "Banner Url"
+  },
+  {
+   "fieldname": "section_break_hrlg",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "logo_url",
+   "fieldtype": "Attach",
+   "label": "Logo"
+  },
+  {
+   "fieldname": "column_break_gjxs",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_tfpp",
+   "fieldtype": "Column Break"
   }
  ],
  "grid_page_length": 50,
@@ -83,7 +70,7 @@
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2025-08-22 00:46:45.432470",
+ "modified": "2025-08-23 15:19:26.903569",
  "modified_by": "Administrator",
  "module": "Myecom",
  "name": "Site Settings",

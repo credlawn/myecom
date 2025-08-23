@@ -6,7 +6,7 @@ def get_menu_list():
     parents = frappe.get_all(
         "My Menu",
         filters={"menu_type": "Parent"},
-        fields=["menu_name", "parent_id", "slug"],
+        fields=["menu_name", "parent_id", "slug", "menu_type"],
         order_by="parent_id asc"
     )
 
@@ -16,7 +16,7 @@ def get_menu_list():
         children = frappe.get_all(
             "My Menu",
             filters={"menu_type": "Child", "parent_name": parent["menu_name"]},
-            fields=["menu_name", "child_id", "slug"],
+            fields=["menu_name", "child_id", "slug", "menu_type"],
             order_by="child_id asc"
         )
         # Add parent_id to each child
