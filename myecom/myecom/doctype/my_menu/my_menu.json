@@ -1,0 +1,129 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-08-22 15:59:47.979434",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "menu_name",
+  "parent_name",
+  "column_break_evdq",
+  "menu_type",
+  "slug",
+  "column_break_hogv",
+  "sequence",
+  "section_break_agdg",
+  "parent_id",
+  "column_break_mqln",
+  "child_id",
+  "column_break_bzsh"
+ ],
+ "fields": [
+  {
+   "fieldname": "menu_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Menu Name",
+   "unique": 1
+  },
+  {
+   "fieldname": "column_break_evdq",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "menu_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Menu Type",
+   "options": "Parent\nChild"
+  },
+  {
+   "fieldname": "column_break_hogv",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "sequence",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Sequence"
+  },
+  {
+   "fieldname": "section_break_agdg",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "parent_id",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Parent ID"
+  },
+  {
+   "fieldname": "column_break_mqln",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_bzsh",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "child_id",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Child ID"
+  },
+  {
+   "depends_on": "eval: doc.menu_type == \"Child\"",
+   "fieldname": "parent_name",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Parent Name",
+   "mandatory_depends_on": "eval: doc.menu_type == \"Child\"",
+   "options": "My Menu"
+  },
+  {
+   "fieldname": "slug",
+   "fieldtype": "Data",
+   "label": "Slug"
+  }
+ ],
+ "grid_page_length": 50,
+ "hide_toolbar": 1,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-08-23 12:02:57.789682",
+ "modified_by": "Administrator",
+ "module": "Myecom",
+ "name": "My Menu",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Guest",
+   "share": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}

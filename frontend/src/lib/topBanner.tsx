@@ -33,8 +33,8 @@ function getHeightDesktopClass(heightDesktop: string) {
 }
 
 export default function TopBanner({
-  background = "linear-gradient(90deg, #F04F4B 0%, #FF7B54 100%)",
-  boxShadowColor = "#F04F4B",
+  background = "linear-gradient(90deg, rgba(255, 65, 108, 0.9) 0%, rgba(255, 75, 43, 0.9) 100%)",
+  boxShadowColor = "rgba(255, 75, 43, 0.3)",
   href = "#", // Changed from defaultHref
   animation = "zoom",
   messages = [], // Add default empty array for messages
@@ -46,7 +46,7 @@ export default function TopBanner({
 
   heightDesktop = "h-9",
   fontWeightDesktop = 600,
-  fontSizeDesktop = 15,
+  fontSizeDesktop = 16,
   fontColorDesktop = "#ffffff",
 }: TopBannerProps) {
   const [startIndex, setStartIndex] = useState(0);
@@ -95,6 +95,7 @@ export default function TopBanner({
       style={{
         background,
         boxShadow: `0 0 0 100vmax ${boxShadowColor}`,
+
       }}
       href={href}
     >
