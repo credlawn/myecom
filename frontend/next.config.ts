@@ -11,7 +11,7 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
-        hostname: "paisamilega.in",
+        hostname: "credlawn.com",
         pathname: "/files/**",
       },
     ],
