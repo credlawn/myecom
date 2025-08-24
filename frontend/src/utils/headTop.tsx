@@ -111,6 +111,7 @@ export default function HeadTop({ settings }: HeadTopProps) {
                 isOpen={isSidebarOpen}
                 onClose={() => setIsSidebarOpen(false)}
                 menuData={settings?.menuData ?? []}
+                settings={settings}
               />
             </div>
 
