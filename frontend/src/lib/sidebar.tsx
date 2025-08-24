@@ -1,14 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import { CloseIcon, ChevronDownIcon } from "@/lib/icons";
-import { LogoSidebar } from "@/lib/logo";
+import { ChevronDownIcon, UserIcon } from "@/lib/icons";
 import { MenuResponse } from "@/models/api";
+import { Settings } from "@/models/settings";
 
 interface SidebarProps {
   isOpen: boolean;
   onClose: () => void;
   menuData: MenuResponse[];
+  settings: Settings;
 }
 
 export default function Sidebar({ isOpen, onClose, menuData }: SidebarProps) {
@@ -37,31 +38,21 @@ export default function Sidebar({ isOpen, onClose, menuData }: SidebarProps) {
       style={{ width: "326px", zIndex: 1000 }}
     >
       {/* Header */}
-      <div className="flex items-center justify-between bg-white p-4 border-b border-gray-200">
-        <LogoSidebar />
-        <div className="ml-2 flex flex-1 flex-col gap-0.5">
-          <h4 className="text-lg font-medium capitalize !leading-tight text-gray-900">
-            Hi Guest
-          </h4>
-          <div className="relative flex w-fit cursor-pointer items-center gap-1">
-            <p className="text-sm font-normal !leading-tight text-[#e63631]">
-              Login
-            </p>
-            <ChevronDownIcon className="size-4 text-[#e63631]" />
-            <div className="absolute -bottom-[3px] left-0 h-[0.5px] w-[55px] bg-[#e63631]"></div>
-          </div>
-        </div>
+      <div className="flex items-center justify-between bg-gray-50 p-4 border-b border-gray-200">
+        <h4 className="text-lg font-medium capitalize !leading-tight text-gray-900">
+          Hi Guest
+        </h4>
         <button
           onClick={onClose}
           className="relative flex gap-2 items-center justify-center overflow-hidden capitalize rounded-full font-medium transition-colors duration-200 !leading-tight"
-          aria-label="Close menu"
+          aria-label="Login"
         >
-          <CloseIcon className="text-gray-600" />
+          <UserIcon className="size-6 text-[#e63631]" />
         </button>
       </div>
 
       {/* Menu Items */}
-      <div className="flex-1 overflow-y-auto bg-gray-50 p-4">
+      <div className="flex-1 overflow-y-auto bg-white p-4">
         <ul className="space-y-4">
           {sortedMenuData.map((item) => (
             <li key={item.parent.slug}>
