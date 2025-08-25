@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { ChevronDownIcon, UserIcon } from "@/lib/icons";
-import { MenuResponse } from "@/models/api";
+import { MenuResponse } from "@/models/menuList";
 import { Settings } from "@/models/settings";
 
 interface SidebarProps {

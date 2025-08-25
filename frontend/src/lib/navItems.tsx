@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { ArrowDownIcon } from "@/lib/icons";
-import { MenuResponse } from "@/models/api";
+import { MenuResponse } from "@/models/menuList";
 
 interface NavItemsProps {
   menuData: MenuResponse[];
