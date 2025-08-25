@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { HeroItem } from "@/models/api";
+import { HeroItem } from "@/models/heroDetails";
 
 interface HeroProps {
   heroData: HeroItem[];
