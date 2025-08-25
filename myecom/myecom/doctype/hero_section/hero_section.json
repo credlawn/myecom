@@ -1,0 +1,112 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-08-25 16:06:14.627815",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "section_break_aain",
+  "enable",
+  "section_break_ncsu",
+  "hero_title",
+  "price_text",
+  "hero_image",
+  "column_break_ygqz",
+  "hero_subtitle",
+  "price",
+  "hero_url",
+  "image_alt"
+ ],
+ "fields": [
+  {
+   "fieldname": "hero_title",
+   "fieldtype": "Data",
+   "label": "Hero Title"
+  },
+  {
+   "fieldname": "column_break_ygqz",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "hero_subtitle",
+   "fieldtype": "Data",
+   "label": "Hero Subtitle"
+  },
+  {
+   "fieldname": "price",
+   "fieldtype": "Currency",
+   "label": "Price",
+   "precision": "0"
+  },
+  {
+   "fieldname": "hero_image",
+   "fieldtype": "Attach",
+   "label": "Hero Image"
+  },
+  {
+   "fieldname": "hero_url",
+   "fieldtype": "Data",
+   "label": "Hero Url"
+  },
+  {
+   "fieldname": "price_text",
+   "fieldtype": "Data",
+   "label": "Price Text"
+  },
+  {
+   "fieldname": "section_break_aain",
+   "fieldtype": "Section Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "enable",
+   "fieldtype": "Check",
+   "label": "Enable"
+  },
+  {
+   "fieldname": "section_break_ncsu",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "image_alt",
+   "fieldtype": "Data",
+   "label": "Image Alt"
+  }
+ ],
+ "grid_page_length": 50,
+ "hide_toolbar": 1,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-08-25 16:34:27.120851",
+ "modified_by": "Administrator",
+ "module": "Myecom",
+ "name": "Hero Section",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Guest",
+   "share": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}

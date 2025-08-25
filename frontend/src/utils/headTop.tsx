@@ -2,7 +2,6 @@
 
 import { HamburgerIcon, UserIcon, CartIcon, SearchIcon } from "@/lib/icons";
 import { Logo, LogoMobile } from "@/lib/logo";
-import TopBanner from "@/lib/topBanner";
 import SearchBox from "@/lib/searchBox";
 import Sidebar from "@/lib/sidebar";
 import { Settings } from "@/models/settings";
@@ -64,10 +63,6 @@ export default function HeadTop({ settings }: HeadTopProps) {
 
   return (
     <div className="max-h-[100dvh] overflow-visible">
-      {settings.showBanner === 1 && (
-        <TopBanner href={settings.url} messages={settings.bannerMessages} />
-      )}
-
       <header className="relative">
         <div className="container-main flex items-center border-b-[0.5px] border-solid border-gray-300_01 bg-white h-13 px-4">
           {/* Desktop View */}

@@ -9,12 +9,12 @@
   "show_top_banner",
   "column_break_hdqi",
   "show_mobile_logo",
-  "column_break_sszp",
-  "banner_url",
+  "column_break_zzya",
+  "auto_slide_hero",
   "section_break_hrlg",
   "logo_url",
   "column_break_gjxs",
-  "column_break_tfpp"
+  "banner_url"
  ],
  "fields": [
   {
@@ -34,10 +34,6 @@
    "label": "Show Mobile Logo"
   },
   {
-   "fieldname": "column_break_sszp",
-   "fieldtype": "Column Break"
-  },
-  {
    "fieldname": "basic_setting_section",
    "fieldtype": "Section Break",
    "label": "Basic Setting"
@@ -45,11 +41,12 @@
   {
    "fieldname": "banner_url",
    "fieldtype": "Data",
-   "label": "Banner Url"
+   "label": "Top Banner Click Url"
   },
   {
    "fieldname": "section_break_hrlg",
-   "fieldtype": "Section Break"
+   "fieldtype": "Section Break",
+   "label": "Logo"
   },
   {
    "fieldname": "logo_url",
@@ -61,8 +58,14 @@
    "fieldtype": "Column Break"
   },
   {
-   "fieldname": "column_break_tfpp",
+   "fieldname": "column_break_zzya",
    "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "auto_slide_hero",
+   "fieldtype": "Check",
+   "label": "Auto Slide Hero"
   }
  ],
  "grid_page_length": 50,
@@ -70,7 +73,7 @@
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2025-08-23 15:19:26.903569",
+ "modified": "2025-08-25 17:46:36.619524",
  "modified_by": "Administrator",
  "module": "Myecom",
  "name": "Site Settings",
