@@ -15,7 +15,7 @@ interface Product {
 }
 
 interface ProductGridProps {
-  products: Product[];
+  products?: Product[];
   maxCardWidth?: number;
   maxCardHeight?: number;
   showSnap?: boolean;
