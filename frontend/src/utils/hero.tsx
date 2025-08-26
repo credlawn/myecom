@@ -60,7 +60,7 @@ export default function Hero({ heroData, autoSlide = true }: HeroProps) {
                 />
 
                 {/* Banner Content */}
-                <div className="absolute bottom-6 left-6 right-6 bg-white/80 p-5 rounded-lg">
+                <div className="absolute bottom-6 left-6 bg-white/80 p-5 rounded-lg w-full md:w-1/2">
                   <p className="text-red-500 text-sm font-medium tracking-widest mb-2">
                     {slide.hero_subtitle}
                   </p>

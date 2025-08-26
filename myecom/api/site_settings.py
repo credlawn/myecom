@@ -9,4 +9,5 @@ def get_site_settings():
         "banner_url": site_settings.banner_url or "",
         "logo_url": site_settings.logo_url or "",
         "auto_slide_hero": site_settings.auto_slide_hero or 0,
+
     }

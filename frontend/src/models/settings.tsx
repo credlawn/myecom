@@ -3,6 +3,7 @@ import { getBannerMessages } from "./bannerMessages";
 import { getMenuList } from "./menuList";
 import { getHeroDetails, HeroItem } from "./heroDetails";
 import { MenuResponse } from "./menuList";
+import { getCategoryList, CategoryList } from "./categoryList";
 
 export interface Settings {
   showBanner: number;
@@ -13,15 +14,17 @@ export interface Settings {
   bannerMessages: string[];
   menuData: MenuResponse[];
   heroData: HeroItem[];
+  categoryData: CategoryList[];
 }
 
 export async function getSettings(): Promise<Settings> {
-  const [settingsResponse, bannerMessages, menuData, heroData] =
+  const [settingsResponse, bannerMessages, menuData, heroData, categoryData] =
     await Promise.all([
       getSiteSettings(),
       getBannerMessages(),
       getMenuList(),
       getHeroDetails(),
+      getCategoryList(),
     ]);
 
   return {
@@ -32,10 +35,7 @@ export async function getSettings(): Promise<Settings> {
     logo_url: settingsResponse?.logo_url ?? "",
     bannerMessages: bannerMessages,
     menuData: menuData,
-    heroData: heroData.map((item) => ({
-      ...item,
-      hero_image: item.hero_image,
-      hero_url: item.hero_url,
-    })),
+    heroData: heroData,
+    categoryData: categoryData,
   };
 }

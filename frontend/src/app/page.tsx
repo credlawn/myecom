@@ -1,8 +1,9 @@
 import HeadTop from "@/utils/headTop";
-import CategoryDemo from "@/utils/category";
+import Category from "@/utils/category";
 import Hero from "@/utils/hero";
 import TopBanner from "@/lib/topBanner";
 import { getSettings, Settings } from "@/models/settings";
+import ProductGrid from "@/models/productGrid";
 
 export default async function Page() {
   const settings: Settings = await getSettings();
@@ -21,7 +22,9 @@ export default async function Page() {
         autoSlide={settings.autoSlideHero === 1}
       />
 
-      <CategoryDemo />
+      <Category categoryData={settings.categoryData} />
+
+      <ProductGrid />
     </div>
   );
 }

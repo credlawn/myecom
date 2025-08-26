@@ -14,7 +14,9 @@
   "section_break_hrlg",
   "logo_url",
   "column_break_gjxs",
-  "banner_url"
+  "banner_url",
+  "section_break_zvpe",
+  "check_image"
  ],
  "fields": [
   {
@@ -66,6 +68,15 @@
    "fieldname": "auto_slide_hero",
    "fieldtype": "Check",
    "label": "Auto Slide Hero"
+  },
+  {
+   "fieldname": "section_break_zvpe",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "check_image",
+   "fieldtype": "Attach Image",
+   "label": "check image"
   }
  ],
  "grid_page_length": 50,
@@ -73,7 +84,7 @@
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2025-08-25 17:46:36.619524",
+ "modified": "2025-08-26 10:18:34.950943",
  "modified_by": "Administrator",
  "module": "Myecom",
  "name": "Site Settings",
