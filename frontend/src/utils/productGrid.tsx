@@ -33,7 +33,7 @@ export default function ProductGrid({
       rating_count: p.rating_count || 0,
       discountPercent: p.discount_percent || 0,
       price: p.discounted_price ?? p.price,
-      oldPrice: p.discounted_price !== p.price ? p.price : undefined,
+      oldPrice: p.discounted_price !== p.price ? p.price : 0,
       imageDefault: p.product_image_1 || "/images/placeholder.jpg",
       imageHover:
         p.product_image_2 || p.product_image_1 || "/images/placeholder.jpg",
@@ -46,6 +46,17 @@ export default function ProductGrid({
   const mobileCardWidth = "100%";
   const mobileImageHeight = 140;
   const mobileCardHeight = 280;
+
+  const formatInr = (
+    num: number,
+    { showDecimal = false }: { showDecimal?: boolean } = {},
+  ): string => {
+    return new Intl.NumberFormat("en-IN", {
+      minimumFractionDigits: showDecimal ? 2 : 0,
+      maximumFractionDigits: showDecimal ? 2 : 0,
+      useGrouping: true,
+    }).format(num);
+  };
 
   return (
     <section className="w-full px-0 py-2">
@@ -89,7 +100,7 @@ export default function ProductGrid({
                       src={p.imageHover}
                       alt={p.altText}
                       fill
-                      className="object-contain absolute inset-0 opacity-0 transition-transform duration-300 group-hover:opacity-100 group-hover:scale-110"
+                      className="object-contain absolute inset-0 opacity-0 transition-transform duration-300 group-hover:opacity-100 group-hover:scale-60"
                       sizes="50vw"
                     />
                   </div>
@@ -133,12 +144,12 @@ export default function ProductGrid({
                     <div className="flex items-center gap-1 text-[14px] text-neutral-900 mt-1">
                       <p className="font-bold">
                         {currency}
-                        {p.price.toFixed(2)}
+                        {formatInr(p.price)}
                       </p>
                       {p.oldPrice && (
-                        <del className="text-gray-400">
+                        <del className="text-gray-400 ml-2">
                           {currency}
-                          {p.oldPrice.toFixed(2)}
+                          {formatInr(p.oldPrice)}
                         </del>
                       )}
                     </div>
@@ -220,18 +231,18 @@ export default function ProductGrid({
                     </span>
                   </div>
 
-                  <div className="flex items-center gap-2 text-[15px] text-neutral-900 mt-auto">
+                  <div className="flex items-center gap-2 text-[15px] text-neutral-900 mt-auto whitespace-nowrap overflow-hidden">
                     <p className="font-bold">
                       {currency}
-                      {p.price.toFixed(2)}
+                      {formatInr(p.price)}
                     </p>
-                    {p.oldPrice && (
+                    {formatInr(p.oldPrice) && (
                       <>
                         <del className="text-gray-500">
                           {currency}
-                          {p.oldPrice.toFixed(2)}
+                          {formatInr(p.oldPrice)}
                         </del>
-                        <span className="text-green-600 text-base font-medium ml-2">
+                        <span className="text-green-600 text-base font-medium ml-2 whitespace-nowrap">
                           {p.discountPercent.toFixed(0)}% off
                         </span>
                       </>
