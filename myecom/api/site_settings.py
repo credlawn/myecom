@@ -9,5 +9,15 @@ def get_site_settings():
         "banner_url": site_settings.banner_url or "",
         "logo_url": site_settings.logo_url or "",
         "auto_slide_hero": site_settings.auto_slide_hero or 0,
+        "card_size": site_settings.card_size or 72,
+        "image_size": site_settings.image_size or 56,
+        "mobile_card_size": site_settings.mobile_card_size or 72,
+        "mobile_image_size": site_settings.mobile_image_size or 56,
+        "tab_card_size": site_settings.tab_card_size or 72,
+        "tab_image_size": site_settings.tab_image_size or 56,
+        "card_bg": site_settings.card_bg or "white",
+        "image_bg": site_settings.image_bg or "transparent",
+        "text_color": site_settings.text_color or "black",
+        "currency": site_settings.currency or "₹"
 
     }

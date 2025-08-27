@@ -3,7 +3,7 @@ import Category from "@/utils/category";
 import Hero from "@/utils/hero";
 import TopBanner from "@/lib/topBanner";
 import { getSettings, Settings } from "@/models/settings";
-import ProductGrid from "@/models/productGrid";
+import ProductGrid from "@/utils/productGrid";
 
 export default async function Page() {
   const settings: Settings = await getSettings();
@@ -22,9 +22,19 @@ export default async function Page() {
         autoSlide={settings.autoSlideHero === 1}
       />
 
-      <Category categoryData={settings.categoryData} />
+      <Category
+        categoryData={settings.categoryData}
+        cardSize={settings.cardSize}
+        imageSize={settings.imageSize}
+        imageBgColor={settings.imageBg}
+        cardBgColor={settings.cardBg}
+        textColor={settings.textColor}
+      />
 
-      <ProductGrid />
+      <ProductGrid
+        products={settings.productList}
+        currency={settings.currency}
+      />
     </div>
   );
 }
