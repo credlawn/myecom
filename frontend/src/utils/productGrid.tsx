@@ -100,7 +100,7 @@ export default function ProductGrid({
                       src={p.imageHover}
                       alt={p.altText}
                       fill
-                      className="object-contain absolute inset-0 opacity-0 transition-transform duration-300 group-hover:opacity-100 group-hover:scale-60"
+                      className="object-contain absolute inset-0 opacity-0 transition-transform duration-300 group-hover:opacity-100 group-hover:scale-105"
                       sizes="50vw"
                     />
                   </div>
@@ -147,7 +147,7 @@ export default function ProductGrid({
                         {formatInr(p.price)}
                       </p>
                       {p.oldPrice && (
-                        <del className="text-gray-400 ml-2">
+                        <del className="text-gray-400 ml-1">
                           {currency}
                           {formatInr(p.oldPrice)}
                         </del>
