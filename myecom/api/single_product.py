@@ -46,12 +46,12 @@ def get_product_by_slug(slug: str):
         elif product_images:
             product_image_1 = get_image_url(product_images[0])
         else:
-            product_image_1 = None
+            product_image_1 = "/files/placeholder.jpg"
 
         all_images = []
-        for img in product_images[:10]:
+        for img in product_images[:8]:
             image_url = get_image_url(img)
-            if image_url:
+            if image_url and image_url != product_image_1:
                 all_images.append(image_url)
 
         data = {

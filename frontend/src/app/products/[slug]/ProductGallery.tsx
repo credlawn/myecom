@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper/modules";
@@ -22,13 +22,10 @@ export default function ProductGallery({
   const [mainImage, setMainImage] = useState(product.product_image_1);
   const [activeIndex, setActiveIndex] = useState(0);
 
-  const images: string[] = [
-    product.product_image_1,
-    product.product_image_2,
-    product.product_image_3,
-    product.product_image_4,
-    product.product_image_5,
-  ].filter(Boolean) as string[];
+  const images: string[] = useMemo(
+    () => product.product_images || [],
+    [product.product_images],
+  );
 
   useEffect(() => {
     const index = images.indexOf(mainImage!);

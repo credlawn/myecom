@@ -29,12 +29,11 @@ export async function getProductBySlug(
           ? product.product_image_1
           : `${DOMAIN}${product.product_image_1}`
         : null,
-      product_image_2: product.product_image_2
-        ? product.product_image_2.startsWith("http")
-          ? product.product_image_2
-          : `${DOMAIN}${product.product_image_2}`
-        : null,
-      // Add similar logic for other images if needed
+      product_images: product.product_images
+        ? product.product_images.map((img) =>
+            img.startsWith("http") ? img : `${DOMAIN}${img}`,
+          )
+        : [],
     };
   } catch (err) {
     console.error("Error fetching product:", err);

@@ -12,7 +12,7 @@ import "swiper/css/free-mode";
 import "swiper/css/zoom";
 
 interface ImageModalProps {
-  images: string[];
+  images: string[]; // yaha aap product.all_images pass karoge
   initialIndex: number;
   isOpen: boolean;
   onClose: () => void;
@@ -42,7 +42,6 @@ export default function ImageModal({
     } else {
       document.body.style.overflow = "unset";
 
-      // Clean up Swiper instances when modal closes
       if (thumbsSwiper && thumbsSwiper.destroy) {
         thumbsSwiper.destroy(true, true);
       }

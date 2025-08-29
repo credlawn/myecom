@@ -13,10 +13,7 @@ export interface SingleProduct {
   rating_count: number;
   product_slug: string;
   product_image_1: string | null;
-  product_image_2: string | null;
-  product_image_3: string | null;
-  product_image_4: string | null;
-  product_image_5: string | null;
+  product_images: string[]; // up to 10 images
   product_tag: string | null;
   description: string | null;
   unit: string | null;
