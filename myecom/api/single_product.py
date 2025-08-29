@@ -51,7 +51,7 @@ def get_product_by_slug(slug: str):
         all_images = []
         for img in product_images[:8]:
             image_url = get_image_url(img)
-            if image_url and image_url != product_image_1:
+            if image_url:
                 all_images.append(image_url)
 
         data = {

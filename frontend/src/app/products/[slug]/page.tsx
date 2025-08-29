@@ -1,6 +1,6 @@
 import { getProductBySlug } from "@/models/productSingle";
 import ProductContent from "./ProductContent";
-import { SingleProduct } from "./productData";
+import { SingleProduct } from "@/models/productData";
 
 export default async function ProductPage({
   params,
