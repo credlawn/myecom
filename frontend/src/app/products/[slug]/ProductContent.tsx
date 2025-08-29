@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { SingleProduct } from "@/types/product";
+import { SingleProduct } from "@/models/productData";
 import ProductGallery from "./ProductGallery";
 
 export default function ProductContent({
