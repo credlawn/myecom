@@ -1,4 +1,3 @@
-import HeadTop from "@/utils/headTop";
 import Category from "@/utils/category";
 import Hero from "@/utils/hero";
 import TopBanner from "@/lib/topBanner";
@@ -22,8 +21,6 @@ export default async function Page() {
       {settings.showBanner === 1 && (
         <TopBanner href={settings.url} messages={settings.bannerMessages} />
       )}
-
-      <HeadTop settings={settings} />
 
       <Hero
         heroData={settings.heroData}

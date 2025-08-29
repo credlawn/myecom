@@ -9,7 +9,7 @@ export async function getProductBySlug(
 ): Promise<SingleProduct | null> {
   try {
     const { data } = await axios.get<{ message: { data: SingleProduct } }>(
-      `${BASE_URL}.product.get_product_by_slug`,
+      `${BASE_URL}.single_product.get_product_by_slug`,
       {
         params: { slug },
         withCredentials: true,

@@ -4,4 +4,4 @@ from .menu_list import get_menu_list
 from .hero_section import get_hero_details
 from .category_list import get_category_list
 from .product_list import get_product_list
-from .product import get_product_by_slug
+from .single_product import get_product_by_slug

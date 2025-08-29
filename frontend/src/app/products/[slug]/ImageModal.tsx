@@ -114,7 +114,7 @@ export default function ImageModal({
             <SwiperSlide key={idx} style={{ width: "80px" }}>
               <div className="h-full flex items-center justify-center p-1">
                 <div
-                  className={`h-full w-full object-contain cursor-pointer rounded border-2 relative ${
+                  className={`h-full w-full object-contain cursor-pointer rounded border-1 relative ${
                     activeIndex === idx ? "border-red-500" : "border-gray-200"
                   }`}
                   onClick={() => {

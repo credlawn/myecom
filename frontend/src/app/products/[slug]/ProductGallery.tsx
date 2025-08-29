@@ -106,17 +106,17 @@ export default function ProductGallery({
               alt={product.product_name}
               fill
               className="object-cover"
-              priority
+              priority={false}
               sizes="(max-width: 1024px) 100vw, 50vw"
             />
           </div>
 
           {/* Desktop Buttons */}
           <div className="flex gap-2 mt-4">
-            <button className="bg-green-600 text-white px-6 py-2 rounded font-medium flex items-center gap-1 flex-1">
+            <button className="bg-green-600 text-white justify-center px-6 py-2 rounded font-medium flex items-center gap-1 flex-1">
               Add to cart
             </button>
-            <button className="bg-red-600 text-white px-6 py-2 rounded font-medium flex items-center gap-1 flex-1">
+            <button className="bg-red-600 text-white justify-center px-6 py-2 rounded font-medium flex items-center gap-1 flex-1">
               Buy Now
             </button>
           </div>
