@@ -10,7 +10,8 @@ def get_product_list():
             "name", "product_name", "brand_name", "unit", "min_purchase_qty",
             "discount_type", "discount_percent", "discount_amount", "price",
             "discounted_price", "stock", "product_slug", "product_image_1",
-            "product_image_2", "product_tag", "product_rating", "rating_count"
+            "product_image_2", "product_tag", "product_rating", "rating_count",
+            "nd_text", "featured"
         ],
         order_by="modified desc"
     )

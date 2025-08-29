@@ -4,9 +4,17 @@ import Hero from "@/utils/hero";
 import TopBanner from "@/lib/topBanner";
 import { getSettings, Settings } from "@/models/settings";
 import ProductGrid from "@/utils/productGrid";
+import FeatureGrid from "@/utils/featureGrid";
 
 export default async function Page() {
   const settings: Settings = await getSettings();
+  const allProducts = Array.isArray(settings.productList)
+    ? settings.productList
+    : [];
+  const featuredProducts = allProducts
+    .filter((p) => p.featured === 1)
+    .slice(0, 12);
+  const newProducts = allProducts.filter((p) => p.featured !== 1);
 
   return (
     <div>
@@ -31,10 +39,13 @@ export default async function Page() {
         textColor={settings.textColor}
       />
 
-      <ProductGrid
-        products={settings.productList}
-        currency={settings.currency}
-      />
+      {featuredProducts.length > 0 && (
+        <FeatureGrid products={featuredProducts} currency={settings.currency} />
+      )}
+
+      {newProducts.length > 0 && (
+        <ProductGrid products={newProducts} currency={settings.currency} />
+      )}
     </div>
   );
 }

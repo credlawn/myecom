@@ -2,12 +2,16 @@ import frappe
 from frappe.model.document import Document
 import random
 import re
+from PIL import Image
+import io
+import os
 
 class Product(Document):
     def validate(self):
         self.calculate_discount()
         self.calculate_discounted_price()
         self.set_product_slug()
+        self.set_image_url()
 
     def autoname(self):
         charset = "ABCDEFGHJKMNPQRSTUVWXYZ23456789"
@@ -66,3 +70,11 @@ class Product(Document):
             slug_parts = "product"
 
         self.product_slug = f"{slug_parts}-{self.name.lower()}"
+
+
+    def set_image_url(self):
+        if not self.product_image_1:
+            self.product_image_1 = self.url_1
+
+        if not self.product_image_2:
+            self.product_image_2 = self.url_2

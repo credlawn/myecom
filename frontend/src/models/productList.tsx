@@ -22,6 +22,8 @@ export interface ProductItem {
   product_rating: number;
   rating_count: number;
   product_category: string[];
+  nd_text: string | null;
+  featured: number;
 }
 
 export async function getProductList(): Promise<ProductItem[]> {
@@ -34,10 +36,14 @@ export async function getProductList(): Promise<ProductItem[]> {
     return (data.message?.messages || []).map((item) => ({
       ...item,
       product_image_1: item.product_image_1
-        ? `${DOMAIN}${item.product_image_1}`
+        ? item.product_image_1.startsWith("http")
+          ? item.product_image_1
+          : `${DOMAIN}${item.product_image_1}`
         : null,
       product_image_2: item.product_image_2
-        ? `${DOMAIN}${item.product_image_2}`
+        ? item.product_image_2.startsWith("http")
+          ? item.product_image_2
+          : `${DOMAIN}${item.product_image_2}`
         : null,
     }));
   } catch (err) {

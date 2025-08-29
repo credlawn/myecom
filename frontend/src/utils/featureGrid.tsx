@@ -1,12 +1,10 @@
-// productGrid.tsx
-
 "use client";
 
 import Image from "next/image";
 import { useState } from "react";
 import type { ProductItem } from "@/models/productList";
 
-interface ProductGridProps {
+interface FeatureGridProps {
   products?: ProductItem[];
   maxCardWidth?: number;
   maxCardHeight?: number;
@@ -14,13 +12,13 @@ interface ProductGridProps {
   currency?: string;
 }
 
-export default function ProductGrid({
+export default function FeatureGrid({
   products = [],
   maxCardWidth = 240,
   maxCardHeight = 320,
   showSnap = true,
   currency = "₹ ",
-}: ProductGridProps) {
+}: FeatureGridProps) {
   const [isClient] = useState(true);
 
   if (!isClient) return null;
@@ -62,7 +60,7 @@ export default function ProductGrid({
   return (
     <section className="w-full px-0 py-2">
       <div className="border border-gray-200 rounded-md px-0 py-2">
-        <h2 className="text-lg font-semibold mb-4 px-4 ">New Products</h2>
+        <h2 className="text-lg font-semibold mb-4 px-4 ">Featured Products</h2>
 
         {/* Mobile View: 2-up Grid */}
         <div className="md:hidden">
@@ -94,14 +92,14 @@ export default function ProductGrid({
                       src={p.imageDefault}
                       alt={p.altText}
                       fill
-                      className="object-contain transition-transform duration-300 group-hover:opacity-0 group-hover:scale-110"
+                      className="object-cover mx-0.5 my-0.5 transition-transform duration-300 group-hover:opacity-0 group-hover:scale-110"
                       sizes="50vw"
                     />
                     <Image
                       src={p.imageHover}
                       alt={p.altText}
                       fill
-                      className="object-contain absolute inset-0 opacity-0 transition-transform duration-300 group-hover:opacity-100 group-hover:scale-105"
+                      className="object-cover absolute inset-0 opacity-0 transition-transform duration-300 group-hover:opacity-100 group-hover:scale-105"
                       sizes="50vw"
                     />
                   </div>
@@ -178,7 +176,7 @@ export default function ProductGrid({
               <a
                 key={p.id}
                 href={`/products/${p.slug}`}
-                className="group block flex-shrink-0 rounded-md border border-gray-200 overflow-hidden transition-shadow duration-300 hover:shadow-[0_0_10px_rgba(0,0,0,0.1)]"
+                className="group block flex-shrink-0 rounded-md border border-gray-200 overflow-hidden transition-shadow duration-300 hover:shadow-[0_0_10px_rgba(0,0,0,0.1)] relative"
                 style={{ width: maxCardWidth, maxHeight: maxCardHeight }}
               >
                 {/* Image container */}
@@ -190,17 +188,22 @@ export default function ProductGrid({
                     src={p.imageDefault}
                     alt={p.altText}
                     fill
-                    className="object-contain transition-transform duration-300 group-hover:opacity-0 group-hover:scale-110"
+                    className="object-cover transition-transform duration-300 group-hover:opacity-0 group-hover:scale-105"
                     sizes="240px"
                   />
                   <Image
                     src={p.imageHover}
                     alt={p.altText}
                     fill
-                    className="object-contain absolute inset-0 opacity-0 transition-transform duration-300 group-hover:opacity-100 group-hover:scale-110"
+                    className="object-cover mx-0.5 my-0.5 absolute inset-0 opacity-0 transition-transform duration-300 group-hover:opacity-100 group-hover:scale-105"
                     sizes="240px"
                   />
                 </div>
+
+                <span className="absolute top-0 left-0 h-[2px] w-0 bg-red-500 group-hover:w-full group-hover:transition-all group-hover:duration-500 group-hover:ease-in-out"></span>
+                <span className="absolute top-0 left-0 w-[2px] h-0 bg-red-500 group-hover:h-full group-hover:transition-all group-hover:duration-500 group-hover:ease-in-out"></span>
+                <span className="absolute top-0 right-0 w-[2px] h-0 bg-red-500 group-hover:h-full group-hover:transition-all group-hover:duration-500 group-hover:ease-in-out group-hover:delay-300"></span>
+                <span className="absolute bottom-0 left-0 h-[2px] w-0 bg-red-500 group-hover:w-full group-hover:transition-all group-hover:duration-500 group-hover:ease-in-out group-hover:delay-300"></span>
 
                 {/* Text container */}
                 <div
@@ -209,12 +212,14 @@ export default function ProductGrid({
                 >
                   <h3 className="mb-2">
                     <span
-                      className="text-natural-900 text-[14px] font-light tracking-wide capitalize line-clamp-2 group-hover:text-neutral-900 block"
+                      className="text-natural-900 text-[14px] font-light tracking-wide capitalize line-clamp-2 group-hover:text-neutral-900 block w-full"
                       style={{
                         display: "-webkit-box",
                         WebkitLineClamp: 2,
                         WebkitBoxOrient: "vertical",
                         overflow: "hidden",
+                        minHeight: "2.8em",
+                        lineHeight: "1.4em",
                       }}
                     >
                       {p.title}
