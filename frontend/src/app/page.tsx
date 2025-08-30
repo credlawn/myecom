@@ -19,7 +19,11 @@ export default async function Page() {
     <div>
       {/* Top banner */}
       {settings.showBanner === 1 && (
-        <TopBanner href={settings.url} messages={settings.bannerMessages} />
+        <TopBanner
+          {...settings}
+          href={settings.url}
+          messages={settings.bannerMessages}
+        />
       )}
 
       <Hero

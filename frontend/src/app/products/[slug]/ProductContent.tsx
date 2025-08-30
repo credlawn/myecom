@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { SingleProduct } from "@/models/productData";
 import ProductGallery from "./ProductGallery";
+import StarRating from "@/lib/starRating";
 
 export default function ProductContent({
   product,
@@ -67,11 +68,11 @@ export default function ProductContent({
             {product.product_name}
           </h1>
           <div className="flex items-center gap-2 text-gray-500 text-sm">
-            {[...Array(5)].map((_, i) => (
-              <span key={i} className="text-yellow-400">
-                ★
-              </span>
-            ))}
+            <StarRating
+              rating={product.product_rating}
+              size={18}
+              fullColor="#f87171"
+            />
             <span>({product.rating_count} reviews)</span>
           </div>
 

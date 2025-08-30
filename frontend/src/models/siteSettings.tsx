@@ -7,7 +7,7 @@ export interface SiteSettingsResponse {
   show_top_banner: number;
   show_mobile_logo: number;
   auto_slide_hero: number;
-  banner_url?: string | null;
+  banner_url?: string;
   logo_url?: string | null;
   card_size?: number;
   mobile_card_size?: number;
@@ -19,6 +19,26 @@ export interface SiteSettingsResponse {
   image_bg?: string | null;
   text_color?: string | null;
   currency?: string | null;
+  primary_color?: string | null;
+  secondary_color?: string | null;
+  third_color?: string | null;
+  button_1_color?: string | null;
+  button_2_color?: string | null;
+  button_3_color?: string | null;
+  bt_1_color?: string | null;
+  bt_2_color?: string | null;
+  bt_3_color?: string | null;
+  banner_animation?: string | null;
+  bg_color?: string | null;
+  bg_shadow_color?: string | null;
+  mob_font_color?: string | null;
+  lap_font_color?: string | null;
+  mob_height?: string | null;
+  lap_height?: string | null;
+  mob_ft_weight?: number;
+  lap_ft_weight?: number;
+  mob_ft_size?: number;
+  lap_ft_size?: number;
 }
 
 export async function getSiteSettings(): Promise<SiteSettingsResponse | null> {
@@ -45,6 +65,26 @@ export async function getSiteSettings(): Promise<SiteSettingsResponse | null> {
         image_bg: message.image_bg,
         text_color: message.text_color,
         currency: message.currency,
+        primary_color: message.primary_color,
+        secondary_color: message.secondary_color,
+        third_color: message.third_color,
+        button_1_color: message.button_1_color,
+        button_2_color: message.button_2_color,
+        button_3_color: message.button_3_color,
+        bt_1_color: message.bt_1_color,
+        bt_2_color: message.bt_2_color,
+        bt_3_color: message.bt_3_color,
+        banner_animation: message.banner_animation,
+        bg_color: message.bg_color,
+        bg_shadow_color: message.bg_shadow_color,
+        mob_font_color: message.mob_font_color,
+        lap_font_color: message.lap_font_color,
+        mob_height: message.mob_height,
+        lap_height: message.lap_height,
+        mob_ft_weight: message.mob_ft_weight,
+        lap_ft_weight: message.lap_ft_weight,
+        mob_ft_size: message.mob_ft_size,
+        lap_ft_size: message.lap_ft_size,
       };
     }
     return null;

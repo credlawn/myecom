@@ -7,6 +7,7 @@ import Sidebar from "@/lib/sidebar";
 import { Settings } from "@/models/settings";
 import { useState, useRef, useEffect } from "react";
 import { NavItems } from "@/lib/navItems";
+import Link from "next/link";
 
 interface HeadTopProps {
   settings: Settings;
@@ -69,7 +70,11 @@ export default function HeadTop({ settings }: HeadTopProps) {
           <div className="hidden lg:flex items-center justify-between w-full h-8">
             {/* Left: Logo */}
             <div className="flex-shrink-0">
-              <Logo logoUrl={settings.logo_url} />
+              <Link href="/">
+                <div className="cursor-pointer">
+                  <Logo logoUrl={settings.logo_url} />
+                </div>
+              </Link>
             </div>
             <NavItems menuData={settings.menuData} />
 

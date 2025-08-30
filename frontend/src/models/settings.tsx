@@ -22,6 +22,28 @@ export interface Settings {
   cardBg: string;
   imageBg: string;
   textColor: string;
+  priColor: string;
+  secColor: string;
+  thiColor: string;
+  btn1Color: string;
+  btn2Color: string;
+  btn3Color: string;
+  bt1Color: string;
+  bt2Color: string;
+  bt3Color: string;
+  banAnimation: string;
+  background: string;
+  boxShadowColor: string;
+  heightMobile: string;
+  heightDesktop: string;
+
+  fontWeightMobile: number;
+  fontWeightDesktop: number;
+  fontSizeMobile: number;
+  fontSizeDesktop: number;
+  fontColorMobile: string;
+  fontColorDesktop: string;
+
   bannerMessages: string[];
   menuData: MenuResponse[];
   heroData: HeroItem[];
@@ -62,6 +84,27 @@ export async function getSettings(): Promise<Settings> {
     cardBg: settingsResponse?.card_bg ?? "white",
     imageBg: settingsResponse?.image_bg ?? "transparent",
     textColor: settingsResponse?.text_color ?? "black",
+    priColor: settingsResponse?.primary_color ?? "red-500",
+    secColor: settingsResponse?.secondary_color ?? "natural-900",
+    thiColor: settingsResponse?.third_color ?? "red-500",
+    btn1Color: settingsResponse?.button_1_color ?? "red-500",
+    btn2Color: settingsResponse?.button_2_color ?? "green-600",
+    btn3Color: settingsResponse?.button_3_color ?? "blue-500",
+    bt1Color: settingsResponse?.bt_1_color ?? "natural-900",
+    bt2Color: settingsResponse?.bt_2_color ?? "white",
+    bt3Color: settingsResponse?.bt_3_color ?? "blue",
+    background: settingsResponse?.bg_color ?? "black",
+    boxShadowColor: settingsResponse?.bg_shadow_color ?? "black",
+    banAnimation: settingsResponse?.banner_animation ?? "zoom",
+    heightMobile: settingsResponse?.mob_height ?? "h-8",
+    heightDesktop: settingsResponse?.lap_height ?? "h-9",
+    fontWeightMobile: settingsResponse?.mob_ft_weight ?? 500,
+    fontWeightDesktop: settingsResponse?.lap_ft_weight ?? 600,
+    fontSizeMobile: settingsResponse?.mob_ft_size ?? 14,
+    fontSizeDesktop: settingsResponse?.lap_ft_size ?? 16,
+    fontColorMobile: settingsResponse?.mob_font_color ?? "white",
+    fontColorDesktop: settingsResponse?.lap_font_color ?? "white",
+
     bannerMessages: bannerMessages,
     menuData: menuData,
     heroData: heroData,

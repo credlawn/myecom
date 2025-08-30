@@ -5,9 +5,9 @@ interface TopBannerProps {
   background?: string;
   boxShadowColor?: string;
   href?: string;
-  animation?: "slide" | "zoom";
-  messages?: string[]; // Add messages prop for dynamic data
-  
+  banAnimation?: string;
+  messages?: string[];
+
   // Mobile / Desktop specific props
   heightMobile?: string;
   heightDesktop?: string;
@@ -19,31 +19,16 @@ interface TopBannerProps {
   fontColorDesktop?: string;
 }
 
-function getHeightDesktopClass(heightDesktop: string) {
-  switch (heightDesktop) {
-    case "h-8":
-      return "sm:h-8";
-    case "h-9":
-      return "sm:h-9";
-    case "h-10":
-      return "sm:h-10";
-    default:
-      return "";
-  }
-}
-
 export default function TopBanner({
   background = "linear-gradient(90deg, rgba(255, 65, 108, 0.9) 0%, rgba(255, 75, 43, 0.9) 100%)",
   boxShadowColor = "rgba(255, 75, 43, 0.3)",
-  href = "#", // Changed from defaultHref
-  animation = "zoom",
-  messages = [], // Add default empty array for messages
-  
+  href = "#",
+  banAnimation = "zoom",
+  messages = [],
   heightMobile = "h-8",
   fontWeightMobile = 500,
   fontSizeMobile = 14,
   fontColorMobile = "#ffffff",
-
   heightDesktop = "h-9",
   fontWeightDesktop = 600,
   fontSizeDesktop = 16,
@@ -53,9 +38,8 @@ export default function TopBanner({
   const [animating, setAnimating] = useState(false);
 
   // Use dynamic messages from props instead of static topBannerData
-  const allTexts = messages.filter(msg => msg && msg.trim() !== "");
+  const allTexts = messages.filter((msg) => msg && msg.trim() !== "");
   const total = allTexts.length;
-  const heightDesktopClass = getHeightDesktopClass(heightDesktop);
 
   useEffect(() => {
     // Only set up interval if there are messages to rotate
@@ -75,34 +59,57 @@ export default function TopBanner({
   const getText = (offset: number) =>
     allTexts[(startIndex + offset) % total] || "";
 
-  const animationClasses =
-    animation === "slide"
+  const banAnimationClasses =
+    banAnimation === "slide"
       ? animating
         ? "opacity-0 translate-y-2"
         : "opacity-100 translate-y-0"
       : animating
-      ? "opacity-0 scale-90"
-      : "opacity-100 scale-100";
+        ? "opacity-0 scale-90"
+        : "opacity-100 scale-100";
 
   // Don't render anything if there are no messages
   if (total === 0) {
     return null;
   }
 
+  // Parse height values from props
+  const getHeightValue = (heightClass: string) => {
+    const match = heightClass.match(/h-(\d+)/);
+    if (match) {
+      return `${parseInt(match[1]) * 0.25}rem`;
+    }
+    return "2rem"; // Default fallback
+  };
+
+  const mobileHeightValue = getHeightValue(heightMobile);
+  const desktopHeightValue = getHeightValue(heightDesktop);
+
   return (
     <a
-      className={`container-main flex justify-center [clipPath:inset(0_-100vmax)] ${heightMobile} ${heightDesktopClass}`}
+      className="container-main flex justify-center [clipPath:inset(0_-100vmax)]"
       style={{
         background,
         boxShadow: `0 0 0 100vmax ${boxShadowColor}`,
-
+        height: mobileHeightValue,
+        // Apply desktop height using media query
+        // This is a workaround for the sm: prefix issue
       }}
       href={href}
     >
+      {/* Inline style for desktop height */}
+      <style>{`
+        @media (min-width: 640px) {
+          a[href="${href}"] {
+            height: ${desktopHeightValue} !important;
+          }
+        }
+      `}</style>
+
       {/* Desktop View */}
       <div className="hidden flex-1 items-center justify-between gap-5 sm:flex">
         <p
-          className={`!leading-tight shrink-0 lg:w-[28%] transition-all duration-500 ease-in-out ${animationClasses}`}
+          className={`!leading-tight shrink-0 lg:w-[28%] transition-all duration-500 ease-in-out ${banAnimationClasses}`}
           style={{
             fontWeight: fontWeightDesktop,
             fontSize: `${fontSizeDesktop}px`,
@@ -113,7 +120,7 @@ export default function TopBanner({
         </p>
         <div className="m-auto flex w-auto shrink-0 items-center justify-center">
           <p
-            className={`!leading-tight py-0.5 transition-all duration-500 ease-in-out ${animationClasses}`}
+            className={`!leading-tight py-0.5 transition-all duration-500 ease-in-out ${banAnimationClasses}`}
             style={{
               fontWeight: fontWeightDesktop,
               fontSize: `${fontSizeDesktop}px`,
@@ -124,7 +131,7 @@ export default function TopBanner({
           </p>
         </div>
         <p
-          className={`!leading-tight text-end lg:w-[28%] transition-all duration-500 ease-in-out ${animationClasses}`}
+          className={`!leading-tight text-end lg:w-[28%] transition-all duration-500 ease-in-out ${banAnimationClasses}`}
           style={{
             fontWeight: fontWeightDesktop,
             fontSize: `${fontSizeDesktop}px`,
@@ -139,7 +146,7 @@ export default function TopBanner({
       <div className="sm:hidden flex items-center justify-center w-full overflow-hidden relative">
         <p
           key={startIndex}
-          className={`absolute transition-all duration-500 ease-in-out ${animationClasses}`}
+          className={`absolute transition-all duration-500 ease-in-out ${banAnimationClasses}`}
           style={{
             fontWeight: fontWeightMobile,
             fontSize: `${fontSizeMobile}px`,

@@ -7,16 +7,42 @@
  "field_order": [
   "basic_setting_section",
   "show_top_banner",
+  "currency",
   "column_break_hdqi",
   "show_mobile_logo",
+  "banner_animation",
   "column_break_zzya",
   "auto_slide_hero",
-  "column_break_mucp",
-  "currency",
+  "section_break_dhro",
+  "bg_color",
+  "mob_ft_weight",
+  "mob_height",
+  "column_break_xojw",
+  "bg_shadow_color",
+  "lap_ft_weight",
+  "lap_height",
+  "column_break_xchu",
+  "mob_font_color",
+  "mob_ft_size",
+  "column_break_fboq",
+  "lap_font_color",
+  "lap_ft_size",
   "section_break_hrlg",
   "logo_url",
   "column_break_gjxs",
   "banner_url",
+  "section_break_dtoo",
+  "primary_color",
+  "button_1_color",
+  "bt_1_color",
+  "column_break_uuaf",
+  "secondary_color",
+  "button_2_color",
+  "bt_2_color",
+  "column_break_pcbm",
+  "third_color",
+  "button_3_color",
+  "bt_3_color",
   "section_break_ootg",
   "card_size",
   "mobile_image_size",
@@ -148,13 +174,140 @@
    "label": "Tab Image Size"
   },
   {
-   "fieldname": "column_break_mucp",
-   "fieldtype": "Column Break"
-  },
-  {
    "fieldname": "currency",
    "fieldtype": "Data",
    "label": "Currency"
+  },
+  {
+   "fieldname": "section_break_dtoo",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "primary_color",
+   "fieldtype": "Data",
+   "label": "Primary Color"
+  },
+  {
+   "fieldname": "column_break_uuaf",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_pcbm",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "secondary_color",
+   "fieldtype": "Data",
+   "label": "Secondary Color"
+  },
+  {
+   "fieldname": "third_color",
+   "fieldtype": "Data",
+   "label": "Third Color"
+  },
+  {
+   "fieldname": "button_1_color",
+   "fieldtype": "Data",
+   "label": "Button 1 Color"
+  },
+  {
+   "fieldname": "button_2_color",
+   "fieldtype": "Data",
+   "label": "Button 2 Color"
+  },
+  {
+   "fieldname": "button_3_color",
+   "fieldtype": "Data",
+   "label": "Button 3 Color"
+  },
+  {
+   "fieldname": "bt_1_color",
+   "fieldtype": "Data",
+   "label": "BT 1 Color"
+  },
+  {
+   "fieldname": "bt_2_color",
+   "fieldtype": "Data",
+   "label": "BT 2 Color"
+  },
+  {
+   "fieldname": "bt_3_color",
+   "fieldtype": "Data",
+   "label": "BT 3 Color"
+  },
+  {
+   "fieldname": "section_break_dhro",
+   "fieldtype": "Section Break",
+   "label": "Top Banner Settings"
+  },
+  {
+   "fieldname": "bg_color",
+   "fieldtype": "Data",
+   "label": "BG Color"
+  },
+  {
+   "fieldname": "column_break_xojw",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "bg_shadow_color",
+   "fieldtype": "Data",
+   "label": "BG Shadow Color"
+  },
+  {
+   "fieldname": "column_break_xchu",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "mob_font_color",
+   "fieldtype": "Data",
+   "label": "Mob Font Color"
+  },
+  {
+   "fieldname": "lap_font_color",
+   "fieldtype": "Data",
+   "label": "Lap Font Color"
+  },
+  {
+   "fieldname": "mob_ft_weight",
+   "fieldtype": "Int",
+   "label": "Mob FT Weight"
+  },
+  {
+   "fieldname": "lap_ft_weight",
+   "fieldtype": "Int",
+   "label": "Lap FT Weight"
+  },
+  {
+   "fieldname": "mob_ft_size",
+   "fieldtype": "Int",
+   "label": "Mob FT Size"
+  },
+  {
+   "fieldname": "lap_ft_size",
+   "fieldtype": "Int",
+   "label": "Lap FT Size"
+  },
+  {
+   "fieldname": "mob_height",
+   "fieldtype": "Data",
+   "label": "Mob Height"
+  },
+  {
+   "fieldname": "lap_height",
+   "fieldtype": "Data",
+   "label": "Lap Height"
+  },
+  {
+   "default": "zoom",
+   "fieldname": "banner_animation",
+   "fieldtype": "Select",
+   "label": "Banner Animation",
+   "options": "slide\nzoom"
+  },
+  {
+   "fieldname": "column_break_fboq",
+   "fieldtype": "Column Break"
   }
  ],
  "grid_page_length": 50,
@@ -162,7 +315,7 @@
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2025-08-27 19:55:58.347606",
+ "modified": "2025-08-30 19:51:44.192721",
  "modified_by": "Administrator",
  "module": "Myecom",
  "name": "Site Settings",
