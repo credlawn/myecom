@@ -1,6 +1,6 @@
-import { getProductBySlug } from "@/models/productSingle";
+import { getProductBySlug } from "@/myapi/productSingle";
 import ProductContent from "./ProductContent";
-import { SingleProduct } from "@/models/productData";
+import { SingleProduct } from "@/myapi/productData";
 
 export default async function ProductPage({
   params,

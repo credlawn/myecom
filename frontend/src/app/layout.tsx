@@ -4,7 +4,7 @@ import "./globals.css";
 import "@/styles/main.css";
 import "@/styles/style.css";
 import HeadTop from "@/utils/headTop";
-import { getSettings, Settings } from "@/models/settings";
+import { getSettings, Settings } from "@/myapi/settings";
 
 const outfit = Outfit({
   subsets: ["latin"],
