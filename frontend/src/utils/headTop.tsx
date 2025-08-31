@@ -4,7 +4,7 @@ import { HamburgerIcon, UserIcon, CartIcon, SearchIcon } from "@/lib/icons";
 import { Logo, LogoMobile } from "@/lib/logo";
 import SearchBox from "@/lib/searchBox";
 import Sidebar from "@/lib/sidebar";
-import { Settings } from "@/models/settings";
+import { Settings } from "@/myapi/settings";
 import { useState, useRef, useEffect } from "react";
 import { NavItems } from "@/lib/navItems";
 import Link from "next/link";

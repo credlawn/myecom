@@ -11,6 +11,7 @@
   "hero_title",
   "price_text",
   "hero_image",
+  "button_text",
   "column_break_ygqz",
   "hero_subtitle",
   "price",
@@ -71,13 +72,18 @@
    "fieldname": "image_alt",
    "fieldtype": "Data",
    "label": "Image Alt"
+  },
+  {
+   "fieldname": "button_text",
+   "fieldtype": "Data",
+   "label": "Button Text"
   }
  ],
  "grid_page_length": 50,
  "hide_toolbar": 1,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-08-25 16:34:27.120851",
+ "modified": "2025-08-31 12:18:44.736662",
  "modified_by": "Administrator",
  "module": "Myecom",
  "name": "Hero Section",

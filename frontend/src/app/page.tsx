@@ -27,6 +27,7 @@ export default async function Page() {
       )}
 
       <Hero
+        {...settings}
         heroData={settings.heroData}
         autoSlide={settings.autoSlideHero === 1}
       />

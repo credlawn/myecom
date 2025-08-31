@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { CategoryList } from "@/models/categoryList";
+import { CategoryList } from "@/myapi/categoryList";
 
 interface CategoryProps {
   categoryData?: CategoryList[];

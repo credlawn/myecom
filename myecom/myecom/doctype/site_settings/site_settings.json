@@ -184,7 +184,7 @@
   },
   {
    "fieldname": "primary_color",
-   "fieldtype": "Data",
+   "fieldtype": "Color",
    "label": "Primary Color"
   },
   {
@@ -197,42 +197,42 @@
   },
   {
    "fieldname": "secondary_color",
-   "fieldtype": "Data",
+   "fieldtype": "Color",
    "label": "Secondary Color"
   },
   {
    "fieldname": "third_color",
-   "fieldtype": "Data",
+   "fieldtype": "Color",
    "label": "Third Color"
   },
   {
    "fieldname": "button_1_color",
-   "fieldtype": "Data",
+   "fieldtype": "Color",
    "label": "Button 1 Color"
   },
   {
    "fieldname": "button_2_color",
-   "fieldtype": "Data",
+   "fieldtype": "Color",
    "label": "Button 2 Color"
   },
   {
    "fieldname": "button_3_color",
-   "fieldtype": "Data",
+   "fieldtype": "Color",
    "label": "Button 3 Color"
   },
   {
    "fieldname": "bt_1_color",
-   "fieldtype": "Data",
+   "fieldtype": "Color",
    "label": "BT 1 Color"
   },
   {
    "fieldname": "bt_2_color",
-   "fieldtype": "Data",
+   "fieldtype": "Color",
    "label": "BT 2 Color"
   },
   {
    "fieldname": "bt_3_color",
-   "fieldtype": "Data",
+   "fieldtype": "Color",
    "label": "BT 3 Color"
   },
   {
@@ -315,7 +315,7 @@
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2025-08-30 19:51:44.192721",
+ "modified": "2025-08-31 12:53:55.239103",
  "modified_by": "Administrator",
  "module": "Myecom",
  "name": "Site Settings",

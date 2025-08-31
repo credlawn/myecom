@@ -11,6 +11,7 @@ export interface HeroItem {
   hero_image: string;
   image_alt: string;
   hero_url: string;
+  button_text: string;
 }
 
 export async function getHeroDetails(): Promise<HeroItem[]> {

@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { ChevronDownIcon, UserIcon } from "@/lib/icons";
-import { MenuResponse } from "@/models/menuList";
-import { Settings } from "@/models/settings";
+import { MenuResponse } from "@/myapi/menuList";
+import { Settings } from "@/myapi/settings";
 
 interface SidebarProps {
   isOpen: boolean;

@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import type { ProductItem } from "@/models/productList";
+import type { ProductItem } from "@/myapi/productList";
 
 interface FeatureGridProps {
   products?: ProductItem[];

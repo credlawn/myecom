@@ -13,7 +13,8 @@ def get_hero_details():
             "price",
             "hero_image",
             "image_alt",
-            "hero_url"
+            "hero_url",
+            "button_text",
         ],
         order_by="modified desc",
         limit=10
