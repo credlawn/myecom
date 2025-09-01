@@ -1,5 +1,6 @@
 import frappe
 from frappe import _
+from frappe.utils import now, nowdate, nowtime, time_diff_in_seconds
 
 @frappe.whitelist(allow_guest=True)
 def create_or_update_visitor():
@@ -14,36 +15,60 @@ def create_or_update_visitor():
     except frappe.DoesNotExistError:
         doc = None
 
+    current_time = now()
+    ip_address = frappe.local.request_ip or getattr(frappe.request, 'remote_addr', None)
+
     if not doc:
         new_doc = frappe.new_doc('Visitors')
         new_doc.visitor_id = visitor_id
-        new_doc.visit_date_time = frappe.utils.now()
-        new_doc.last_seen = frappe.utils.now()
+        new_doc.visit_date_time = current_time
+        new_doc.last_seen = current_time
         new_doc.visit_count = 1
         new_doc.total_session_time = 0
-        new_doc.visit_ip_address = frappe.local.request_ip or frappe.request.remote_addr
+        new_doc.visit_ip_address = ip_address
+        new_doc.current_session_start = current_time
         new_doc.append('visit_records', {
-            'visitor_ip': frappe.local.request_ip or frappe.request.remote_addr,
-            'visit_date_time': frappe.utils.now(),
-            'visit_date': frappe.utils.nowdate(),
-            'visit_time': frappe.utils.nowtime(),
+            'visitor_ip': ip_address,
+            'visit_date_time': current_time,
+            'visit_date': nowdate(),
+            'visit_time': nowtime(),
             'session_time': 0,
+            'session_visit_count': 1,
             'slug': slug
         })
         new_doc.insert(ignore_permissions=True)
         frappe.db.commit()
         return {"status": "success", "message": "New visitor record created."}
     else:
-        doc.last_seen = frappe.utils.now()
-        doc.visit_count += 1
-        doc.append('visit_records', {
-            'visitor_ip': frappe.local.request_ip or frappe.request.remote_addr,
-            'visit_date_time': frappe.utils.now(),
-            'visit_date': frappe.utils.nowdate(),
-            'visit_time': frappe.utils.nowtime(),
-            'session_time': 0,
-            'slug': slug
-        })
+        time_diff = time_diff_in_seconds(current_time, doc.last_seen)
+        
+        if time_diff > 1800:
+            doc.visit_count += 1
+            doc.current_session_start = current_time
+
+        doc.last_seen = current_time
+        
+        existing_record = None
+        for record in doc.visit_records:
+            if record.slug == slug and record.visit_date_time >= doc.current_session_start:
+                existing_record = record
+                break
+
+        if not existing_record:
+            doc.append('visit_records', {
+                'visitor_ip': ip_address,
+                'visit_date_time': current_time,
+                'visit_date': nowdate(),
+                'visit_time': nowtime(),
+                'session_time': 0,
+                'session_visit_count': 1,
+                'slug': slug
+            })
+        else:
+            existing_record.session_visit_count += 1
+            existing_record.visit_time = nowtime()
+            existing_record.visit_date_time = current_time
+
         doc.save(ignore_permissions=True)
         frappe.db.commit()
         return {"status": "success", "message": "Visitor record updated."}
@@ -51,17 +76,35 @@ def create_or_update_visitor():
 @frappe.whitelist(allow_guest=True)
 def update_session_time():
     visitor_id = frappe.form_dict.get("visitor_id")
-    session_time = frappe.form_dict.get("session_time")
+    slug = frappe.form_dict.get("slug")
 
-    if not visitor_id or session_time is None:
-        frappe.throw(_("Missing visitor_id or session_time"), frappe.ValidationError)
+    if not visitor_id or not slug:
+        frappe.throw(_("Missing visitor_id or slug"), frappe.ValidationError)
 
     try:
         doc = frappe.get_doc('Visitors', {'visitor_id': visitor_id})
-        doc.total_session_time += int(session_time)
+        current_time = now()
+        
         if doc.visit_records:
-            last_record = doc.visit_records[-1]
-            last_record.session_time = int(session_time)
+            # Find the most recent record for this slug in the current session
+            matching_records = [
+                record for record in doc.visit_records 
+                if record.slug == slug and record.visit_date_time >= doc.current_session_start
+            ]
+            
+            if matching_records:
+                latest_record = max(matching_records, key=lambda x: x.visit_date_time)
+                session_duration = time_diff_in_seconds(current_time, latest_record.visit_date_time)
+                
+                # Update session time
+                latest_record.session_time += session_duration
+                doc.total_session_time += session_duration
+                
+                # Update last seen
+                doc.last_seen = current_time
+                latest_record.visit_time = nowtime()
+                latest_record.visit_date_time = current_time
+            
         doc.save(ignore_permissions=True)
         frappe.db.commit()
         return {"status": "success", "message": "Session time updated successfully."}

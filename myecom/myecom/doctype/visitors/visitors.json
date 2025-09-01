@@ -9,9 +9,11 @@
   "visit_ip_address",
   "visit_count",
   "total_session_time",
+  "formatted_session_duration",
   "column_break_fqpn",
   "visit_date_time",
   "last_seen",
+  "current_session_start",
   "section_break_nbfq",
   "visit_records"
  ],
@@ -63,13 +65,23 @@
    "fieldtype": "Int",
    "in_list_view": 1,
    "label": "Total Session Time"
+  },
+  {
+   "fieldname": "current_session_start",
+   "fieldtype": "Datetime"
+  },
+  {
+   "fieldname": "formatted_session_duration",
+   "fieldtype": "Data",
+   "label": "Session Duration",
+   "read_only": 1
   }
  ],
  "grid_page_length": 50,
  "hide_toolbar": 1,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-09-01 12:41:36.700380",
+ "modified": "2025-09-02 04:23:34.012803",
  "modified_by": "Administrator",
  "module": "Myecom",
  "name": "Visitors",

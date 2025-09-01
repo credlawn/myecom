@@ -12,7 +12,8 @@
   "slug",
   "column_break_trvi",
   "visit_date_time",
-  "visit_time"
+  "visit_time",
+  "session_visit_count"
  ],
  "fields": [
   {
@@ -48,13 +49,18 @@
    "fieldname": "slug",
    "fieldtype": "Data",
    "label": "Slug"
+  },
+  {
+   "fieldname": "session_visit_count",
+   "fieldtype": "Int",
+   "label": "Visit Count"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-09-01 12:54:07.268866",
+ "modified": "2025-09-02 03:17:43.430440",
  "modified_by": "Administrator",
  "module": "Myecom",
  "name": "Visitors Child",
