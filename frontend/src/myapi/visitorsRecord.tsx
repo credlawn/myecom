@@ -22,8 +22,8 @@ export default function VisitorsRecord() {
         });
       }
       if (typeof visitorId === 'string') {
-        const slug = window.location.pathname; // Slug को यहाँ कैप्चर करें
-        sendVisitorIdToFrappe(visitorId, slug); // API कॉल में भेजें
+        const slug = window.location.pathname;
+        sendVisitorIdToFrappe(visitorId, slug);
       }
     };
     handleInitialLoad();
@@ -68,10 +68,14 @@ export default function VisitorsRecord() {
   const sendVisitorIdToFrappe = async (id: string, slug: string) => {
     try {
       const frappeApiUrl = `${BASE_URL}.visitors_record.create_or_update_visitor`;
-      await axios.post(frappeApiUrl, {
-        visitor_id: id,
-        slug: slug, // slug को API के डेटा में जोड़ें
-      });
+      await axios.post(
+        frappeApiUrl,
+        {
+          visitor_id: id,
+          slug: slug,
+        },
+        { withCredentials: true } // यह लाइन जोड़ी गई है
+      );
     } catch (error) {
       console.error('Error sending visitor ID to Frappe:', error);
     }
@@ -80,10 +84,14 @@ export default function VisitorsRecord() {
   const sendSessionTimeUpdate = async (id: string, duration: number) => {
     try {
       const frappeApiUrl = `${BASE_URL}.visitors_record.update_session_time`;
-      await axios.post(frappeApiUrl, {
-        visitor_id: id,
-        session_time: duration,
-      });
+      await axios.post(
+        frappeApiUrl,
+        {
+          visitor_id: id,
+          session_time: duration,
+        },
+        { withCredentials: true } // यह लाइन भी जोड़ी गई है
+      );
     } catch (error) {
       console.error('Error updating session time to Frappe:', error);
     }
