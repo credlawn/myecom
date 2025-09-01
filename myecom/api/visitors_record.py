@@ -1,13 +1,13 @@
 import frappe
+from frappe import _
 
 @frappe.whitelist(allow_guest=True)
 def create_or_update_visitor():
-    data = frappe.request.json or {}
-    visitor_id = data.get("visitor_id")
-    slug = data.get("slug")
+    visitor_id = frappe.form_dict.get("visitor_id")
+    slug = frappe.form_dict.get("slug")
 
     if not visitor_id or not slug:
-        return {"status": "error", "message": "Missing visitor_id or slug"}
+        frappe.throw(_("Missing visitor_id or slug"), frappe.ValidationError)
 
     try:
         doc = frappe.get_doc('Visitors', {'visitor_id': visitor_id})
@@ -50,12 +50,11 @@ def create_or_update_visitor():
 
 @frappe.whitelist(allow_guest=True)
 def update_session_time():
-    data = frappe.request.json or {}
-    visitor_id = data.get("visitor_id")
-    session_time = data.get("session_time")
+    visitor_id = frappe.form_dict.get("visitor_id")
+    session_time = frappe.form_dict.get("session_time")
 
     if not visitor_id or session_time is None:
-        return {"status": "error", "message": "Missing visitor_id or session_time"}
+        frappe.throw(_("Missing visitor_id or session_time"), frappe.ValidationError)
 
     try:
         doc = frappe.get_doc('Visitors', {'visitor_id': visitor_id})

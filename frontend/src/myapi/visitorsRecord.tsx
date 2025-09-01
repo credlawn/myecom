@@ -65,7 +65,7 @@ export default function VisitorsRecord() {
   const sendVisitorIdToFrappe = async (id: string, slug: string) => {
     try {
       const frappeApiUrl = `${BASE_URL}.visitors_record.create_or_update_visitor`;
-      await axios.post(frappeApiUrl, JSON.stringify({ visitor_id: id, slug }), { headers: { 'Content-Type': 'application/json' } });
+      await axios.post(frappeApiUrl, ({ visitor_id: id, slug }), { headers: { 'Content-Type': 'application/json' } });
     } catch (error) {
       console.error('Error sending visitor ID to Frappe:', error);
     }
@@ -74,7 +74,7 @@ export default function VisitorsRecord() {
   const sendSessionTimeUpdate = async (id: string, duration: number) => {
     try {
       const frappeApiUrl = `${BASE_URL}.visitors_record.update_session_time`;
-      await axios.post(frappeApiUrl, JSON.stringify({ visitor_id: id, session_time: duration }), { headers: { 'Content-Type': 'application/json' } });
+      await axios.post(frappeApiUrl, ({ visitor_id: id, session_time: duration }), { headers: { 'Content-Type': 'application/json' } });
     } catch (error) {
       console.error('Error updating session time to Frappe:', error);
     }
