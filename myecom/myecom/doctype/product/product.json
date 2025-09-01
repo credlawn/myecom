@@ -6,6 +6,26 @@
  "engine": "InnoDB",
  "field_order": [
   "featured",
+  "section_break_sxed",
+  "custom_rating",
+  "column_break_fckm",
+  "custom_rating_count",
+  "column_break_jdke",
+  "custom_review_count",
+  "column_break_mvgf",
+  "custom_units_sold",
+  "helper_section",
+  "actual_rating",
+  "product_rating",
+  "column_break_syoa",
+  "actual_rating_count",
+  "rating_count",
+  "column_break_rnqj",
+  "actual_review_count",
+  "review_count",
+  "column_break_vumb",
+  "actual_units_sold",
+  "units_sold",
   "section_break_hjcx",
   "product_name",
   "min_purchase_qty",
@@ -21,8 +41,6 @@
   "unit",
   "discount_percent",
   "discount_amount",
-  "product_rating",
-  "rating_count",
   "section_break_oloe",
   "product_image_1",
   "url_1",
@@ -32,7 +50,9 @@
   "section_break_wlxh",
   "product_img",
   "section_break_trvu",
+  "quick_tag_input",
   "product_tag",
+  "display_product_tags",
   "section_break_ijsl",
   "table_multiselect_lnaq",
   "description_tab",
@@ -157,19 +177,22 @@
   },
   {
    "fieldname": "product_tag",
-   "fieldtype": "Data",
-   "label": "Tag"
+   "fieldtype": "Table MultiSelect",
+   "label": "Tag",
+   "options": "Tag Child"
   },
   {
    "fieldname": "product_rating",
    "fieldtype": "Float",
-   "label": "Product Rating",
-   "precision": "1"
+   "label": "Final Product Rating",
+   "precision": "1",
+   "read_only": 1
   },
   {
    "fieldname": "rating_count",
    "fieldtype": "Int",
-   "label": "Rating Count"
+   "label": "Final Rating Count",
+   "read_only": 1
   },
   {
    "fieldname": "nd_text",
@@ -205,13 +228,120 @@
    "fieldtype": "Table",
    "label": "Product Img",
    "options": "Product Images"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "helper_section",
+   "fieldtype": "Section Break",
+   "label": "Rating Helper"
+  },
+  {
+   "fieldname": "custom_rating",
+   "fieldtype": "Float",
+   "label": "Custom Rating",
+   "precision": "1"
+  },
+  {
+   "fieldname": "column_break_syoa",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0.0",
+   "fieldname": "actual_rating",
+   "fieldtype": "Float",
+   "label": "Actual Rating",
+   "precision": "1",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_rnqj",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "custom_rating_count",
+   "fieldtype": "Int",
+   "label": "Custom Rating Count"
+  },
+  {
+   "default": "0",
+   "fieldname": "actual_rating_count",
+   "fieldtype": "Int",
+   "label": "Actual Rating Count",
+   "read_only": 1
+  },
+  {
+   "fieldname": "custom_review_count",
+   "fieldtype": "Int",
+   "label": "Custom Review Count"
+  },
+  {
+   "default": "0",
+   "fieldname": "actual_review_count",
+   "fieldtype": "Int",
+   "label": "Actual Review Count",
+   "read_only": 1
+  },
+  {
+   "fieldname": "review_count",
+   "fieldtype": "Int",
+   "label": "Final Review Count",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_sxed",
+   "fieldtype": "Section Break",
+   "label": "Custom Review and Rating"
+  },
+  {
+   "fieldname": "column_break_fckm",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_jdke",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_mvgf",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "custom_units_sold",
+   "fieldtype": "Int",
+   "label": "Custom Units Sold"
+  },
+  {
+   "fieldname": "column_break_vumb",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "actual_units_sold",
+   "fieldtype": "Int",
+   "label": "Actual Units Sold",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "units_sold",
+   "fieldtype": "Int",
+   "label": "Final Units Sold",
+   "read_only": 1
+  },
+  {
+   "fieldname": "quick_tag_input",
+   "fieldtype": "Autocomplete",
+   "label": "Add Tag"
+  },
+  {
+   "fieldname": "display_product_tags",
+   "fieldtype": "HTML"
   }
  ],
  "grid_page_length": 50,
  "hide_toolbar": 1,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-08-30 04:33:54.094479",
+ "modified": "2025-08-31 18:02:19.413646",
  "modified_by": "Administrator",
  "module": "Myecom",
  "name": "Product",

@@ -2,14 +2,17 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { SingleProduct } from "@/models/productData";
+import { SingleProduct } from "@/myapi/productData";
 import ProductGallery from "./ProductGallery";
 import StarRating from "@/lib/starRating";
+import { Settings } from "@/myapi/settings";
 
 export default function ProductContent({
   product,
+  settings,
 }: {
   product: SingleProduct;
+  settings: Settings;
 }) {
   const [quantity, setQuantity] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -63,20 +66,27 @@ export default function ProductContent({
         </div>
 
         {/* Product Info Section */}
-        <div className="lg:w-1/2 flex flex-col space-y-4 items-start">
+        <div className="lg:w-1/2 flex flex-col items-start"
+        style={{ color: settings.thiColor || "green" }}>
           <h1 className="text-xl font-bold text-neutral-900">
             {product.product_name}
           </h1>
-          <div className="flex items-center gap-2 text-gray-500 text-sm">
+          <div className="flex items-center gap-2 text-sm mt-4 md:mt-6 md:text-base">
             <StarRating
               rating={product.product_rating}
               size={18}
-              fullColor="#f87171"
+              fullColor={settings.starColorPage || "#f87171"}
             />
-            <span>({product.rating_count} reviews)</span>
+            <span>( {product.rating_count} Ratings</span>&<span>{product.review_count} Reviews )</span>
           </div>
+          {product.units_sold > 0 && (
+          <p className="text-base font-medium mt-2 md:mt-1"
+            style={{ color: settings.thiColor || "green" }}>
+              {product.units_sold}+ Units Sold
+          </p>
+          )}
 
-          <p className="text-sm text-gray-600">
+          <p className="text-sm mt-4 md:mt-6 text-gray-600">
             Estimate Shipping Time: <strong>5 Days</strong>
           </p>
 
@@ -103,10 +113,10 @@ export default function ProductContent({
 
           <div className="flex items-center gap-2 mt-2">
             <span className="text-red-600 font-bold">
-              ₹{product.discounted_price.toFixed(2)}
+              {settings.currency} {product.discounted_price.toFixed(2)}
             </span>
             <del className="text-gray-500">
-              ₹{product.price.toFixed(2)} /{product.unit}
+              {settings.currency} {product.price.toFixed(2)} /{product.unit}
             </del>
             <span className="bg-red-600 text-white text-xs px-2 py-1 rounded">
               -{discountPercent}%

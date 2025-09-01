@@ -2,9 +2,7 @@ import frappe
 from frappe.model.document import Document
 import random
 import re
-from PIL import Image
-import io
-import os
+
 
 class Product(Document):
     def validate(self):
@@ -12,6 +10,8 @@ class Product(Document):
         self.calculate_discounted_price()
         self.set_product_slug()
         self.set_image_url()
+        self.set_reviews_and_ratings()
+        self.validation_checks()
 
     def autoname(self):
         charset = "ABCDEFGHJKMNPQRSTUVWXYZ23456789"
@@ -78,3 +78,15 @@ class Product(Document):
 
         if not self.product_image_2:
             self.product_image_2 = self.url_2
+
+    def set_reviews_and_ratings(self):
+        self.rating_count = self.custom_rating_count or 0 + self.actual_rating_count or 0
+        self.review_count = self.custom_review_count or 0 + self.actual_review_count or 0
+        self.product_rating = (self.custom_rating + self.actual_rating) / 2 if (self.custom_rating and self.actual_rating) else self.custom_rating or self.actual_rating or 0
+        self.units_sold = self.custom_units_sold or 0 + self.actual_units_sold or 0
+
+        
+    def validation_checks(self):
+        if self.product_rating > 5:
+            frappe.throw("Product rating cannot exceed 5.")
+        

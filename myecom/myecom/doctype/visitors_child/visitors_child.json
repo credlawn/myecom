@@ -1,0 +1,67 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-09-01 11:45:27.555729",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "visitor_ip",
+  "visit_date",
+  "session_time",
+  "slug",
+  "column_break_trvi",
+  "visit_date_time",
+  "visit_time"
+ ],
+ "fields": [
+  {
+   "fieldname": "visitor_ip",
+   "fieldtype": "Data",
+   "label": "Visitor IP"
+  },
+  {
+   "fieldname": "visit_date",
+   "fieldtype": "Date",
+   "label": "Visit Date"
+  },
+  {
+   "fieldname": "column_break_trvi",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "visit_date_time",
+   "fieldtype": "Datetime",
+   "label": "Visit Date Time"
+  },
+  {
+   "fieldname": "visit_time",
+   "fieldtype": "Time",
+   "label": "Visit Time"
+  },
+  {
+   "fieldname": "session_time",
+   "fieldtype": "Int",
+   "label": "Session Time"
+  },
+  {
+   "fieldname": "slug",
+   "fieldtype": "Data",
+   "label": "Slug"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2025-09-01 12:54:07.268866",
+ "modified_by": "Administrator",
+ "module": "Myecom",
+ "name": "Visitors Child",
+ "owner": "Administrator",
+ "permissions": [],
+ "row_format": "Dynamic",
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}

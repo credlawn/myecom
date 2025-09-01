@@ -31,6 +31,8 @@ export interface Settings {
   bt1Color: string;
   bt2Color: string;
   bt3Color: string;
+  starColorPage: string;
+  starColorCard: string;
   banAnimation: string;
   background: string;
   boxShadowColor: string;
@@ -93,6 +95,8 @@ export async function getSettings(): Promise<Settings> {
     bt1Color: settingsResponse?.bt_1_color ?? "natural-900",
     bt2Color: settingsResponse?.bt_2_color ?? "white",
     bt3Color: settingsResponse?.bt_3_color ?? "blue",
+    starColorPage: settingsResponse?.star_color_2 ?? "#f51818",
+    starColorCard: settingsResponse?.star_color_1 ?? "#f51818",
     background: settingsResponse?.bg_color ?? "black",
     boxShadowColor: settingsResponse?.bg_shadow_color ?? "black",
     banAnimation: settingsResponse?.banner_animation ?? "zoom",

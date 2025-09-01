@@ -1,0 +1,106 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-09-01 10:08:50.737164",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "visitor_id",
+  "visit_ip_address",
+  "visit_count",
+  "total_session_time",
+  "column_break_fqpn",
+  "visit_date_time",
+  "last_seen",
+  "section_break_nbfq",
+  "visit_records"
+ ],
+ "fields": [
+  {
+   "fieldname": "visitor_id",
+   "fieldtype": "Data",
+   "label": "Visitor ID"
+  },
+  {
+   "fieldname": "column_break_fqpn",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "visit_date_time",
+   "fieldtype": "Datetime",
+   "label": "Visit Date & Time"
+  },
+  {
+   "fieldname": "visit_ip_address",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "IP Address"
+  },
+  {
+   "fieldname": "last_seen",
+   "fieldtype": "Datetime",
+   "in_list_view": 1,
+   "label": "Last Seen"
+  },
+  {
+   "fieldname": "visit_count",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Visit Count"
+  },
+  {
+   "fieldname": "section_break_nbfq",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "visit_records",
+   "fieldtype": "Table",
+   "label": "Visit Records",
+   "options": "Visitors Child"
+  },
+  {
+   "fieldname": "total_session_time",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Total Session Time"
+  }
+ ],
+ "grid_page_length": 50,
+ "hide_toolbar": 1,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-09-01 12:41:36.700380",
+ "modified_by": "Administrator",
+ "module": "Myecom",
+ "name": "Visitors",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Guest",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}

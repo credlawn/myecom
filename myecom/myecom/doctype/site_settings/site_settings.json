@@ -35,10 +35,12 @@
   "primary_color",
   "button_1_color",
   "bt_1_color",
+  "star_color_1",
   "column_break_uuaf",
   "secondary_color",
   "button_2_color",
   "bt_2_color",
+  "star_color_2",
   "column_break_pcbm",
   "third_color",
   "button_3_color",
@@ -180,7 +182,8 @@
   },
   {
    "fieldname": "section_break_dtoo",
-   "fieldtype": "Section Break"
+   "fieldtype": "Section Break",
+   "label": "Color Selection"
   },
   {
    "fieldname": "primary_color",
@@ -308,6 +311,16 @@
   {
    "fieldname": "column_break_fboq",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "star_color_1",
+   "fieldtype": "Color",
+   "label": "Star Color (Home Card)"
+  },
+  {
+   "fieldname": "star_color_2",
+   "fieldtype": "Color",
+   "label": "Star Color (Product Page)"
   }
  ],
  "grid_page_length": 50,
@@ -315,7 +328,7 @@
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2025-08-31 12:53:55.239103",
+ "modified": "2025-08-31 13:49:05.242101",
  "modified_by": "Administrator",
  "module": "Myecom",
  "name": "Site Settings",

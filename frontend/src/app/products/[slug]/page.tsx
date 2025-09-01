@@ -1,6 +1,7 @@
 import { getProductBySlug } from "@/myapi/productSingle";
 import ProductContent from "./ProductContent";
 import { SingleProduct } from "@/myapi/productData";
+import { getSettings, Settings } from "@/myapi/settings";
 
 export default async function ProductPage({
   params,
@@ -9,6 +10,7 @@ export default async function ProductPage({
 }) {
   const { slug } = await params;
   const product = await getProductBySlug(slug);
+  const settings: Settings = await getSettings();
 
   if (!product) {
     return (
@@ -16,5 +18,5 @@ export default async function ProductPage({
     );
   }
 
-  return <ProductContent product={product as SingleProduct} />;
+  return <ProductContent product={product as SingleProduct} settings={settings} />;
 }

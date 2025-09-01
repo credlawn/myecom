@@ -28,6 +28,8 @@ export interface SiteSettingsResponse {
   bt_1_color?: string | null;
   bt_2_color?: string | null;
   bt_3_color?: string | null;
+  star_color_1?: string | null;
+  star_color_2?: string | null;
   banner_animation?: string | null;
   bg_color?: string | null;
   bg_shadow_color?: string | null;
@@ -74,6 +76,8 @@ export async function getSiteSettings(): Promise<SiteSettingsResponse | null> {
         bt_1_color: message.bt_1_color,
         bt_2_color: message.bt_2_color,
         bt_3_color: message.bt_3_color,
+        star_color_1: message.star_color_1,
+        star_color_2: message.star_color_2, 
         banner_animation: message.banner_animation,
         bg_color: message.bg_color,
         bg_shadow_color: message.bg_shadow_color,

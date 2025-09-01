@@ -29,6 +29,8 @@ def get_site_settings():
         "bt_1_color": site_settings.bt_1_color or "red-500",
         "bt_2_color": site_settings.bt_2_color or "red-500",
         "bt_3_color": site_settings.bt_3_color or "red-500",
+        "star_color_1": site_settings.star_color_1 or "ffffff",
+        "star_color_2": site_settings.star_color_2 or "ffffff",
         "banner_animation": site_settings.banner_animation or "zoom",
         "bg_color": site_settings.bg_color or "ffffff",
         "bg_shadow_color": site_settings.bg_shadow_color or "ffffff",

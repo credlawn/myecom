@@ -67,6 +67,8 @@ def get_product_by_slug(slug: str):
             "min_purchase_qty": product.min_purchase_qty,
             "product_rating": product.product_rating,
             "rating_count": product.rating_count,
+            "review_count": product.review_count,
+            "units_sold": product.units_sold,
             "product_slug": product.product_slug,
             "product_image_1": product_image_1,
             "product_images": all_images,

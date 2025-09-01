@@ -1,5 +1,5 @@
 import axios from "axios";
-import { SingleProduct } from "@/models/productData";
+import { SingleProduct } from "@/myapi/productData";
 
 const DOMAIN = process.env.DOMAIN;
 const BASE_URL = `${DOMAIN}/api/method/myecom.api`;

@@ -5,3 +5,4 @@ from .hero_section import get_hero_details
 from .category_list import get_category_list
 from .product_list import get_product_list
 from .single_product import get_product_by_slug
+from.visitors_record import create_visitor_record

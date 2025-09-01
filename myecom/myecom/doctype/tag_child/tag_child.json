@@ -1,0 +1,55 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-08-31 15:30:40.293478",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "child_tag_name",
+  "column_break_xovw",
+  "tag_color",
+  "column_break_znjn",
+  "tag_type"
+ ],
+ "fields": [
+  {
+   "fieldname": "child_tag_name",
+   "fieldtype": "Link",
+   "label": "Tag Name",
+   "options": "Tags"
+  },
+  {
+   "fieldname": "column_break_xovw",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "tag_color",
+   "fieldtype": "Data",
+   "label": "Tag Color"
+  },
+  {
+   "fieldname": "column_break_znjn",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "tag_type",
+   "fieldtype": "Data",
+   "label": "Tag Type"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2025-08-31 15:38:38.971657",
+ "modified_by": "Administrator",
+ "module": "Myecom",
+ "name": "Tag Child",
+ "owner": "Administrator",
+ "permissions": [],
+ "row_format": "Dynamic",
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}

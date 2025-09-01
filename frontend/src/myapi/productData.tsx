@@ -11,6 +11,8 @@ export interface SingleProduct {
   min_purchase_qty: number;
   product_rating: number;
   rating_count: number;
+  review_count: number;
+  units_sold: number;
   product_slug: string;
   product_image_1: string | null;
   product_images: string[]; // up to 10 images
