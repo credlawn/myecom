@@ -89,6 +89,7 @@ export default function ImageModal({
                   src={img}
                   alt={`${productName} view ${idx + 1}`}
                   fill
+                  loading="lazy"
                   className="object-contain"
                   sizes="100vw"
                 />
@@ -124,6 +125,7 @@ export default function ImageModal({
                     src={img}
                     alt={`Thumb ${idx}`}
                     fill
+                    loading="lazy"
                     className="object-cover"
                     sizes="80px"
                   />

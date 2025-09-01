@@ -59,7 +59,9 @@ export default function ProductGallery({
                   alt={`Slide ${idx}`}
                   fill
                   className="object-cover"
-                  priority={idx === 0}
+                  loading="lazy"
+                  placeholder="blur"
+                  blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAIUlEQVQYV2NkYGD4z0AEYBxVSFUwCkb9j0Y1T4hKJgYAM+UD/ZXgPmgAAAAASUVORK5CYII="
                   sizes="(max-width: 768px) 100vw, 50vw"
                 />
               </div>
@@ -85,6 +87,7 @@ export default function ProductGallery({
                 src={img}
                 alt={`Thumb ${idx}`}
                 fill
+                loading="lazy"
                 className="object-cover"
                 sizes="64px"
               />
@@ -103,7 +106,7 @@ export default function ProductGallery({
               alt={product.product_name}
               fill
               className="object-cover"
-              priority={false}
+              loading="lazy"
               sizes="(max-width: 1024px) 100vw, 50vw"
             />
           </div>

@@ -3,6 +3,7 @@
 import { useEffect, useRef } from 'react';
 import { getCookie, setCookie } from 'cookies-next';
 import axios from 'axios';
+import { v4 as uuidv4 } from "uuid";
 
 const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN;
 const BASE_URL = `${DOMAIN}/api/method/myecom.api`;
@@ -15,7 +16,7 @@ export default function VisitorsRecord() {
     const handleInitialLoad = async () => {
       let visitorId = getCookie('visitor_id');
       if (!visitorId) {
-        visitorId = `visitor-${Math.random().toString(36).substring(2)}-${Date.now()}`;
+        visitorId = `visitor-${uuidv4()}`;
         setCookie('visitor_id', visitorId, { maxAge: 60 * 60 * 24 * 365, path: '/' });
       }
       if (typeof visitorId === 'string') {

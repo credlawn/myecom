@@ -76,7 +76,7 @@ export default function Hero({
                   }
                   alt={slide.image_alt}
                   fill
-                  priority
+                  loading="lazy"
                   className="object-cover object-top-right"
                 />
 
