@@ -28,8 +28,10 @@ export async function getHeroDetails(): Promise<HeroItem[]> {
 
       hero_url: item.hero_url ? item.hero_url : `${DOMAIN}`,
     }));
-  } catch (err) {
-    console.error(err);
-    return [];
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw new Error(error.response?.data?.message || 'Failed to fetch hero details');
+    }
+    throw error;
   }
 }

@@ -6,6 +6,7 @@ import "@/styles/style.css";
 import HeadTop from "@/utils/headTop";
 import { getSettings, Settings } from "@/myapi/settings";
 import VisitorsRecord from "@/myapi/visitorsRecord";
+import { Providers } from "./providers";
 
 const outfit = Outfit({
   subsets: ["latin"],
@@ -34,11 +35,11 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={`${outfit.className} ${poppins.variable} antialiased`}>
-        <VisitorsRecord />
-        <HeadTop settings={settings} />
-
-        
-        {children}
+        <Providers>
+          <VisitorsRecord />
+          <HeadTop settings={settings} />
+          {children}
+        </Providers>
       </body>
     </html>
   );

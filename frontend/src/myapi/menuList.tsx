@@ -28,7 +28,9 @@ export async function getMenuList(): Promise<MenuResponse[]> {
 
     return response.data.message?.menu || [];
   } catch (error) {
-    console.error("Error fetching menu:", error);
-    return [];
+    if (axios.isAxiosError(error)) {
+      throw new Error(error.response?.data?.message || 'Failed to fetch menu list');
+    }
+    throw error;
   }
 }

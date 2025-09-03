@@ -35,8 +35,10 @@ export async function getProductBySlug(
           )
         : [],
     };
-  } catch (err) {
-    console.error("Error fetching product:", err);
-    return null;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw new Error(error.response?.data?.message || 'Failed to fetch product');
+    }
+    throw error;
   }
 }

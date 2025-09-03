@@ -1,6 +1,7 @@
 "use client";
 
-import { HamburgerIcon, UserIcon, CartIcon, SearchIcon } from "@/lib/icons";
+import { HamburgerIcon, UserIcon, CartIcon, SearchIcon, HeartIcon } from "@/lib/icons";
+import { useWishlist } from '@/hooks/useWishlist';
 import { Logo, LogoMobile } from "@/lib/logo";
 import SearchBox from "@/lib/searchBox";
 import Sidebar from "@/lib/sidebar";
@@ -14,6 +15,7 @@ interface HeadTopProps {
 }
 
 export default function HeadTop({ settings }: HeadTopProps) {
+  const { wishlistCount } = useWishlist();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
   const searchButtonRef = useRef<HTMLButtonElement>(null);
@@ -87,6 +89,14 @@ export default function HeadTop({ settings }: HeadTopProps) {
 
               {/* User Icons */}
               <div className="flex items-center gap-6">
+                <Link href="/wishlist" className="relative hover:text-red-500 transition-colors">
+                  <HeartIcon />
+                  {wishlistCount > 0 && (
+                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
+                      {wishlistCount}
+                    </span>
+                  )}
+                </Link>
                 <UserIcon />
                 <CartIcon />
               </div>
@@ -132,6 +142,14 @@ export default function HeadTop({ settings }: HeadTopProps) {
               >
                 <SearchIcon />
               </button>
+              <Link href="/wishlist" className="relative hover:text-red-500 transition-colors">
+                <HeartIcon />
+                {wishlistCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
+                    {wishlistCount}
+                  </span>
+                )}
+              </Link>
               <UserIcon />
               <CartIcon />
             </div>

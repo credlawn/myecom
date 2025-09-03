@@ -46,8 +46,10 @@ export async function getProductList(): Promise<ProductItem[]> {
           : `${DOMAIN}${item.product_image_2}`
         : null,
     }));
-  } catch (err) {
-    console.error(err);
-    return [];
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw new Error(error.response?.data?.message || 'Failed to fetch product list');
+    }
+    throw error;
   }
 }

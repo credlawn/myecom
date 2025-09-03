@@ -23,8 +23,10 @@ export async function getCategoryList(): Promise<CategoryList[]> {
         ? `${DOMAIN}${item.banner}`
         : "images/placeholder.jpg",
     }));
-  } catch (err) {
-    console.error(err);
-    return [];
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw new Error(error.response?.data?.message || 'Failed to fetch category list');
+    }
+    throw error;
   }
 }

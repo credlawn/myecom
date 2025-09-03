@@ -92,8 +92,10 @@ export async function getSiteSettings(): Promise<SiteSettingsResponse | null> {
       };
     }
     return null;
-  } catch (err) {
-    console.error(err);
-    return null;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw new Error(error.response?.data?.message || 'Failed to fetch site settings');
+    }
+    throw error;
   }
 }

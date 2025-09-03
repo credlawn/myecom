@@ -68,7 +68,10 @@ export default function VisitorsRecord() {
       const frappeApiUrl = `${BASE_URL}.visitors_record.create_or_update_visitor`;
       await axios.post(frappeApiUrl, ({ visitor_id: id, slug }), { headers: { 'Content-Type': 'application/json' } });
     } catch (error) {
-      console.error('Error sending visitor ID to Frappe:', error);
+      if (axios.isAxiosError(error)) {
+        throw new Error(error.response?.data?.message || 'Failed to send visitor ID to Frappe');
+      }
+      throw error;
     }
   };
 
@@ -77,7 +80,10 @@ export default function VisitorsRecord() {
       const frappeApiUrl = `${BASE_URL}.visitors_record.update_session_time`;
       await axios.post(frappeApiUrl, ({ visitor_id: id, slug }), { headers: { 'Content-Type': 'application/json' } });
     } catch (error) {
-      console.error('Error updating session time to Frappe:', error);
+      if (axios.isAxiosError(error)) {
+        throw new Error(error.response?.data?.message || 'Failed to update session time to Frappe');
+      }
+      throw error;
     }
   };
 

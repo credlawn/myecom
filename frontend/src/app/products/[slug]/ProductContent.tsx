@@ -7,6 +7,7 @@ import ProductGallery from "./ProductGallery";
 import StarRating from "@/lib/starRating";
 import { Settings } from "@/myapi/settings";
 import CheckPin from "./checkPin";
+import { WishlistButton } from "@/components/wishlist/WishlistButton";
 import { motion } from "framer-motion";
 
 export default function ProductContent({
@@ -120,9 +121,13 @@ export default function ProductContent({
           </div>
 
           <div className="flex flex-wrap gap-4 mt-6 w-full">
-            <button className="flex items-center gap-2 hover:text-red-500 transition-colors duration-200 bg-gray-50 px-4 py-2 rounded-lg text-gray-600">
-              <span className="text-red-400">❤️</span> Add to wishlist
-            </button>
+            <WishlistButton 
+              productId={product.name} 
+              variant="button" 
+              size="md" 
+              showText={true}
+              className="bg-gray-50 hover:bg-gray-100"
+            />
             <button className="flex items-center gap-2 hover:text-blue-500 transition-colors duration-200 bg-gray-50 px-4 py-2 rounded-lg text-gray-600">
               <span>⇄</span> Add to compare
             </button>
