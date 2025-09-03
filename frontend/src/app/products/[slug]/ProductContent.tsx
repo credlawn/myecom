@@ -122,7 +122,7 @@ export default function ProductContent({
 
           <div className="flex flex-wrap gap-4 mt-6 w-full">
             <WishlistButton 
-              productId={product.name} 
+              productId={product.id} 
               variant="button" 
               size="md" 
               showText={true}
