@@ -3,10 +3,8 @@
 import { useState } from "react";
 import { checkPinData, PincodeData } from "@/lib/checkPinData";
 import { motion } from "framer-motion";
-import { LocationPinIcon, CloseIcon, LoadingSpinnerIcon, CheckIcon, CashOnDeliveryIcon, AlertIcon, InfoCircleIcon, SearchIcon, EditIcon } from "@/lib/icons";
-import { Settings } from "@/myapi/settings";
-
-export default function CheckPin({ settings }: { settings: Settings }) {
+import { LocationPinIcon, CloseIcon, CheckIcon, CashOnDeliveryIcon, AlertIcon } from "@/lib/icons";
+export default function CheckPin() {
   const [pincode, setPincode] = useState("");
   const [delivery, setDelivery] = useState<PincodeData | null>(null);
   const [loading, setLoading] = useState(false);

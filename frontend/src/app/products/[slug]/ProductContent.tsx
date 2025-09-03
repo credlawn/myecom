@@ -116,7 +116,7 @@ export default function ProductContent({
               </p>
             </motion.div>
           )}          <div className="w-full mt-0 mb-0">
-            <CheckPin settings={settings} />
+            <CheckPin />
           </div>
 
           <div className="flex flex-wrap gap-4 mt-6 w-full">
