@@ -1,0 +1,17 @@
+input:focus,
+input:active,
+input:focus-visible,
+button:focus,
+button:active,
+button:focus-visible,
+[role="button"]:focus,
+[role="button"]:active {
+  outline: none !important;
+  box-shadow: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+  -webkit-focus-ring-color: transparent !important;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent !important;
+}

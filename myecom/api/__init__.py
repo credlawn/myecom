@@ -6,3 +6,4 @@ from .category_list import get_category_list
 from .product_list import get_product_list
 from .single_product import get_product_by_slug
 from.visitors_record import create_or_update_visitor 
+from .check_pincode import get_delivery_time
