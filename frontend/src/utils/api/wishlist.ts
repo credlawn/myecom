@@ -42,7 +42,7 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_DOMAIN;
 
 class WishlistAPI {
   private getHeaders() {
-    // ✅ Only read visitor_id — do NOT generate here
+    
     const visitorId = getCookie('visitor_id');
 
     const headers: Record<string, string> = {

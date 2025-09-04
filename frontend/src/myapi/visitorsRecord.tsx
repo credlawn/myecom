@@ -14,7 +14,7 @@ export default function VisitorsRecord() {
   const [currentSlug, setCurrentSlug] = useState('');
 
   useEffect(() => {
-    // Set current slug after component mounts (client-side only)
+    
     setCurrentSlug(window.location.pathname);
     
     const handleInitialLoad = async () => {
