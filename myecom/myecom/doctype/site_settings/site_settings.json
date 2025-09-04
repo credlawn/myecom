@@ -13,6 +13,8 @@
   "banner_animation",
   "column_break_zzya",
   "auto_slide_hero",
+  "column_break_vddo",
+  "enable_visitor_tracking",
   "section_break_dhro",
   "bg_color",
   "mob_ft_weight",
@@ -321,6 +323,16 @@
    "fieldname": "star_color_2",
    "fieldtype": "Color",
    "label": "Star Color (Product Page)"
+  },
+  {
+   "fieldname": "column_break_vddo",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "enable_visitor_tracking",
+   "fieldtype": "Check",
+   "label": "Enable Visitor Tracking"
   }
  ],
  "grid_page_length": 50,
@@ -328,7 +340,7 @@
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2025-08-31 13:49:05.242101",
+ "modified": "2025-09-04 16:33:13.508439",
  "modified_by": "Administrator",
  "module": "Myecom",
  "name": "Site Settings",

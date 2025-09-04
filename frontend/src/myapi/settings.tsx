@@ -10,6 +10,7 @@ export interface Settings {
   showBanner: number;
   showMobileLogo: number;
   autoSlideHero: number;
+  visitorTracking: number;
   url: string;
   logo_url: string;
   currency: string;
@@ -72,6 +73,7 @@ export async function getSettings(): Promise<Settings> {
 
   return {
     showBanner: settingsResponse?.show_top_banner ?? 1,
+    visitorTracking: settingsResponse?.visitor_tracking ?? 0,
     currency: settingsResponse?.currency ?? "₹",
     showMobileLogo: settingsResponse?.show_mobile_logo ?? 1,
     autoSlideHero: settingsResponse?.auto_slide_hero ?? 1,
