@@ -7,7 +7,7 @@ import ProductGallery from "./ProductGallery";
 import StarRating from "@/lib/starRating";
 import { Settings } from "@/myapi/settings";
 import CheckPin from "./checkPin";
-import { WishlistButton } from "@/components/wishlist/WishlistButton";
+import { WishlistButton } from "@/app/wishlist/WishlistButton";
 import { motion } from "framer-motion";
 
 export default function ProductContent({

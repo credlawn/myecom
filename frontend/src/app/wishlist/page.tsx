@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { useWishlist } from '@/hooks/useWishlist';
+import { useWishlist } from './useWishlist';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';

@@ -1,8 +1,7 @@
 import React from 'react';
 import { Heart } from 'lucide-react';
-import { useWishlist } from '@/hooks/useWishlist';
+import { useWishlist } from './useWishlist';
 
-// Utility function for class names
 function cn(...classes: (string | undefined | null | false)[]) {
   return classes.filter(Boolean).join(' ');
 }

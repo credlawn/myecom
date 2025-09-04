@@ -1,10 +1,9 @@
 'use client';
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { wishlistAPI, WishlistItem } from '@/utils/api/wishlist';
+import { wishlistAPI } from '@/myapi/wishlist';
 
-// Simple toast notification system
+
 const useToast = () => {
   const toast = ({ title, description }: { title: string; description?: string }) => {
     if (typeof window !== 'undefined') {
@@ -19,15 +18,13 @@ export const useWishlist = () => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
-  // Query to fetch all wishlist items
   const { data: wishlistItems = [], isLoading, error, refetch } = useQuery({
     queryKey: ['wishlist'],
     queryFn: () => wishlistAPI.getWishlistItems(),
-    staleTime: 5 * 60 * 1000, // 5 minutes
+    staleTime: 5 * 60 * 1000, 
     retry: 2,
   });
 
-  // Mutation to add item to wishlist
   const addToWishlistMutation = useMutation({
     mutationFn: (productId: string) => wishlistAPI.addToWishlist(productId),
     onSuccess: () => {
@@ -46,7 +43,6 @@ export const useWishlist = () => {
     },
   });
 
-  // Mutation to remove item from wishlist
   const removeFromWishlistMutation = useMutation({
     mutationFn: (productId: string) => wishlistAPI.removeFromWishlist(productId),
     onSuccess: () => {
@@ -65,7 +61,6 @@ export const useWishlist = () => {
     },
   });
 
-  // Mutation to clear entire wishlist
   const clearWishlistMutation = useMutation({
     mutationFn: () => wishlistAPI.clearWishlist(),
     onSuccess: () => {
@@ -84,34 +79,33 @@ export const useWishlist = () => {
     },
   });
 
-  // Hook to check if a specific product is in wishlist
   const useIsInWishlist = (productId: string) => {
     return useQuery({
       queryKey: ['wishlist', 'check', productId],
       queryFn: () => wishlistAPI.isInWishlist(productId),
       enabled: !!productId,
-      staleTime: 60 * 1000, // 1 minute
+      staleTime: 60 * 1000,
       retry: 1,
     });
   };
 
   return {
-    // Data
+    
     wishlistItems,
     wishlistCount: wishlistItems.length,
     isLoading,
     error,
 
-    // Actions
+    
     addToWishlist: addToWishlistMutation.mutate,
     removeFromWishlist: removeFromWishlistMutation.mutate,
     clearWishlist: clearWishlistMutation.mutate,
     refetchWishlist: refetch,
 
-    // Check individual item status
+    
     useIsInWishlist,
 
-    // Mutation states
+    
     isAdding: addToWishlistMutation.isPending,
     isRemoving: removeFromWishlistMutation.isPending,
     isClearing: clearWishlistMutation.isPending,

@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import type { ProductItem } from "@/myapi/productList";
-import { WishlistButton } from "@/components/wishlist/WishlistButton";
+import { WishlistButton } from "@/app/wishlist/WishlistButton";
 
 interface ProductGridProps {
   products?: ProductItem[];

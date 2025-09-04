@@ -1,7 +1,7 @@
 "use client";
 
 import { HamburgerIcon, UserIcon, CartIcon, SearchIcon, HeartIcon } from "@/lib/icons";
-import { useWishlist } from '@/hooks/useWishlist';
+import { useWishlist } from '@/app/wishlist/useWishlist';
 import { Logo, LogoMobile } from "@/lib/logo";
 import SearchBox from "@/lib/searchBox";
 import Sidebar from "@/lib/sidebar";
