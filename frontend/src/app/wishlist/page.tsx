@@ -6,14 +6,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Heart, XCircle } from 'lucide-react';
+import { img } from '@/myapi/apiPath'; 
 
-const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN || 'http://localhost:8000';
 
-const getImageUrl = (imageUrl: string | null): string | null => {
-  if (!imageUrl) return null;
-  if (imageUrl.startsWith('http')) return imageUrl;
-  return `${DOMAIN}${imageUrl}`;
-};
 
 const WishlistPage: React.FC = () => {
   const { wishlistItems, isLoading, removeFromWishlist, clearWishlist, wishlistCount } = useWishlist();
@@ -48,7 +43,7 @@ const WishlistPage: React.FC = () => {
                   <div className="relative w-full h-48 bg-gray-100 flex items-center justify-center">
                     {item.product_image ? (
                       <Image
-                        src={getImageUrl(item.product_image)!}
+                        src={img(item.product_image)!}
                         alt={item.product_name}
                         layout="fill"
                         objectFit="cover"

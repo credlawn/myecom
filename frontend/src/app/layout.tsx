@@ -1,10 +1,11 @@
+// app/layout.tsx
 import type { Metadata } from "next";
 import { Outfit, Poppins } from "next/font/google";
 import "./globals.css";
 import "@/styles/main.css";
 import "@/styles/style.css";
 import HeadTop from "@/utils/headTop";
-import { getSettings, Settings } from "@/myapi/settings";
+import { getSettings, Settings } from "@/myapi/apiData/settings";
 import VisitorsRecord from "@/myapi/visitorsRecord";
 import { Providers } from "./providers";
 
@@ -36,7 +37,7 @@ export default async function RootLayout({
     <html lang="en">
       <body className={`${outfit.className} ${poppins.variable} antialiased`}>
         <Providers>
-          <VisitorsRecord />
+          {settings.visitorTracking === 1 && <VisitorsRecord />}
           <HeadTop settings={settings} />
           {children}
         </Providers>

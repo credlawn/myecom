@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { checkPinData, PincodeData } from "@/lib/checkPinData";
+import { checkPinData, PincodeData } from "@/myapi/apiData/checkPinData";
 import { motion } from "framer-motion";
 import { LocationPinIcon, CloseIcon, CheckIcon, CashOnDeliveryIcon, AlertIcon } from "@/lib/icons";
 export default function CheckPin() {

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { SingleProduct } from "@/myapi/productData";
+import { SingleProduct } from "@/myapi/apiData/productData";
 import ProductGallery from "./ProductGallery";
 import StarRating from "@/lib/starRating";
 import { Settings } from "@/myapi/settings";

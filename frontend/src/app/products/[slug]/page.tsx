@@ -1,7 +1,7 @@
 import { getProductBySlug } from "@/myapi/productSingle";
 import ProductContent from "./ProductContent";
-import { SingleProduct } from "@/myapi/productData";
-import { getSettings, Settings } from "@/myapi/settings";
+import { SingleProduct } from "@/myapi/apiData/productData";
+import { getSettings, Settings } from "@/myapi/apiData/settings";
 
 export default async function ProductPage({
   params,

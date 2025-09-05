@@ -4,7 +4,6 @@ import React from 'react';
 import { WishlistButton } from './WishlistButton';
 import Image from 'next/image';
 
-// Define proper interfaces
 interface Product {
   id: string;
   name: string;
@@ -21,11 +20,9 @@ interface ProductDetailProps {
   product: Product;
 }
 
-// Example usage in ProductCard component
 export const ProductCardWithWishlist: React.FC<ProductCardProps> = ({ product }) => {
   return (
     <div className="relative group">
-      {/* Product image and details */}
       <div className="relative">
         <div className="relative w-full h-64">
           <Image
@@ -36,7 +33,6 @@ export const ProductCardWithWishlist: React.FC<ProductCardProps> = ({ product })
             className="rounded-lg"
           />
         </div>
-        {/* Wishlist button positioned on product card */}
         <div className="absolute top-2 right-2 z-10">
           <WishlistButton 
             productId={product.id} 

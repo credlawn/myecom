@@ -1,7 +1,5 @@
 import axios from "axios";
-
-const DOMAIN = process.env.DOMAIN;
-const BASE_URL = `${DOMAIN}/api/method/myecom.api`;
+import { api, img } from "./apiPath";
 
 export interface ProductItem {
   name: string;
@@ -29,23 +27,15 @@ export interface ProductItem {
 export async function getProductList(): Promise<ProductItem[]> {
   try {
     const { data } = await axios.get<{ message: { messages: ProductItem[] } }>(
-      `${BASE_URL}.product_list.get_product_list`,
-      { withCredentials: true },
+      api.PL, { withCredentials: true },
     );
 
     return (data.message?.messages || []).map((item) => ({
       ...item,
-      product_image_1: item.product_image_1
-        ? item.product_image_1.startsWith("http")
-          ? item.product_image_1
-          : `${DOMAIN}${item.product_image_1}`
-        : null,
-      product_image_2: item.product_image_2
-        ? item.product_image_2.startsWith("http")
-          ? item.product_image_2
-          : `${DOMAIN}${item.product_image_2}`
-        : null,
+      product_image_1: item.product_image_1 ? img(item.product_image_1) : null,
+      product_image_2: item.product_image_2 ? img(item.product_image_2) : null,
     }));
+
   } catch (error) {
     if (axios.isAxiosError(error)) {
       throw new Error(error.response?.data?.message || 'Failed to fetch product list');

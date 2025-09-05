@@ -1,7 +1,5 @@
 import axios from 'axios';
-
-const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN;
-const API_URL = `${DOMAIN}/api/method/myecom.api.check_pincode.get_delivery_time`;
+import { api } from '../apiPath';
 
 interface DeliveryResponse {
   message: {
@@ -63,10 +61,8 @@ export async function checkPinData(
 
   try {
     const { data } = await axios.post<DeliveryResponse>(
-      API_URL,
-      { pincode: pin },
-      {
-        headers: { 'Content-Type': 'application/json' },
+      api.CP, { pincode: pin },
+      { headers: { 'Content-Type': 'application/json' },
         timeout: 10000,
       }
     );

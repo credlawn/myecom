@@ -1,7 +1,5 @@
 import axios from "axios";
-
-const DOMAIN = process.env.DOMAIN;
-const BASE_URL = `${DOMAIN}/api/method/myecom.api`;
+import { api } from "./apiPath";
 
 export interface MenuItem {
   menu_name: string;
@@ -19,11 +17,9 @@ export interface MenuResponse {
 
 export async function getMenuList(): Promise<MenuResponse[]> {
   try {
-    const response = await axios.get(`${BASE_URL}.menu_list.get_menu_list`, {
-      withCredentials: true,
-      headers: {
-        "Content-Type": "application/json",
-      },
+    const response = await axios.get(api.ML, {
+      headers: {"Content-Type": "application/json"},
+      withCredentials: true,   
     });
 
     return response.data.message?.menu || [];

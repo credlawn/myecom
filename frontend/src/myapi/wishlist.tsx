@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { getCookie } from 'cookies-next';
+import { api } from './apiPath';
 
 export interface WishlistItem {
   product: string;
@@ -38,7 +39,6 @@ interface WishlistBackendResponse {
   success?: boolean;
 }
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_DOMAIN;
 
 class WishlistAPI {
   private getHeaders() {
@@ -62,17 +62,16 @@ class WishlistAPI {
   }
 
   async addToWishlist(itemCode: string): Promise<WishlistActionResponse> {
-    const response = await axios.post(
-      `${API_BASE_URL}/api/method/myecom.api.wishlist.add_to_wishlist`,
+    const response = await axios.post(api.AW,
       { product_id: itemCode },
       { headers: this.getHeaders() }
     );
     return response.data;
   }
 
+
   async removeFromWishlist(itemCode: string): Promise<WishlistActionResponse> {
-    const response = await axios.post(
-      `${API_BASE_URL}/api/method/myecom.api.wishlist.remove_from_wishlist`,
+    const response = await axios.post(api.RW,
       { product_id: itemCode },
       { headers: this.getHeaders() }
     );
@@ -80,8 +79,7 @@ class WishlistAPI {
   }
 
   async isInWishlist(itemCode: string): Promise<boolean> {
-    const response = await axios.get<{ message: { in_wishlist: boolean } }>(
-      `${API_BASE_URL}/api/method/myecom.api.wishlist.is_in_wishlist`,
+    const response = await axios.get<{ message: { in_wishlist: boolean } }>(api.IW,
       { params: { product_id: itemCode }, headers: this.getHeaders() }
     );
     return response.data.message.in_wishlist;
@@ -89,8 +87,8 @@ class WishlistAPI {
 
   async getWishlistItems(): Promise<WishlistItem[]> {
     const response = await axios.get<WishlistBackendResponse>(
-      `${API_BASE_URL}/api/method/myecom.api.wishlist.get_wishlist_items`,
-      { headers: this.getHeaders() }
+      api.WL, { headers: this.getHeaders() }
+      
     );
 
     const items = Array.isArray(response.data.message?.items)
@@ -111,9 +109,7 @@ class WishlistAPI {
 
   async clearWishlist(): Promise<WishlistActionResponse> {
     const response = await axios.post<WishlistActionResponse>(
-      `${API_BASE_URL}/api/method/myecom.api.wishlist.clear_wishlist`,
-      {},
-      { headers: this.getHeaders() }
+      api.CW, {}, { headers: this.getHeaders() }
     );
     return response.data;
   }

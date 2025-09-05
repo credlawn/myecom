@@ -1,91 +1,98 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { getCookie, setCookie } from 'cookies-next';
 import axios from 'axios';
-import { v4 as uuidv4 } from "uuid";
-
-const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN;
-const BASE_URL = `${DOMAIN}/api/method/myecom.api`;
+import { v4 as uuidv4 } from 'uuid';
+import { api } from "./apiPath";
 
 export default function VisitorsRecord() {
   const visitStartTime = useRef(Date.now());
   const isInitialLoad = useRef(true);
-  const [currentSlug, setCurrentSlug] = useState('');
 
   useEffect(() => {
-    
-    setCurrentSlug(window.location.pathname);
-    
-    const handleInitialLoad = async () => {
+    const getSlug = () => window.location.pathname;
+
+    const ensureVisitorId = (): string | null => {
       let visitorId = getCookie('visitor_id');
-      if (!visitorId) {
-        visitorId = `${uuidv4()}`;
-        setCookie('visitor_id', visitorId, { maxAge: 60 * 60 * 24 * 365, path: '/' });
+      if (!visitorId || typeof visitorId !== 'string') {
+        visitorId = uuidv4();
+        try {
+          setCookie('visitor_id', visitorId, {
+            maxAge: 60 * 60 * 24 * 365,
+            path: '/',
+            sameSite: 'strict',
+            secure: process.env.NODE_ENV === 'production',
+          });
+        } catch {
+          return null;
+        }
       }
-      if (typeof visitorId === 'string' && currentSlug) {
-        sendVisitorIdToFrappe(visitorId, currentSlug);
+      return visitorId;
+    };
+
+    const sendVisitorIdToFrappe = async (id: string, slug: string) => {
+      try {
+        await axios.post(api.VC, { visitor_id: id, slug },
+          { headers: { 'Content-Type': 'application/json' }, timeout: 5000 }
+        );
+      } catch (error) {
+        console.warn('[VisitorsRecord] Failed to send visitor ID', error);
       }
     };
-    
-    handleInitialLoad();
+
+    const sendSessionTimeUpdate = async (id: string, slug: string) => {
+      const timeSpent = Math.floor((Date.now() - visitStartTime.current) / 1000);
+      try {
+        await axios.post(api.VR,
+          { visitor_id: id, slug, time_spent: timeSpent },
+          { headers: { 'Content-Type': 'application/json' }, timeout: 5000 }
+        );
+      } catch (error) {
+        console.warn('[VisitorsRecord] Failed to update session time', error);
+      }
+    };
+
+    const handleInitialLoad = () => {
+      const visitorId = ensureVisitorId();
+      const slug = getSlug();
+      if (visitorId && slug) {
+        sendVisitorIdToFrappe(visitorId, slug);
+      }
+    };
 
     const handleVisibilityChange = () => {
+      const visitorId = getCookie('visitor_id');
+      const slug = getSlug();
+      if (!visitorId || typeof visitorId !== 'string' || !slug) return;
+
       if (document.visibilityState === 'visible' && !isInitialLoad.current) {
         visitStartTime.current = Date.now();
-        setCurrentSlug(window.location.pathname);
-        const currentVisitorId = getCookie('visitor_id');
-        if (typeof currentVisitorId === 'string' && currentSlug) {
-          sendVisitorIdToFrappe(currentVisitorId, currentSlug);
-        }
+        sendVisitorIdToFrappe(visitorId, slug);
       } else {
-        const currentVisitorId = getCookie('visitor_id');
-        if (typeof currentVisitorId === 'string' && currentSlug) {
-          sendSessionTimeUpdate(currentVisitorId, currentSlug);
-        }
+        sendSessionTimeUpdate(visitorId, slug);
       }
       isInitialLoad.current = false;
     };
 
-    window.addEventListener('visibilitychange', handleVisibilityChange);
-
     const handleBeforeUnload = () => {
-      const currentVisitorId = getCookie('visitor_id');
-      if (typeof currentVisitorId === 'string' && currentSlug) {
-        sendSessionTimeUpdate(currentVisitorId, currentSlug);
+      const visitorId = getCookie('visitor_id');
+      const slug = getSlug();
+      if (typeof visitorId === 'string' && slug) {
+        sendSessionTimeUpdate(visitorId, slug);
       }
     };
+
+    handleInitialLoad();
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
     window.addEventListener('beforeunload', handleBeforeUnload);
 
     return () => {
-      window.removeEventListener('visibilitychange', handleVisibilityChange);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
       window.removeEventListener('beforeunload', handleBeforeUnload);
     };
-  }, [currentSlug]);
-
-  const sendVisitorIdToFrappe = async (id: string, slug: string) => {
-    try {
-      const frappeApiUrl = `${BASE_URL}.visitors_record.create_or_update_visitor`;
-      await axios.post(frappeApiUrl, ({ visitor_id: id, slug }), { headers: { 'Content-Type': 'application/json' } });
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        throw new Error(error.response?.data?.message || 'Failed to send visitor ID to Frappe');
-      }
-      throw error;
-    }
-  };
-
-  const sendSessionTimeUpdate = async (id: string, slug: string) => {
-    try {
-      const frappeApiUrl = `${BASE_URL}.visitors_record.update_session_time`;
-      await axios.post(frappeApiUrl, ({ visitor_id: id, slug }), { headers: { 'Content-Type': 'application/json' } });
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        throw new Error(error.response?.data?.message || 'Failed to update session time to Frappe');
-      }
-      throw error;
-    }
-  };
+  }, []);
 
   return null;
 }

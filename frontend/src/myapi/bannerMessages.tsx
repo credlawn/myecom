@@ -1,7 +1,5 @@
 import axios from "axios";
-
-const DOMAIN = process.env.DOMAIN;
-const BASE_URL = `${DOMAIN}/api/method/myecom.api`;
+import { api } from "./apiPath";
 
 export interface BannerMessage {
   banner_message: string;
@@ -9,15 +7,10 @@ export interface BannerMessage {
 
 export async function getBannerMessages(): Promise<string[]> {
   try {
-    const response = await axios.get(
-      `${BASE_URL}.banner_message.get_banner_message`,
-      {
-        withCredentials: true,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      },
-    );
+    const response = await axios.get(api.BM, {
+      headers: { "Content-Type": "application/json" },
+      withCredentials: true,
+    });
 
     const messagesArray = response.data.message?.messages || [];
     return messagesArray
@@ -25,7 +18,7 @@ export async function getBannerMessages(): Promise<string[]> {
       .filter((msg: string) => msg && msg.trim() !== "");
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      throw new Error(error.response?.data?.message || 'Failed to fetch banner messages');
+      throw new Error(error.response?.data?.message || "Failed to fetch banner messages");
     }
     throw error;
   }

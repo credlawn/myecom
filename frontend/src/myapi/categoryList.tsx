@@ -1,7 +1,5 @@
 import axios from "axios";
-
-const DOMAIN = process.env.DOMAIN;
-const BASE_URL = `${DOMAIN}/api/method/myecom.api`;
+import { api, img } from "./apiPath"
 
 export interface CategoryList {
   category: string;
@@ -13,15 +11,10 @@ export interface CategoryList {
 
 export async function getCategoryList(): Promise<CategoryList[]> {
   try {
-    const { data } = await axios.get(
-      `${BASE_URL}.category_list.get_category_list`,
-      { withCredentials: true },
-    );
+    const { data } = await axios.get(api.CL, { withCredentials: true },);
     return (data.message?.messages || []).map((item: CategoryList) => ({
       ...item,
-      category_image: item.banner
-        ? `${DOMAIN}${item.banner}`
-        : "images/placeholder.jpg",
+      category_image: item.banner ? img(item.banner) : "images/placeholder.jpg",
     }));
   } catch (error) {
     if (axios.isAxiosError(error)) {

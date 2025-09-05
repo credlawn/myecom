@@ -1,14 +1,12 @@
 import axios from "axios";
-
-const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN
-const BASE_URL = `${DOMAIN}/api/method/myecom.api`;
+import { api, img } from "./apiPath";
 
 export interface SiteSettingsResponse {
   show_top_banner: number;
   show_mobile_logo: number;
   visitor_tracking: number;
   auto_slide_hero: number;
-  banner_url?: string;
+  banner_url?: string | null;
   logo_url?: string | null;
   card_size?: number;
   mobile_card_size?: number;
@@ -46,10 +44,7 @@ export interface SiteSettingsResponse {
 
 export async function getSiteSettings(): Promise<SiteSettingsResponse | null> {
   try {
-    const { data } = await axios.get(
-      `${BASE_URL}.site_settings.get_site_settings`,
-      { withCredentials: true },
-    );
+    const { data } = await axios.get(api.SS, { withCredentials: true });
     const message = data.message;
     if (message) {
       return {
@@ -57,8 +52,8 @@ export async function getSiteSettings(): Promise<SiteSettingsResponse | null> {
         show_mobile_logo: message.show_mobile_logo,
         visitor_tracking: message.visitor_tracking,
         auto_slide_hero: message.auto_slide_hero,
-        banner_url: message.banner_url ? message.banner_url : null,
-        logo_url: message.logo_url ? `${DOMAIN}${message.logo_url}` : null,
+        banner_url: img(message.banner_url),
+        logo_url: img(message.logo_url),
         card_size: message.card_size,
         mobile_card_size: message.mobile_card_size,
         tab_card_size: message.tab_card_size,

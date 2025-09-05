@@ -5,7 +5,7 @@ import { useWishlist } from '@/app/wishlist/useWishlist';
 import { Logo, LogoMobile } from "@/lib/logo";
 import SearchBox from "@/lib/searchBox";
 import Sidebar from "@/lib/sidebar";
-import { Settings } from "@/myapi/settings";
+import { Settings } from "@/myapi/apiData/settings";
 import { useState, useRef, useEffect } from "react";
 import { NavItems } from "@/lib/navItems";
 import Link from "next/link";

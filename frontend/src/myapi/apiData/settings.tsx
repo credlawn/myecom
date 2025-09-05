@@ -1,10 +1,10 @@
-import { getSiteSettings } from "./siteSettings";
-import { getBannerMessages } from "./bannerMessages";
-import { getMenuList } from "./menuList";
-import { getHeroDetails, HeroItem } from "./heroDetails";
-import { MenuResponse } from "./menuList";
-import { getCategoryList, CategoryList } from "./categoryList";
-import { getProductList, ProductItem } from "./productList";
+import { getSiteSettings } from "../siteSettings";
+import { getBannerMessages } from "../bannerMessages";
+import { getMenuList } from "../menuList";
+import { getHeroDetails, HeroItem } from "../heroDetails";
+import { MenuResponse } from "../menuList";
+import { getCategoryList, CategoryList } from "../categoryList";
+import { getProductList, ProductItem } from "../productList";
 
 export interface Settings {
   showBanner: number;

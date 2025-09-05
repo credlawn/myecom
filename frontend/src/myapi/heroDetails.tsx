@@ -1,7 +1,5 @@
 import axios from "axios";
-
-const DOMAIN = process.env.DOMAIN;
-const BASE_URL = `${DOMAIN}/api/method/myecom.api`;
+import { api, img } from "./apiPath"
 
 export interface HeroItem {
   hero_title: string;
@@ -16,18 +14,15 @@ export interface HeroItem {
 
 export async function getHeroDetails(): Promise<HeroItem[]> {
   try {
-    const { data } = await axios.get(
-      `${BASE_URL}.hero_section.get_hero_details`,
-      { withCredentials: true },
-    );
+    const { data } = await axios.get(api.HD, { withCredentials: true }, );
+
     return (data.message?.messages || []).map((item: HeroItem) => ({
       ...item,
-      hero_image: item.hero_image
-        ? `${DOMAIN}${item.hero_image}`
-        : "images/placeholder.jpg",
 
-      hero_url: item.hero_url ? item.hero_url : `${DOMAIN}`,
+      hero_image: item.hero_image ? img(item.hero_image) : "images/placeholder.jpg",
+      hero_url: item.hero_url ? item.hero_url : img(),
     }));
+
   } catch (error) {
     if (axios.isAxiosError(error)) {
       throw new Error(error.response?.data?.message || 'Failed to fetch hero details');
