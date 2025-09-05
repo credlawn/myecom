@@ -72,7 +72,7 @@ export default function CartSlider({ isOpen, onClose, cartItems }: CartSliderPro
                         alt={item.product_name}
                         fill
                         className="object-contain rounded"
-                        sizes="84spx"
+                        sizes="84px"
                       />
                     </div>
                     <div className="flex-1">
