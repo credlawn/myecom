@@ -5,7 +5,7 @@ import Link from "next/link";
 import { SingleProduct } from "@/myapi/apiData/productData";
 import ProductGallery from "./ProductGallery";
 import StarRating from "@/lib/starRating";
-import { Settings } from "@/myapi/settings";
+import { Settings } from "@/myapi/apiData/settings";
 import CheckPin from "./checkPin";
 import { WishlistButton } from "@/app/wishlist/WishlistButton";
 import { motion } from "framer-motion";
