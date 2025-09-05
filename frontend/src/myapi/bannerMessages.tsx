@@ -9,7 +9,6 @@ export async function getBannerMessages(): Promise<string[]> {
   try {
     const response = await axios.get(api.BM, {
       headers: { "Content-Type": "application/json" },
-      withCredentials: true,
     });
 
     const messagesArray = response.data.message?.messages || [];
