@@ -10,9 +10,15 @@ interface CartSliderProps {
   isOpen: boolean;
   onClose: () => void;
   cartItems: CartItem[];
+  transitionDuration?: number; // Add optional prop to control speed
 }
 
-export default function CartSlider({ isOpen, onClose, cartItems }: CartSliderProps) {
+export default function CartSlider({ 
+  isOpen, 
+  onClose, 
+  cartItems, 
+  transitionDuration = 300 // Default to 300ms
+}: CartSliderProps) {
   const sliderRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -43,13 +49,16 @@ export default function CartSlider({ isOpen, onClose, cartItems }: CartSliderPro
         />
       )}
       
-      {/* Slider */}
+      {/* Slider with customizable transition duration */}
       <div className="fixed inset-0 z-50 pointer-events-none">
         <div
           ref={sliderRef}
-          className={`absolute right-0 top-0 h-full bg-white shadow-lg transition-transform duration-300 ease-in-out
-            w-full max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl pointer-events-auto
-            ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
+          className="absolute right-0 top-0 h-full bg-white shadow-lg ease-in-out pointer-events-auto
+                     w-full max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl"
+          style={{
+            transform: isOpen ? 'translateX(0)' : 'translateX(100%)',
+            transition: `transform ${transitionDuration}ms ease-in-out`
+          }}
         >
           <div className="flex justify-between items-center p-4 border-b">
             <h2 className="text-xl font-semibold">Your Cart</h2>
@@ -71,14 +80,14 @@ export default function CartSlider({ isOpen, onClose, cartItems }: CartSliderPro
                         src={img(item.product_image)}
                         alt={item.product_name}
                         fill
-                        className="object-contain rounded"
-                        sizes="84px"
+                        className="object-cover rounded"
+                        sizes="64px"
                       />
                     </div>
                     <div className="flex-1">
                       <p className="font-semibold">{item.product_name}</p>
                       <p className="text-gray-600 text-sm">Qty: {item.qty}</p>
-                      <p className="text-gray-800 font-bold">₹ {item.price.toFixed(2)}</p>
+                      <p className="text-gray-800 font-bold">${item.price.toFixed(2)}</p>
                     </div>
                   </div>
                 ))}
