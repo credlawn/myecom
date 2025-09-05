@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { getCookie } from 'cookies-next';
-import { api } from './apiPath';
+import { api } from '@/myapi/apiPath';
 
 export interface CartItem {
   product: string;

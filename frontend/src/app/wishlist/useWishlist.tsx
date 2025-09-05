@@ -1,7 +1,7 @@
 'use client';
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { wishlistAPI } from '@/myapi/wishlist';
+import { wishlistAPI } from './wishlist';
 
 
 const useToast = () => {

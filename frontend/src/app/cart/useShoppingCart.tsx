@@ -1,7 +1,7 @@
 'use client';
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { shoppingCartAPI } from '@/myapi/shoppingCart';
+import { shoppingCartAPI } from './shoppingCart';
 
 const useToast = () => {
   const toast = ({ title, description }: { title: string; description?: string }) => {

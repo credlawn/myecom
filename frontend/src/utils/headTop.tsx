@@ -1,12 +1,14 @@
 "use client";
 
 import { HamburgerIcon, UserIcon, CartIcon, SearchIcon, HeartIcon } from "@/lib/icons";
+import { useShoppingCart } from '@/app/cart/useShoppingCart';
 import { useWishlist } from '@/app/wishlist/useWishlist';
 import { Logo, LogoMobile } from "@/lib/logo";
 import SearchBox from "@/lib/searchBox";
 import Sidebar from "@/lib/sidebar";
 import { Settings } from "@/myapi/apiData/settings";
 import { useState, useRef, useEffect } from "react";
+import CartSlider from "@/app/cart/CartSlider";
 import { NavItems } from "@/lib/navItems";
 import Link from "next/link";
 
@@ -16,6 +18,7 @@ interface HeadTopProps {
 
 export default function HeadTop({ settings }: HeadTopProps) {
   const { wishlistCount } = useWishlist();
+  const { cartCount, cartItems } = useShoppingCart();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
   const searchButtonRef = useRef<HTMLButtonElement>(null);
@@ -23,6 +26,8 @@ export default function HeadTop({ settings }: HeadTopProps) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const sidebarRef = useRef<HTMLDivElement>(null);
   const sidebarButtonRef = useRef<HTMLButtonElement>(null);
+
+  const [isCartSliderOpen, setIsCartSliderOpen] = useState(false);
 
   const handleSearch = (query: string) => {
     console.log("Search query:", query);
@@ -78,9 +83,9 @@ export default function HeadTop({ settings }: HeadTopProps) {
                 </div>
               </Link>
             </div>
-            <NavItems menuData={settings.menuData} />
 
             {/* Center: Navigation */}
+            <NavItems menuData={settings.menuData} />
 
             {/* Right: Search + Icons */}
             <div className="flex items-center gap-4">
@@ -98,7 +103,14 @@ export default function HeadTop({ settings }: HeadTopProps) {
                   )}
                 </Link>
                 <UserIcon />
-                <CartIcon />
+                <button onClick={() => setIsCartSliderOpen(true)} className="relative hover:text-red-500 transition-colors">
+                  <CartIcon />
+                  {cartCount > 0 && (
+                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
+                      {cartCount}
+                    </span>
+                  )}
+                </button>
               </div>
             </div>
           </div>
@@ -151,7 +163,14 @@ export default function HeadTop({ settings }: HeadTopProps) {
                 )}
               </Link>
               <UserIcon />
-              <CartIcon />
+              <button onClick={() => setIsCartSliderOpen(true)} className="relative hover:text-red-500 transition-colors">
+                <CartIcon />
+                {cartCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
+                    {cartCount}
+                  </span>
+                )}
+              </button>
             </div>
           </div>
 
@@ -170,6 +189,9 @@ export default function HeadTop({ settings }: HeadTopProps) {
           )}
         </div>
       </header>
+      <CartSlider isOpen={isCartSliderOpen} onClose={() => setIsCartSliderOpen(false)} cartItems={cartItems}>
+
+      </CartSlider>
     </div>
   );
 }
