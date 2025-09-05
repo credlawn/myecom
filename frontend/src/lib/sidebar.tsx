@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { ChevronDownIcon, UserIcon } from "@/lib/icons";
 import { MenuResponse } from "@/myapi/menuList";
-import { Settings } from "@/myapi/settings";
+import { Settings } from "@/myapi/apiData/settings";
 
 interface SidebarProps {
   isOpen: boolean;
