@@ -44,7 +44,7 @@ export interface SiteSettingsResponse {
 
 export async function getSiteSettings(): Promise<SiteSettingsResponse | null> {
   try {
-    const { data } = await axios.get(api.SS, { withCredentials: true });
+    const { data } = await axios.get(api.SS,);
     const message = data.message;
     if (message) {
       return {
