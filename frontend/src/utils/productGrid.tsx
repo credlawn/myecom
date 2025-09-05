@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useState } from "react";
 import type { ProductItem } from "@/myapi/productList";
 import { WishlistButton } from "@/app/wishlist/WishlistButton";
+import { CartButton } from "@/app/cart/cartButton";
 
 interface ProductGridProps {
   products?: ProductItem[];
@@ -163,11 +164,17 @@ export default function ProducteGrid({
                         </del>
                       )}
                     </div>
-                    <span className="text-green-600 text-sm font-medium mt-1">
-                      {p.discountPercent > 0
-                        ? `${p.discountPercent.toFixed(0)}% Instant off`
-                        : p.ndText}
-                    </span>
+                    <div className="relative">
+                      <span className="text-green-600 text-sm font-medium mt-1">
+                        {p.discountPercent > 0
+                          ? `${p.discountPercent.toFixed(0)}% Instant off`
+                          : p.ndText}
+                      </span>
+                      
+                    </div>
+                    <div className="absolute bottom-0 right-0 z-10">
+                      <CartButton productId={p.id} />
+                    </div>
                   </div>
                 </a>
               ))

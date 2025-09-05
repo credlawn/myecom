@@ -3,6 +3,8 @@
 import Image from "next/image";
 import { useState } from "react";
 import type { ProductItem } from "@/myapi/productList";
+import { WishlistButton } from "@/app/wishlist/WishlistButton";
+import { CartButton } from "@/app/cart/cartButton";
 
 interface FeatureGridProps {
   products?: ProductItem[];
@@ -25,7 +27,7 @@ export default function FeatureGrid({
 
   const mappedProducts = (Array.isArray(products) ? products : []).map(
     (p, index) => ({
-      id: p.name || index,
+      id: p.name || String(index),
       title: p.product_name || "Untitled Product",
       rating: Math.max(0, Math.min(5, p.product_rating)),
       rating_count: p.rating_count || 0,
@@ -102,6 +104,14 @@ export default function FeatureGrid({
                       className="object-cover absolute inset-0 opacity-0 transition-transform duration-300 group-hover:opacity-100 group-hover:scale-105"
                       sizes="50vw"
                     />
+                    <div className="absolute top-1 right-1 z-10">
+                      <WishlistButton 
+                        productId={p.id} 
+                        variant="icon" 
+                        size="sm"
+                        className="bg-white/80 backdrop-blur-sm hover:bg-white"
+                      />
+                    </div>
                   </div>
 
                   {/* Text container */}
@@ -158,6 +168,9 @@ export default function FeatureGrid({
                         : p.ndText}
                     </span>
                   </div>
+                  <div className="absolute bottom-0 right-0 z-10">
+                    <CartButton productId={p.id} />
+                  </div>
                 </a>
               ))
             )}
@@ -198,6 +211,14 @@ export default function FeatureGrid({
                     className="object-cover mx-0.5 my-0.5 absolute inset-0 opacity-0 transition-transform duration-300 group-hover:opacity-100 group-hover:scale-105"
                     sizes="240px"
                   />
+                  <div className="absolute top-1 right-1 z-10">
+                      <WishlistButton 
+                        productId={p.id} 
+                        variant="icon" 
+                        size="sm"
+                        className="bg-white/80 backdrop-blur-sm hover:bg-white"
+                      />
+                    </div>
                 </div>
 
                 <span className="absolute top-0 left-0 h-[2px] w-0 bg-red-500 group-hover:w-full group-hover:transition-all group-hover:duration-500 group-hover:ease-in-out"></span>

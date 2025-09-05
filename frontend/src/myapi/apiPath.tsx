@@ -28,12 +28,21 @@ export const api = {
   VR: apiUrl("visitors_record.update_session_time"),
   VC: apiUrl("visitors_record.create_or_update_visitor"),
 
+  CP: apiUrl("check_pincode.get_delivery_time"),
+
   WL: apiUrl("wishlist.get_wishlist_items"),
   AW: apiUrl("wishlist.add_to_wishlist"),
   RW: apiUrl("wishlist.remove_from_wishlist"),
   CW: apiUrl("wishlist.clear_wishlist"),
   IW: apiUrl("wishlist.is_in_wishlist"),
 
-  CP: apiUrl("check_pincode.get_delivery_time"),
+
+  AC: apiUrl("shopping_cart.add_to_cart"),
+  RC: apiUrl("shopping_cart.remove_from_cart"),
+  UQ: apiUrl("shopping_cart.update_quantity"),
+  GC: apiUrl("shopping_cart.get_cart_items"),
+  CC: apiUrl("shopping_cart.clear_cart"),
+
+  
 
 };
