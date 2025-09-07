@@ -7,6 +7,7 @@ export interface WishlistItem {
   product_name: string;
   price: number;
   product_image: string;
+  second_image: string;
   added_on: string;
   slug: string;
 }
@@ -29,6 +30,7 @@ interface WishlistBackendItem {
   product_name: string;
   price: number;
   product_image: string;
+  second_image: string;
   added_on: string;
   slug: string;
 }
@@ -102,6 +104,7 @@ class WishlistAPI {
       product_name: item.product_name,
       price: item.price,
       product_image: item.product_image,
+      second_image: item.second_image,
       added_on: item.added_on,
       slug: item.slug || '',
     }));

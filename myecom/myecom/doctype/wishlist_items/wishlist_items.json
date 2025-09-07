@@ -10,6 +10,7 @@
   "product_name",
   "product_image",
   "price",
+  "second_image",
   "column_break_1",
   "added_on",
   "slug"
@@ -55,13 +56,18 @@
    "fieldname": "slug",
    "fieldtype": "Data",
    "label": "slug"
+  },
+  {
+   "fieldname": "second_image",
+   "fieldtype": "Data",
+   "label": "Second Image"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-09-04 02:59:08.194002",
+ "modified": "2025-09-07 14:26:45.417779",
  "modified_by": "Administrator",
  "module": "Myecom",
  "name": "Wishlist Items",

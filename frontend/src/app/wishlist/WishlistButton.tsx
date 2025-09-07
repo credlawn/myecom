@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { Heart } from 'lucide-react';
 import { useWishlist } from './useWishlist';
@@ -35,8 +37,6 @@ export const WishlistButton: React.FC<WishlistButtonProps> = ({
     }
   };
 
-
-
   const iconSizes = {
     sm: 'h-4 w-4',
     md: 'h-5 w-5',
@@ -70,33 +70,31 @@ export const WishlistButton: React.FC<WishlistButtonProps> = ({
 
   return (
     <button
-            onClick={handleWishlistToggle}
-            disabled={isLoading}
-            className={cn(
-              'inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors',
-              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
-              'disabled:opacity-50 disabled:pointer-events-none',
-              isInWishlist
-                ? 'bg-gray-100 hover:bg-gray-200 text-gray-900'
-                : 'bg-transparent hover:bg-gray-100 text-gray-600',
-              size === 'sm' ? 'h-8 px-3 text-xs' : size === 'lg' ? 'h-12 px-6' : 'h-10 px-4',
-              className
-            )}
-          >
-            <Heart
-              className={cn(
-                showText ? 'mr-2' : '',
-                iconSizes[size === 'lg' ? 'md' : 'sm'],
-                isInWishlist
-                  ? 'fill-red-500 text-red-500'
-                  : 'text-gray-400'
-              )}
-            />
-            {showText && (
-              <span>
-                {isInWishlist ? 'In Wishlist' : 'Add to Wishlist'}
-              </span>
-            )}
-          </button>
+      onClick={handleWishlistToggle}
+      disabled={isLoading}
+      className={cn(
+        'inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors',
+        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
+        'disabled:opacity-50 disabled:pointer-events-none',
+        isInWishlist
+          ? 'bg-gray-100 hover:bg-gray-200 text-gray-900'
+          : 'bg-transparent hover:bg-gray-100 text-gray-600',
+        size === 'sm' ? 'h-8 px-3 text-xs' : size === 'lg' ? 'h-12 px-6' : 'h-10 px-4',
+        className
+      )}
+    >
+      <Heart
+        className={cn(
+          showText ? 'mr-2' : '',
+          iconSizes[size],
+          isInWishlist
+            ? 'fill-red-500 text-red-500'
+            : 'text-gray-400'
+        )}
+      />
+      {showText && (
+        <span>{isInWishlist ? 'In Wishlist' : 'Add to Wishlist'}</span>
+      )}
+    </button>
   );
 };

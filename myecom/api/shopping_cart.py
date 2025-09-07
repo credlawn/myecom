@@ -92,14 +92,35 @@ def add_to_cart(product_id: Optional[str] = None, qty: int = 1, user: Optional[s
         # try to fetch product details if Product Doc exists
         product_name = ""
         product_image = ""
+        second_image = ""
         price = 0
         slug = ""
         try:
             p = frappe.get_doc("Product", product_id)
             product_name = getattr(p, "product_name", "") or getattr(p, "name", "")
-            product_image = getattr(p, "product_image_1", "") or getattr(p, "image", "") or ""
             price = getattr(p, "price", 0) or 0
             slug = getattr(p, "product_slug", "") or ""
+            primary_img = None
+            secondary_img = None
+
+            for image in getattr(p, "product_img", []):
+                if getattr(image, "primary_image", 0) and not primary_img:
+                    primary_img = image
+                if getattr(image, "secondary_image", 0) and not secondary_img:
+                    secondary_img = image
+
+            if primary_img:
+                if getattr(primary_img, "cdn_image", 0):
+                    product_image = getattr(primary_img, "image_url", "")
+                else:
+                    product_image = getattr(primary_img, "attach_image", "")
+            
+            if secondary_img:
+                if getattr(secondary_img, "cdn_image", 0):
+                    second_image = getattr(secondary_img, "image_url", "")
+                else:
+                    second_image = getattr(secondary_img, "attach_image", "")
+
         except Exception:
             product_name = str(product_id)
 
@@ -107,6 +128,7 @@ def add_to_cart(product_id: Optional[str] = None, qty: int = 1, user: Optional[s
             "product": product_id,
             "product_name": product_name,
             "product_image": product_image or None,
+            "second_image": second_image or None,
             "price": price,
             "qty": int(qty),
             "slug": slug
@@ -165,6 +187,7 @@ def get_cart_items(user: Optional[str] = None, visitor_id: Optional[str] = None)
             "product": item.product,
             "product_name": item.product_name,
             "product_image": getattr(item, "product_image", None),
+            "second_image": getattr(item, "second_image", None),
             "price": getattr(item, "price", 0),
             "qty": getattr(item, "qty", 0),
             "slug": getattr(item, "slug", ""),

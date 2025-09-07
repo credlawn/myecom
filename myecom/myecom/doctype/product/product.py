@@ -9,7 +9,6 @@ class Product(Document):
         self.calculate_discount()
         self.calculate_discounted_price()
         self.set_product_slug()
-        self.set_image_url()
         self.set_reviews_and_ratings()
         self.validation_checks()
 
@@ -72,13 +71,6 @@ class Product(Document):
         self.product_slug = f"{slug_parts}-{self.name.lower()}"
 
 
-    def set_image_url(self):
-        if not self.product_image_1:
-            self.product_image_1 = self.url_1
-
-        if not self.product_image_2:
-            self.product_image_2 = self.url_2
-
     def set_reviews_and_ratings(self):
         self.rating_count = self.custom_rating_count or 0 + self.actual_rating_count or 0
         self.review_count = self.custom_review_count or 0 + self.actual_review_count or 0
@@ -86,7 +78,41 @@ class Product(Document):
         self.units_sold = self.custom_units_sold or 0 + self.actual_units_sold or 0
 
         
+
+
     def validation_checks(self):
+
         if self.product_rating > 5:
             frappe.throw("Product rating cannot exceed 5.")
+        
+        images = getattr(self, "product_img", [])
+        if not images:
+            frappe.throw("Please upload primary & Secondary image.")
+
+        primary_count = 0
+        secondary_count = 0
+
+        for idx, img in enumerate(getattr(self, "product_img", []), start=1):
+            is_primary = getattr(img, "primary_image", 0)
+            is_secondary = getattr(img, "secondary_image", 0)
+
+            if is_primary and is_secondary:
+                frappe.throw(f"Row {idx}: A single image cannot be both primary and secondary.")
+
+            if is_primary:
+                primary_count += 1
+            if is_secondary:
+                secondary_count += 1
+
+        if primary_count == 0:
+            frappe.throw("Please Select Primary Image.")
+        elif primary_count > 1:
+            frappe.throw("You Can Select only 1 Primary Image.")
+
+        if secondary_count == 0:
+            frappe.throw("Please Select Secondary Image.")
+        elif secondary_count > 1:
+            frappe.throw("You Can Select only 1 Secondary Image.")
+
+
         

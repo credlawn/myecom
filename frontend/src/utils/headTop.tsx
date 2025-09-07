@@ -9,6 +9,7 @@ import Sidebar from "@/lib/sidebar";
 import { Settings } from "@/myapi/apiData/settings";
 import { useState, useRef, useEffect } from "react";
 import CartSlider from "@/app/cart/CartSlider";
+import WishlistSlider from '@/app/wishlist/WishlistSlider';
 import { NavItems } from "@/lib/navItems";
 import Link from "next/link";
 
@@ -18,7 +19,7 @@ interface HeadTopProps {
 
 export default function HeadTop({ settings }: HeadTopProps) {
   const { wishlistCount } = useWishlist();
-  const { cartCount, cartItems } = useShoppingCart();
+  const { cartCount } = useShoppingCart();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
   const searchButtonRef = useRef<HTMLButtonElement>(null);
@@ -28,6 +29,7 @@ export default function HeadTop({ settings }: HeadTopProps) {
   const sidebarButtonRef = useRef<HTMLButtonElement>(null);
 
   const [isCartSliderOpen, setIsCartSliderOpen] = useState(false);
+  const [isWishlistSliderOpen, setIsWishlistSliderOpen] = useState(false);
 
   const handleSearch = (query: string) => {
     console.log("Search query:", query);
@@ -94,14 +96,14 @@ export default function HeadTop({ settings }: HeadTopProps) {
 
               {/* User Icons */}
               <div className="flex items-center gap-6">
-                <Link href="/wishlist" className="relative hover:text-red-500 transition-colors">
+                <button onClick={() => setIsWishlistSliderOpen(true)} className="relative hover:text-red-500 transition-colors">
                   <HeartIcon />
                   {wishlistCount > 0 && (
                     <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full h-4 w-4 flex items-center justify-center">
                       {wishlistCount}
                     </span>
                   )}
-                </Link>
+                </button>
                 <UserIcon />
                 <button onClick={() => setIsCartSliderOpen(true)} className="relative hover:text-red-500 transition-colors">
                   <CartIcon />
@@ -154,14 +156,14 @@ export default function HeadTop({ settings }: HeadTopProps) {
               >
                 <SearchIcon />
               </button>
-              <Link href="/wishlist" className="relative hover:text-red-500 transition-colors">
+              <button onClick={() => setIsWishlistSliderOpen(true)} className="relative hover:text-red-500 transition-colors">
                 <HeartIcon />
                 {wishlistCount > 0 && (
                   <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
                     {wishlistCount}
                   </span>
                 )}
-              </Link>
+              </button>
               <UserIcon />
               <button onClick={() => setIsCartSliderOpen(true)} className="relative hover:text-red-500 transition-colors">
                 <CartIcon />
@@ -189,9 +191,18 @@ export default function HeadTop({ settings }: HeadTopProps) {
           )}
         </div>
       </header>
-      <CartSlider isOpen={isCartSliderOpen} onClose={() => setIsCartSliderOpen(false)} cartItems={cartItems}>
 
-      </CartSlider>
+      {/* Cart Slider */}
+      <CartSlider
+        isOpen={isCartSliderOpen}
+        onClose={() => setIsCartSliderOpen(false)}
+      />
+
+      {/* Wishlist Slider */}
+      <WishlistSlider
+        isOpen={isWishlistSliderOpen}
+        onClose={() => setIsWishlistSliderOpen(false)}
+      />
     </div>
   );
 }

@@ -22,10 +22,29 @@ def add_to_wishlist(product_id=None, user=None, visitor_id=None, **kwargs):
 		return {"success": False, "message": "Already in wishlist"}
 	
 	product = frappe.get_doc("Product", product_id)
+	product_image = ""
+	second_image = ""
+	for img in getattr(product, "product_img", []):
+		if getattr(img, "primary_image", 0):
+			if getattr(img, "cdn_image", 0):
+				product_image = getattr(img, "image_url", "")
+			else:
+				product_image = getattr(img, "attach_image", "")
+			break
+	
+	for img in getattr(product, "product_img", []):
+		if getattr(img, "secondary_image", 0):
+			if getattr(img, "cdn_image", 0):
+				second_image = getattr(img, "image_url", "")
+			else:
+				second_image = getattr(img, "attach_image", "")
+			break
+	
 	wishlist.append("items", {
 		"product": product.name,
 		"product_name": product.product_name,
-		"product_image": product.product_image_1 or None,
+		"product_image": product_image or None,
+		"second_image": second_image or None,
 		"price": product.price,
 		"slug": product.product_slug
 	})
@@ -74,6 +93,7 @@ def get_wishlist_items(user=None, visitor_id=None):
 			"product": item.product,
 			"product_name": item.product_name,
 			"product_image": item.product_image,
+			"second_image": item.second_image,
 			"price": item.price,
 			"added_on": item.added_on,
 			"slug": item.slug

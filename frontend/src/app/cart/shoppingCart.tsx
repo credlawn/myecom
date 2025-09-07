@@ -7,6 +7,7 @@ export interface CartItem {
   product_name: string;
   price: number;
   product_image: string;
+  second_image: string;
   qty: number;
   slug: string;
   added_on?: string;
@@ -30,6 +31,7 @@ interface CartBackendItem {
   product_name: string;
   price: number;
   product_image: string;
+  second_image: string;
   qty: number;
   slug: string;
 }
@@ -100,6 +102,7 @@ class ShoppingCartAPI {
       product_name: item.product_name,
       price: item.price,
       product_image: item.product_image,
+      second_image: item.second_image,
       qty: item.qty,
       added_on: (item as CartBackendItem & { added_on?: string }).added_on, 
       slug: item.slug || '',
