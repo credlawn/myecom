@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { HamburgerIcon, UserIcon, CartIcon, SearchIcon, HeartIcon } from "@/lib/icons";
 import { useShoppingCart } from '@/app/cart/useShoppingCart';
@@ -8,10 +8,14 @@ import SearchBox from "@/lib/searchBox";
 import Sidebar from "@/lib/sidebar";
 import { Settings } from "@/myapi/apiData/settings";
 import { useState, useRef, useEffect } from "react";
+import { LoginResponse } from "@/app/auth/MyLogin";
+import SigninPage from "@/app/auth/SigninPage";
+import SignupPage from "@/app/auth/SignupPage";
 import CartSlider from "@/app/cart/CartSlider";
 import WishlistSlider from '@/app/wishlist/WishlistSlider';
 import { NavItems } from "@/lib/navItems";
 import Link from "next/link";
+import { getCookie } from 'cookies-next'; // Add this import
 
 interface HeadTopProps {
   settings: Settings;
@@ -30,10 +34,32 @@ export default function HeadTop({ settings }: HeadTopProps) {
 
   const [isCartSliderOpen, setIsCartSliderOpen] = useState(false);
   const [isWishlistSliderOpen, setIsWishlistSliderOpen] = useState(false);
+  const [isSigninOpen, setIsSigninOpen] = useState(false);
+  const [isSignupOpen, setIsSignupOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userName, setUserName] = useState('');
 
   const handleSearch = (query: string) => {
     console.log("Search query:", query);
   };
+
+  // Check login status on component mount
+  useEffect(() => {
+    const checkLoginStatus = () => {
+      const sid = getCookie('sid');
+      const user = getCookie('user');
+      
+      if (sid && user) {
+        setIsLoggedIn(true);
+        setUserName(user as string);
+      } else {
+        setIsLoggedIn(false);
+        setUserName('');
+      }
+    };
+
+    checkLoginStatus();
+  }, []);
 
   // Close search when clicking outside
   useEffect(() => {
@@ -46,11 +72,8 @@ export default function HeadTop({ settings }: HeadTopProps) {
         setIsSearchOpen(false);
       }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   // Close sidebar when clicking outside
@@ -64,12 +87,30 @@ export default function HeadTop({ settings }: HeadTopProps) {
         setIsSidebarOpen(false);
       }
     };
-
     document.addEventListener("mousedown", handleClickOutsideSidebar);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutsideSidebar);
-    };
+    return () => document.removeEventListener("mousedown", handleClickOutsideSidebar);
   }, []);
+
+  const handleLoginSuccess = (res: LoginResponse) => {
+    if (res.status === 'success') {
+      setIsLoggedIn(true);
+      setUserName(res.full_name || res.user || '');
+    }
+    setIsSigninOpen(false);
+  };
+
+  const handleLogout = () => {
+    // Clear cookies
+    document.cookie = "sid=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    document.cookie = "user=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    document.cookie = "visitor_id=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    
+    setIsLoggedIn(false);
+    setUserName('');
+    
+    // Refresh page to ensure clean state
+    window.location.reload();
+  };
 
   return (
     <div className="max-h-[100dvh] overflow-visible">
@@ -91,7 +132,6 @@ export default function HeadTop({ settings }: HeadTopProps) {
 
             {/* Right: Search + Icons */}
             <div className="flex items-center gap-4">
-              {/* Search Box Component */}
               <SearchBox onSearch={handleSearch} className="w-80" />
 
               {/* User Icons */}
@@ -104,7 +144,26 @@ export default function HeadTop({ settings }: HeadTopProps) {
                     </span>
                   )}
                 </button>
-                <UserIcon />
+                {isLoggedIn ? (
+                  <div className="relative group">
+                    <button className="hover:text-red-500 transition-colors">
+                      <UserIcon />
+                    </button>
+                    <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg py-1 hidden group-hover:block">
+                      <span className="block px-4 py-2 text-sm text-gray-700">Hello, {userName}</span>
+                      <button
+                        onClick={handleLogout}
+                        className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      >
+                        Logout
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <button onClick={() => setIsSigninOpen(true)} className="hover:text-red-500 transition-colors">
+                    <UserIcon />
+                  </button>
+                )}
                 <button onClick={() => setIsCartSliderOpen(true)} className="relative hover:text-red-500 transition-colors">
                   <CartIcon />
                   {cartCount > 0 && (
@@ -119,7 +178,6 @@ export default function HeadTop({ settings }: HeadTopProps) {
 
           {/* Mobile View */}
           <div className="flex lg:hidden items-center justify-between w-full h-6 relative">
-            {/* Left: Hamburger */}
             <div className="flex-shrink-0">
               <button
                 ref={sidebarButtonRef}
@@ -139,14 +197,12 @@ export default function HeadTop({ settings }: HeadTopProps) {
               />
             </div>
 
-            {/* Mobile: Logo */}
             <div className="flex justify-center flex-1">
               {settings.showMobileLogo === 1 && (
                 <LogoMobile logoUrl={settings.logo_url} />
               )}
             </div>
 
-            {/* Right: Icons + Search */}
             <div className="flex items-center gap-3 flex-shrink-0">
               <button
                 ref={searchButtonRef}
@@ -164,7 +220,26 @@ export default function HeadTop({ settings }: HeadTopProps) {
                   </span>
                 )}
               </button>
-              <UserIcon />
+              {isLoggedIn ? (
+                <div className="relative group">
+                  <button className="hover:text-red-500 transition-colors">
+                    <UserIcon />
+                  </button>
+                  <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg py-1 hidden group-hover:block">
+                    <span className="block px-4 py-2 text-sm text-gray-700">Hello, {userName}</span>
+                    <button
+                      onClick={handleLogout}
+                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    >
+                      Logout
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <button onClick={() => setIsSigninOpen(true)} className="hover:text-red-500 transition-colors">
+                  <UserIcon />
+                </button>
+              )}
               <button onClick={() => setIsCartSliderOpen(true)} className="relative hover:text-red-500 transition-colors">
                 <CartIcon />
                 {cartCount > 0 && (
@@ -176,7 +251,7 @@ export default function HeadTop({ settings }: HeadTopProps) {
             </div>
           </div>
 
-          {/* Mobile Search Bar - Full width, absolute positioning */}
+          {/* Mobile Search Bar */}
           {isSearchOpen && (
             <div
               ref={searchRef}
@@ -196,6 +271,23 @@ export default function HeadTop({ settings }: HeadTopProps) {
       <CartSlider
         isOpen={isCartSliderOpen}
         onClose={() => setIsCartSliderOpen(false)}
+      />
+
+      {/* Signin Page */}
+      <SigninPage
+        isOpen={isSigninOpen}
+        onClose={() => setIsSigninOpen(false)}
+        onSignupClick={() => {
+          setIsSigninOpen(false);
+          setIsSignupOpen(true);
+        }}
+        onLoginSuccess={handleLoginSuccess}
+      />
+
+      {/* Signup Page */}
+      <SignupPage
+        isOpen={isSignupOpen}
+        onClose={() => setIsSignupOpen(false)}
       />
 
       {/* Wishlist Slider */}

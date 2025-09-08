@@ -14,6 +14,7 @@ export default function VisitorsRecord() {
     const getSlug = () => window.location.pathname;
 
     const ensureVisitorId = (): string | null => {
+
       let visitorId = getCookie('visitor_id');
       if (!visitorId || typeof visitorId !== 'string') {
         visitorId = uuidv4();
@@ -62,6 +63,12 @@ export default function VisitorsRecord() {
     };
 
     const handleVisibilityChange = () => {
+      // Don't track visitor sessions if user is logged in
+      const sid = getCookie('sid');
+      if (sid) {
+        return;
+      }
+
       const visitorId = getCookie('visitor_id');
       const slug = getSlug();
       if (!visitorId || typeof visitorId !== 'string' || !slug) return;
@@ -76,6 +83,12 @@ export default function VisitorsRecord() {
     };
 
     const handleBeforeUnload = () => {
+      // Don't track visitor sessions if user is logged in
+      const sid = getCookie('sid');
+      if (sid) {
+        return;
+      }
+
       const visitorId = getCookie('visitor_id');
       const slug = getSlug();
       if (typeof visitorId === 'string' && slug) {

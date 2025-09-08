@@ -2,21 +2,10 @@
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { wishlistAPI } from './wishlist';
-
-
-const useToast = () => {
-  const toast = ({ title, description }: { title: string; description?: string }) => {
-    if (typeof window !== 'undefined') {
-      console.log(`${title}: ${description}`);
-
-    }
-  };
-  return { toast };
-};
+import { toast } from 'react-toastify';
 
 export const useWishlist = () => {
   const queryClient = useQueryClient();
-  const { toast } = useToast();
 
   const { data: wishlistItems = [], isLoading, error, refetch } = useQuery({
     queryKey: ['wishlist'],
@@ -29,17 +18,10 @@ export const useWishlist = () => {
     mutationFn: (productId: string) => wishlistAPI.addToWishlist(productId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['wishlist'] });
-      toast({
-        title: "Added to Wishlist",
-        description: "Item has been added to your wishlist.",
-      });
+      toast.success("Added to wishlist.");
     },
     onError: (error: Error) => {
-      toast({
-        title: "Error",
-        description: error.message || "Failed to add item to wishlist",
-
-      });
+      toast.error(error.message || "Failed to add to wishlist");
     },
   });
 
@@ -47,17 +29,10 @@ export const useWishlist = () => {
     mutationFn: (productId: string) => wishlistAPI.removeFromWishlist(productId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['wishlist'] });
-      toast({
-        title: "Removed from Wishlist",
-        description: "Item has been removed from your wishlist.",
-      });
+      toast.success("Removed from wishlist.");
     },
     onError: (error: Error) => {
-      toast({
-        title: "Error",
-        description: error.message || "Failed to remove item from wishlist",
-
-      });
+      toast.error(error.message || "Failed to remove item from wishlist");
     },
   });
 
@@ -65,17 +40,10 @@ export const useWishlist = () => {
     mutationFn: () => wishlistAPI.clearWishlist(),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['wishlist'] });
-      toast({
-        title: "Wishlist Cleared",
-        description: "All items have been removed from your wishlist.",
-      });
+      toast.success("Wishlist Cleared.");
     },
     onError: (error: Error) => {
-      toast({
-        title: "Error",
-        description: error.message || "Failed to clear wishlist",
-
-      });
+      toast.error(error.message || "Failed to clear wishlist");
     },
   });
 
@@ -90,22 +58,15 @@ export const useWishlist = () => {
   };
 
   return {
-    
     wishlistItems,
     wishlistCount: wishlistItems.length,
     isLoading,
     error,
-
-    
     addToWishlist: addToWishlistMutation.mutate,
     removeFromWishlist: removeFromWishlistMutation.mutate,
     clearWishlist: clearWishlistMutation.mutate,
     refetchWishlist: refetch,
-
-    
     useIsInWishlist,
-
-    
     isAdding: addToWishlistMutation.isPending,
     isRemoving: removeFromWishlistMutation.isPending,
     isClearing: clearWishlistMutation.isPending,

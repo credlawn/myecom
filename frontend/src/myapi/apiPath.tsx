@@ -43,6 +43,8 @@ export const api = {
   GC: apiUrl("shopping_cart.get_cart_items"),
   CC: apiUrl("shopping_cart.clear_cart"),
 
+  LGN: apiUrl("my_login.ecom_login"),
+
   
 
 };

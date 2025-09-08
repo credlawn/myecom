@@ -34,6 +34,7 @@ interface CartBackendItem {
   second_image: string;
   qty: number;
   slug: string;
+  added_on?: string;
 }
 
 interface CartBackendResponse {
@@ -43,59 +44,61 @@ interface CartBackendResponse {
 }
 
 class ShoppingCartAPI {
-  private getHeaders() {
-    const visitorId = getCookie('visitor_id');
+  private getConfig() {
+    const visitorId = getCookie("visitor_id");
 
     const headers: Record<string, string> = {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     };
 
-    if (visitorId) {
-      headers['X-Visitor-Id'] = visitorId as string;
+    if (visitorId && (!getCookie("sid") && !getCookie("session_id"))) {
+      headers["X-Visitor-Id"] = visitorId as string;
+      return { headers, withCredentials: false };
     }
 
-    const authToken = getCookie('auth_token');
-    if (authToken) {
-      headers['Authorization'] = `Bearer ${authToken}`;
-    }
-
-    return headers;
+    return { headers, withCredentials: true };
   }
 
   async addToCart(productId: string, qty: number): Promise<CartActionResponse> {
     const response = await axios.post(api.AC,
       { product_id: productId, qty },
-      { headers: this.getHeaders() }
+      this.getConfig()
     );
     return response.data;
   }
 
   async removeFromCart(productId: string): Promise<CartActionResponse> {
-    const response = await axios.post(api.RC,
+    const response = await axios.post(
+      api.RC,
       { product_id: productId },
-      { headers: this.getHeaders() }
+      this.getConfig()
     );
     return response.data;
   }
 
-  async updateQuantity(productId: string, qty: number): Promise<CartActionResponse> {
-    const response = await axios.post(api.UQ,
+  async updateQuantity(
+    productId: string,
+    qty: number
+  ): Promise<CartActionResponse> {
+    const response = await axios.post(
+      api.UQ,
       { product_id: productId, qty },
-      { headers: this.getHeaders() }
+      this.getConfig()
     );
     return response.data;
   }
 
   async getCartItems(): Promise<CartItem[]> {
     const response = await axios.get<CartBackendResponse>(
-      api.GC, { headers: this.getHeaders() }
+      api.GC,
+      this.getConfig()
     );
 
     const items = Array.isArray(response.data.message?.items)
       ? response.data.message.items
       : Array.isArray(response.data.data?.items)
-        ? response.data.data.items
-        : [];
+      ? response.data.data.items
+      : [];
 
     return items.map((item) => ({
       product: item.product,
@@ -104,14 +107,16 @@ class ShoppingCartAPI {
       product_image: item.product_image,
       second_image: item.second_image,
       qty: item.qty,
-      added_on: (item as CartBackendItem & { added_on?: string }).added_on, 
-      slug: item.slug || '',
+      added_on: item.added_on,
+      slug: item.slug || "",
     }));
   }
 
   async clearCart(): Promise<CartActionResponse> {
     const response = await axios.post<CartActionResponse>(
-      api.CC, {}, { headers: this.getHeaders() }
+      api.CC,
+      {},
+      this.getConfig()
     );
     return response.data;
   }

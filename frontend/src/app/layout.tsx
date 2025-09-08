@@ -8,6 +8,8 @@ import HeadTop from "@/utils/headTop";
 import { getSettings, Settings } from "@/myapi/apiData/settings";
 import VisitorsRecord from "@/myapi/visitorsRecord";
 import { Providers } from "./providers";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const outfit = Outfit({
   subsets: ["latin"],
@@ -40,6 +42,18 @@ export default async function RootLayout({
           {settings.visitorTracking === 1 && <VisitorsRecord />}
           <HeadTop settings={settings} />
           {children}
+          <ToastContainer 
+            position="bottom-left"
+            autoClose={2000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"
+          />
         </Providers>
       </body>
     </html>

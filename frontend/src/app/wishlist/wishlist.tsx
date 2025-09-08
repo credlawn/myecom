@@ -41,56 +41,48 @@ interface WishlistBackendResponse {
   success?: boolean;
 }
 
-
 class WishlistAPI {
-  private getHeaders() {
-    
-    const visitorId = getCookie('visitor_id');
+  private getConfig() {
+    const visitorId = getCookie("visitor_id");
 
     const headers: Record<string, string> = {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     };
 
-    if (visitorId) {
-      headers['X-Visitor-Id'] = visitorId as string;
+    if (visitorId && (!getCookie("sid") && !getCookie("session_id"))) {
+      headers["X-Visitor-Id"] = visitorId as string;
+      return { headers, withCredentials: false };
     }
 
-    const authToken = getCookie('auth_token');
-    if (authToken) {
-      headers['Authorization'] = `Bearer ${authToken}`;
-    }
-
-    return headers;
+    return { headers, withCredentials: true };
   }
 
   async addToWishlist(itemCode: string): Promise<WishlistActionResponse> {
     const response = await axios.post(api.AW,
       { product_id: itemCode },
-      { headers: this.getHeaders() }
+      this.getConfig()
     );
     return response.data;
   }
 
-
   async removeFromWishlist(itemCode: string): Promise<WishlistActionResponse> {
     const response = await axios.post(api.RW,
       { product_id: itemCode },
-      { headers: this.getHeaders() }
+      this.getConfig()
     );
     return response.data;
   }
 
   async isInWishlist(itemCode: string): Promise<boolean> {
     const response = await axios.get<{ message: { in_wishlist: boolean } }>(api.IW,
-      { params: { product_id: itemCode }, headers: this.getHeaders() }
+      { params: { product_id: itemCode }, ...this.getConfig() }
     );
     return response.data.message.in_wishlist;
   }
 
   async getWishlistItems(): Promise<WishlistItem[]> {
     const response = await axios.get<WishlistBackendResponse>(
-      api.WL, { headers: this.getHeaders() }
-      
+      api.WL, this.getConfig()
     );
 
     const items = Array.isArray(response.data.message?.items)
@@ -112,7 +104,7 @@ class WishlistAPI {
 
   async clearWishlist(): Promise<WishlistActionResponse> {
     const response = await axios.post<WishlistActionResponse>(
-      api.CW, {}, { headers: this.getHeaders() }
+      api.CW, {}, this.getConfig()
     );
     return response.data;
   }

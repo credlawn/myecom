@@ -6,12 +6,21 @@ from frappe.utils import now, nowdate, nowtime, time_diff_in_seconds
 def create_or_update_visitor():
     visitor_id = frappe.form_dict.get("visitor_id")
     slug = frappe.form_dict.get("slug")
+    user = getattr(frappe.session, 'user', None) if frappe.session else None
+    frappe.log_error(f"Visitor user: {user}")
 
     if not visitor_id or not slug:
         frappe.throw(_("Missing visitor_id or slug"), frappe.ValidationError)
 
     try:
-        doc = frappe.get_doc('Visitors', {'visitor_id': visitor_id})
+        if user and user not in ["Guest", "guest", "None", "Anonymous"]:
+            frappe.log_error(f"Visitor user: {user}")
+            doc = frappe.get_doc('Visitors', {'user': user})
+            if doc:
+                return frappe.get_doc("Visitors", doc)
+        else:
+            doc = frappe.get_doc('Visitors', {'visitor_id': visitor_id})
+            
     except frappe.DoesNotExistError:
         doc = None
 

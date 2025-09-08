@@ -2,19 +2,10 @@
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { shoppingCartAPI } from './shoppingCart';
-
-const useToast = () => {
-  const toast = ({ title, description }: { title: string; description?: string }) => {
-    if (typeof window !== 'undefined') {
-      console.log(`${title}: ${description}`);
-    }
-  };
-  return { toast };
-};
+import { toast } from 'react-toastify';
 
 export const useShoppingCart = () => {
   const queryClient = useQueryClient();
-  const { toast } = useToast();
 
   const { data: cartItems = [], isLoading, error, refetch } = useQuery({
     queryKey: ['cart'],
@@ -30,16 +21,10 @@ export const useShoppingCart = () => {
       shoppingCartAPI.addToCart(productId, qty),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['cart'] });
-      toast({
-        title: "Added to Cart",
-        description: "Item has been added to your cart.",
-      });
+      toast.success("Item has been added to your cart.");
     },
     onError: (error: Error) => {
-      toast({
-        title: "Error",
-        description: error.message || "Failed to add item to cart",
-      });
+      toast.error(error.message || "Failed to add item to cart");
     },
   });
 
@@ -47,16 +32,10 @@ export const useShoppingCart = () => {
     mutationFn: (productId: string) => shoppingCartAPI.removeFromCart(productId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['cart'] });
-      toast({
-        title: "Removed from Cart",
-        description: "Item has been removed from your cart.",
-      });
+      toast.success("Item has been removed from your cart.");
     },
     onError: (error: Error) => {
-      toast({
-        title: "Error",
-        description: error.message || "Failed to remove item from cart",
-      });
+      toast.error(error.message || "Failed to remove item from cart");
     },
   });
 
@@ -65,16 +44,10 @@ export const useShoppingCart = () => {
       shoppingCartAPI.updateQuantity(productId, qty),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['cart'] });
-      toast({
-        title: "Quantity Updated",
-        description: "Item quantity has been updated.",
-      });
+      toast.success("Item quantity has been updated.");
     },
     onError: (error: Error) => {
-      toast({
-        title: "Error",
-        description: error.message || "Failed to update item quantity",
-      });
+      toast.error(error.message || "Failed to update item quantity");
     },
   });
 
@@ -82,16 +55,10 @@ export const useShoppingCart = () => {
     mutationFn: () => shoppingCartAPI.clearCart(),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['cart'] });
-      toast({
-        title: "Cart Cleared",
-        description: "All items have been removed from your cart.",
-      });
+      toast.success("All items have been removed from your cart.");
     },
     onError: (error: Error) => {
-      toast({
-        title: "Error",
-        description: error.message || "Failed to clear cart",
-      });
+      toast.error(error.message || "Failed to clear cart");
     },
   });
 
@@ -109,23 +76,16 @@ export const useShoppingCart = () => {
   };
 
   return {
-    // Cart data
     cartItems,
     cartCount,
     isLoading,
     error,
-
-    // Cart actions
     addToCart: addToCartMutation.mutate,
     removeFromCart: removeFromCartMutation.mutate,
     updateQuantity: updateQuantityMutation.mutate,
     clearCart: clearCartMutation.mutate,
     refetchCart: refetch,
-
-    // Custom hooks
     useIsInCart,
-
-    // Loading states
     isAdding: addToCartMutation.isPending,
     isRemoving: removeFromCartMutation.isPending,
     isUpdating: updateQuantityMutation.isPending,
