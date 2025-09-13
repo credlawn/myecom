@@ -1,6 +1,6 @@
 import Category from "@/utils/category";
 import Hero from "@/utils/hero";
-import TopBanner from "@/lib/topBanner";
+
 import { getSettings, Settings } from "@/myapi/apiData/settings";
 import ProductGrid from "@/utils/productGrid";
 import FeatureGrid from "@/utils/featureGrid";
@@ -17,14 +17,8 @@ export default async function Page() {
 
   return (
     <div>
-      {/* Top banner */}
-      {settings.showBanner === 1 && (
-        <TopBanner
-          {...settings}
-          href={settings.url}
-          messages={settings.bannerMessages}
-        />
-      )}
+      
+
 
       <Hero
         {...settings}

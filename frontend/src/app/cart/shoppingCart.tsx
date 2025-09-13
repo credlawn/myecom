@@ -53,7 +53,7 @@ class ShoppingCartAPI {
 
     if (visitorId && (!getCookie("sid") && !getCookie("session_id"))) {
       headers["X-Visitor-Id"] = visitorId as string;
-      return { headers, withCredentials: false };
+      return { headers, withCredentials: true };
     }
 
     return { headers, withCredentials: true };
