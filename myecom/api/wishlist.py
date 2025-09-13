@@ -15,31 +15,37 @@ def _get_or_create_wishlist(user: Optional[str] = None, visitor_id: Optional[str
     try:
         if not user:
             user = _get_auth_user()
-        
-        if not visitor_id and not user:
-            if frappe.request and hasattr(frappe.request, 'headers'):
-                visitor_id = frappe.request.headers.get("X-Visitor-Id")
-        
-        filters = {}
-        if user and user not in ["Guest", "guest", "None", "Anonymous"]:
-            filters["user"] = user
-        elif visitor_id:
-            filters["visitor_id"] = visitor_id
-        else:
-            return None
 
-        existing = frappe.db.exists("Wishlist", filters)
-        if existing:
-            return frappe.get_doc("Wishlist", existing)
-
-        wishlist = frappe.new_doc("Wishlist")
         if user and user not in ["Guest", "guest", "None", "Anonymous"]:
+            filters = {"user": user}
+            existing = frappe.db.exists("Wishlist", filters)
+            if existing:
+                return frappe.get_doc("Wishlist", existing)
+            
+            wishlist = frappe.new_doc("Wishlist")
             wishlist.user = user
-        if visitor_id:
-            wishlist.visitor_id = visitor_id
-        wishlist.insert(ignore_permissions=True)
-        frappe.db.commit()
-        return wishlist
+            wishlist.insert(ignore_permissions=True)
+            frappe.db.commit()
+            return wishlist
+
+        else:
+            if not visitor_id:
+                if frappe.request and hasattr(frappe.request, 'headers'):
+                    visitor_id = frappe.request.headers.get("X-Visitor-Id")
+
+            if visitor_id:
+                filters = {"visitor_id": visitor_id}
+                existing = frappe.db.exists("Wishlist", filters)
+                if existing:
+                    return frappe.get_doc("Wishlist", existing)
+
+                wishlist = frappe.new_doc("Wishlist")
+                wishlist.visitor_id = visitor_id
+                wishlist.insert(ignore_permissions=True)
+                frappe.db.commit()
+                return wishlist
+        
+        return None
     
     except Exception as e:
         frappe.log_error(f"Error in _get_or_create_wishlist: {str(e)}")
@@ -48,22 +54,20 @@ def _get_or_create_wishlist(user: Optional[str] = None, visitor_id: Optional[str
 def _get_wishlist(user: Optional[str] = None, visitor_id: Optional[str] = None):
     """Get existing wishlist for user or visitor"""
     try:
-        # Get current user from session
         if not user:
             user = _get_auth_user()
-        
-        # Get visitor_id from headers if not provided
-        if not visitor_id and not user:
-            if frappe.request and hasattr(frappe.request, 'headers'):
-                visitor_id = frappe.request.headers.get("X-Visitor-Id")
-        
-        filters = {}
+
         if user and user not in ["Guest", "guest", "None", "Anonymous"]:
-            filters["user"] = user
-        elif visitor_id:
-            filters["visitor_id"] = visitor_id
+            filters = {"user": user}
         else:
-            return None
+            if not visitor_id:
+                if frappe.request and hasattr(frappe.request, 'headers'):
+                    visitor_id = frappe.request.headers.get("X-Visitor-Id")
+            
+            if visitor_id:
+                filters = {"visitor_id": visitor_id}
+            else:
+                return None
 
         existing = frappe.db.exists("Wishlist", filters)
         return frappe.get_doc("Wishlist", existing) if existing else None

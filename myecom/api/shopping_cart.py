@@ -7,6 +7,7 @@ def _get_request_value(name: str, default=None):
         return frappe.request.json.get(name, default)
     return frappe.form_dict.get(name, default)
 
+
 @frappe.whitelist(allow_guest=True)
 def _get_or_create_shopping_cart():
     try:

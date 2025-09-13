@@ -27,6 +27,7 @@ export const api = {
 
   VR: apiUrl("visitors_record.update_session_time"),
   VC: apiUrl("visitors_record.create_or_update_visitor"),
+  CU: apiUrl("visitors_record.get_current_user"),
 
   CP: apiUrl("check_pincode.get_delivery_time"),
 
