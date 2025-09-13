@@ -8,14 +8,15 @@ import SearchBox from "@/lib/searchBox";
 import Sidebar from "@/lib/sidebar";
 import { Settings } from "@/myapi/apiData/settings";
 import { useState, useRef, useEffect } from "react";
-import { LoginResponse } from "@/app/auth/MyLogin";
+import { LoginResponse, loginAPI } from "@/app/auth/MyLogin";
 import SigninPage from "@/app/auth/SigninPage";
 import SignupPage from "@/app/auth/SignupPage";
 import CartSlider from "@/app/cart/CartSlider";
 import WishlistSlider from '@/app/wishlist/WishlistSlider';
 import { NavItems } from "@/lib/navItems";
 import Link from "next/link";
-import { getCookie } from 'cookies-next'; // Add this import
+import { getCurrentUser } from "@/lib/auth";
+import { deleteCookie } from "cookies-next";
 
 interface HeadTopProps {
   settings: Settings;
@@ -39,19 +40,21 @@ export default function HeadTop({ settings }: HeadTopProps) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userName, setUserName] = useState('');
 
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const userMenuRef = useRef<HTMLDivElement>(null);
+  const userMenuButtonRef = useRef<HTMLButtonElement>(null);
+
   const handleSearch = (query: string) => {
     console.log("Search query:", query);
   };
 
   // Check login status on component mount
   useEffect(() => {
-    const checkLoginStatus = () => {
-      const sid = getCookie('sid');
-      const user = getCookie('user');
-      
-      if (sid && user) {
+    const checkLoginStatus = async () => {
+      const user = await getCurrentUser();
+      if (user) {
         setIsLoggedIn(true);
-        setUserName(user as string);
+        setUserName(user.fullName);
       } else {
         setIsLoggedIn(false);
         setUserName('');
@@ -91,6 +94,21 @@ export default function HeadTop({ settings }: HeadTopProps) {
     return () => document.removeEventListener("mousedown", handleClickOutsideSidebar);
   }, []);
 
+  // Close user menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        userMenuRef.current &&
+        !userMenuRef.current.contains(event.target as Node) &&
+        !userMenuButtonRef.current?.contains(event.target as Node)
+      ) {
+        setIsUserMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   const handleLoginSuccess = (res: LoginResponse) => {
     if (res.status === 'success') {
       setIsLoggedIn(true);
@@ -99,17 +117,21 @@ export default function HeadTop({ settings }: HeadTopProps) {
     setIsSigninOpen(false);
   };
 
-  const handleLogout = () => {
-    // Clear cookies
-    document.cookie = "sid=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
-    document.cookie = "user=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
-    document.cookie = "visitor_id=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
-    
-    setIsLoggedIn(false);
-    setUserName('');
-    
-    // Refresh page to ensure clean state
-    window.location.reload();
+  const handleLogout = async () => {
+    try {
+      await loginAPI.logout();
+      
+      // Clear client-side cookies
+      deleteCookie('user', { path: '/' });
+      deleteCookie('visitor_id', { path: '/' });
+      
+      // Update state and reload
+      setIsLoggedIn(false);
+      setUserName('');
+      window.location.reload();
+    } catch (error) {
+      console.error("Logout failed. Please check the console for details.", error);
+    }
   };
 
   return (
@@ -145,19 +167,33 @@ export default function HeadTop({ settings }: HeadTopProps) {
                   )}
                 </button>
                 {isLoggedIn ? (
-                  <div className="relative group">
-                    <button className="hover:text-red-500 transition-colors">
+                  <div className="relative">
+                    <button
+                      ref={userMenuButtonRef}
+                      onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+                      className="hover:text-red-500 transition-colors"
+                    >
                       <UserIcon />
                     </button>
-                    <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg py-1 hidden group-hover:block">
-                      <span className="block px-4 py-2 text-sm text-gray-700">Hello, {userName}</span>
-                      <button
-                        onClick={handleLogout}
-                        className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    {isUserMenuOpen && (
+                      <div
+                        ref={userMenuRef}
+                        className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg py-1 z-10"
                       >
-                        Logout
-                      </button>
-                    </div>
+                        <span className="block px-4 py-2 text-sm text-gray-700">Hello, {userName}</span>
+                        <Link href="/dashboard">
+                          <div className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">
+                            Dashboard
+                          </div>
+                        </Link>
+                        <button
+                          onClick={handleLogout}
+                          className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        >
+                          Logout
+                        </button>
+                      </div>
+                    )}
                   </div>
                 ) : (
                   <button onClick={() => setIsSigninOpen(true)} className="hover:text-red-500 transition-colors">
@@ -194,12 +230,20 @@ export default function HeadTop({ settings }: HeadTopProps) {
                 onClose={() => setIsSidebarOpen(false)}
                 menuData={settings?.menuData ?? []}
                 settings={settings}
+                isLoggedIn={isLoggedIn}
+                onLoginClick={() => setIsSigninOpen(true)}
+                onLogoutClick={handleLogout}
+                userName={userName}
               />
             </div>
 
             <div className="flex justify-center flex-1">
               {settings.showMobileLogo === 1 && (
-                <LogoMobile logoUrl={settings.logo_url} />
+                <Link href="/">
+                  <div className="cursor-pointer">
+                    <LogoMobile logoUrl={settings.logo_url} />
+                  </div>
+                </Link>
               )}
             </div>
 
@@ -220,26 +264,6 @@ export default function HeadTop({ settings }: HeadTopProps) {
                   </span>
                 )}
               </button>
-              {isLoggedIn ? (
-                <div className="relative group">
-                  <button className="hover:text-red-500 transition-colors">
-                    <UserIcon />
-                  </button>
-                  <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg py-1 hidden group-hover:block">
-                    <span className="block px-4 py-2 text-sm text-gray-700">Hello, {userName}</span>
-                    <button
-                      onClick={handleLogout}
-                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    >
-                      Logout
-                    </button>
-                  </div>
-                </div>
-              ) : (
-                <button onClick={() => setIsSigninOpen(true)} className="hover:text-red-500 transition-colors">
-                  <UserIcon />
-                </button>
-              )}
               <button onClick={() => setIsCartSliderOpen(true)} className="relative hover:text-red-500 transition-colors">
                 <CartIcon />
                 {cartCount > 0 && (

@@ -1,8 +1,14 @@
 const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN;
+const API_PREFIX = process.env.NEXT_PUBLIC_API_PREFIX
 const API_PATH = process.env.NEXT_PUBLIC_API_PATH;
 
+
 function apiUrl(endpoint: string) {
-  return `${DOMAIN}${API_PATH}.${endpoint}`;
+  return `${DOMAIN}${API_PREFIX}${API_PATH}.${endpoint}`;
+}
+
+function apilogout(endpoint: string) {
+  return `${DOMAIN}${API_PREFIX}/${endpoint}`;
 }
 
 export function img(path?: string | null): string {
@@ -10,6 +16,7 @@ export function img(path?: string | null): string {
     if (path.startsWith("http")) return path;
     return `${DOMAIN}${path}`;
 }
+
 
 export const api = {
   SS: apiUrl("site_settings.get_site_settings"),
@@ -45,6 +52,7 @@ export const api = {
   CC: apiUrl("shopping_cart.clear_cart"),
 
   LGN: apiUrl("my_login.ecom_login"),
+  LGT: apilogout("logout"),
 
   
 

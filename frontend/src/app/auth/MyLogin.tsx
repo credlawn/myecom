@@ -62,10 +62,7 @@ class LoginAPI {
   }
 
   async logout() {
-    deleteCookie('user', { path: '/' });
-    document.cookie = "sid=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
-    document.cookie = "user=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
-    document.cookie = "visitor_id=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    return await axios.post(api.LGT, {}, { withCredentials: true });
   }
 }
 

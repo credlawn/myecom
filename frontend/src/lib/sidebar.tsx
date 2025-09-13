@@ -1,6 +1,7 @@
-"use client";
+'use client';
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
+import Link from "next/link";
 import { ChevronDownIcon, UserIcon } from "@/lib/icons";
 import { MenuResponse } from "@/myapi/menuList";
 import { Settings } from "@/myapi/apiData/settings";
@@ -10,12 +11,26 @@ interface SidebarProps {
   onClose: () => void;
   menuData: MenuResponse[];
   settings: Settings;
+  isLoggedIn: boolean;
+  onLoginClick: () => void;
+  onLogoutClick: () => void;
+  userName: string;
 }
 
-export default function Sidebar({ isOpen, onClose, menuData }: SidebarProps) {
+export default function Sidebar({ 
+  isOpen, 
+  onClose, 
+  menuData, 
+  isLoggedIn, 
+  onLoginClick, 
+  onLogoutClick, 
+  userName 
+}: SidebarProps) {
   const [openMenu, setOpenMenu] = useState<string | null>(null);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const userMenuRef = useRef<HTMLDivElement>(null);
+  const userMenuButtonRef = useRef<HTMLButtonElement>(null);
 
-  // Sort parents by parent_id and children by child_id
   const sortedMenuData = (menuData ?? [])
     .filter((item) => item.parent && item.parent.menu_name)
     .sort((a, b) => (a.parent?.parent_id || 0) - (b.parent?.parent_id || 0))
@@ -26,8 +41,35 @@ export default function Sidebar({ isOpen, onClose, menuData }: SidebarProps) {
       ),
     }));
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        userMenuRef.current &&
+        !userMenuRef.current.contains(event.target as Node) &&
+        userMenuButtonRef.current &&
+        !userMenuButtonRef.current.contains(event.target as Node)
+      ) {
+        setIsUserMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   const toggleMenu = (title: string) => {
     setOpenMenu(openMenu === title ? null : title);
+  };
+
+  const handleAuthClick = () => {
+    if (isLoggedIn) {
+      setIsUserMenuOpen(!isUserMenuOpen);
+    } else {
+      onClose();
+      onLoginClick();
+    }
   };
 
   return (
@@ -38,17 +80,43 @@ export default function Sidebar({ isOpen, onClose, menuData }: SidebarProps) {
       style={{ width: "326px", zIndex: 1000 }}
     >
       {/* Header */}
-      <div className="flex items-center justify-between bg-gray-50 p-4 border-b border-gray-200">
+      <div className="relative flex items-center justify-between bg-gray-50 p-4 border-b border-gray-200">
         <h4 className="text-lg font-medium capitalize !leading-tight text-gray-900">
-          Hi Guest
+          {isLoggedIn ? `Hi, ${userName}` : "Hi Guest"}
         </h4>
         <button
-          onClick={onClose}
+          ref={userMenuButtonRef}
+          onClick={handleAuthClick}
           className="relative flex gap-2 items-center justify-center overflow-hidden capitalize rounded-full font-medium transition-colors duration-200 !leading-tight"
-          aria-label="Login"
+          aria-label={isLoggedIn ? "Open user menu" : "Login"}
         >
           <UserIcon className="size-6 text-[#e63631]" />
         </button>
+
+        {isUserMenuOpen && isLoggedIn && (
+          <div ref={userMenuRef} className="absolute right-4 top-14 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg py-1 z-20">
+            <Link href="/dashboard">
+              <div
+                onClick={() => {
+                  setIsUserMenuOpen(false);
+                  onClose();
+                }}
+                className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
+              >
+                Dashboard
+              </div>
+            </Link>
+            <button
+              onClick={() => {
+                setIsUserMenuOpen(false);
+                onLogoutClick();
+              }}
+              className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+            >
+              Logout
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Menu Items */}
@@ -85,7 +153,6 @@ export default function Sidebar({ isOpen, onClose, menuData }: SidebarProps) {
                   )}
                 </div>
 
-                {/* Sub Items */}
                 {item.children.length > 0 && (
                   <div
                     className={`overflow-hidden transition-all duration-300 ease-in-out ${
