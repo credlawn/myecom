@@ -38,8 +38,10 @@ export async function getProductList(): Promise<ProductItem[]> {
 
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      throw new Error(error.response?.data?.message || 'Failed to fetch product list');
+      console.error("Failed to fetch product list:", error.message);
+    } else {
+      console.error("An unexpected error occurred:", error);
     }
-    throw error;
+    return []; // Return an empty array on error
   }
 }
