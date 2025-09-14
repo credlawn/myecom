@@ -24,22 +24,10 @@ async function handler(req: NextRequest) {
       duplex: hasBody ? 'half' : undefined,
     });
 
-    // Decompress the response body
-    const body = await response.arrayBuffer();
-    const responseHeaders = new Headers(response.headers);
-    responseHeaders.delete('content-encoding');
-    responseHeaders.delete('content-length');
+    // We are streaming the response, so we can't modify the headers here.
+    // The `Set-Cookie` header will be passed through automatically.
+    return response;
 
-    const setCookie = response.headers.get('set-cookie');
-    if (setCookie) {
-      responseHeaders.set('set-cookie', setCookie);
-    }
-
-    return new NextResponse(body, {
-      status: response.status,
-      statusText: response.statusText,
-      headers: responseHeaders,
-    });
   } catch (error) {
     console.error('[PROXY] Error:', error);
     return new NextResponse('Proxy error', { status: 500 });
