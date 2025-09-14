@@ -1,9 +1,16 @@
 import frappe
 from frappe.auth import LoginManager
+import json
 
 @frappe.whitelist(allow_guest=True)
 def ecom_login(usr: str = None, pwd: str = None, visitor_id: str = None):
     try:
+        # If usr and pwd are not passed as arguments, try to get them from form_dict
+        if not usr:
+            usr = frappe.form_dict.get("usr")
+        if not pwd:
+            pwd = frappe.form_dict.get("pwd")
+
         if not usr or not pwd:
             frappe.local.response["http_status_code"] = 400
             return {"status": "error", "message": "usr and pwd required"}
