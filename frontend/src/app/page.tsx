@@ -3,7 +3,6 @@ import Hero from "@/utils/hero";
 
 import { getSettings, Settings } from "@/myapi/apiData/settings";
 import ProductGrid from "@/utils/productGrid";
-import FeatureGrid from "@/utils/featureGrid";
 
 export default async function Page() {
   const settings: Settings = await getSettings();
@@ -17,9 +16,6 @@ export default async function Page() {
 
   return (
     <div>
-      
-
-
       <Hero
         {...settings}
         heroData={settings.heroData}
@@ -36,11 +32,22 @@ export default async function Page() {
       />
 
       {featuredProducts.length > 0 && (
-        <FeatureGrid products={featuredProducts} currency={settings.currency} />
+        <ProductGrid
+          products={featuredProducts}
+          currency={settings.currency}
+          title="Featured Products"
+          priColor={settings.priColor}
+          bt1Color={settings.bt1Color}
+        />
       )}
 
       {newProducts.length > 0 && (
-        <ProductGrid products={newProducts} currency={settings.currency} />
+        <ProductGrid 
+          products={newProducts} 
+          currency={settings.currency} 
+          priColor={settings.btn1Color}
+          bt1Color={settings.bt1Color}
+        />
       )}
     </div>
   );
