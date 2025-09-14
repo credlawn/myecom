@@ -5,20 +5,12 @@ import json
 @frappe.whitelist(allow_guest=True)
 def ecom_login(usr: str = None, pwd: str = None, visitor_id: str = None):
     try:
-        frappe.log_error(message=f"request headers: {frappe.local.request.headers}", title="ecom_login debug")
-        try:
-            request_body = frappe.local.request.get_data(as_text=True)
-            if request_body:
-                try:
-                    data = json.loads(request_body)
-                    frappe.log_error(message=f"request body keys: {list(data.keys())}", title="ecom_login debug")
-                except json.JSONDecodeError:
-                    frappe.log_error(message=f"request body (not json): {request_body}", title="ecom_login debug")
-            else:
-                frappe.log_error(message="request body is empty", title="ecom_login debug")
-        except Exception as e:
-            frappe.log_error(message=f"error getting request body: {e}", title="ecom_login debug")
-        
+        # If usr and pwd are not passed as arguments, try to get them from form_dict
+        if not usr:
+            usr = frappe.form_dict.get("usr")
+        if not pwd:
+            pwd = frappe.form_dict.get("pwd")
+
         if not usr or not pwd:
             frappe.local.response["http_status_code"] = 400
             return {"status": "error", "message": "usr and pwd required"}
