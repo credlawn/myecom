@@ -1,27 +1,14 @@
-const API_PROXY_PATH = '/api/proxy';
+const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN;
 const API_PREFIX = process.env.NEXT_PUBLIC_API_PREFIX
 const API_PATH = process.env.NEXT_PUBLIC_API_PATH;
-const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN;
 
 
 function apiUrl(endpoint: string) {
-  if (typeof window === 'undefined') {
-    // On the server, call the backend via localhost
-    const backendPort = process.env.BACKEND_PORT || 8000;
-    return `http://localhost:${backendPort}${API_PREFIX}${API_PATH}.${endpoint}`;
-  } else {
-    // On the client, use the proxy
-    return `${API_PROXY_PATH}${API_PREFIX}${API_PATH}.${endpoint}`;
-  }
+  return `${DOMAIN}${API_PREFIX}${API_PATH}.${endpoint}`;
 }
 
 function apilogout(endpoint: string) {
-  if (typeof window === 'undefined') {
-    const backendPort = process.env.BACKEND_PORT || 8000;
-    return `http://localhost:${backendPort}${API_PREFIX}/${endpoint}`;
-  } else {
-    return `${API_PROXY_PATH}${API_PREFIX}/${endpoint}`;
-  }
+  return `${DOMAIN}${API_PREFIX}/${endpoint}`;
 }
 
 export function img(path?: string | null): string {
