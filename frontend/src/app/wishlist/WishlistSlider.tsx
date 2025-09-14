@@ -7,6 +7,7 @@ import Image from 'next/image';
 import { img } from '@/myapi/apiPath';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import { useSettings } from '@/myapi/useSettings';
 
 interface WishlistSliderProps {
   isOpen: boolean;
@@ -19,6 +20,9 @@ const WishlistSlider: React.FC<WishlistSliderProps> = ({
   onClose,
   transitionDuration = 300,
 }) => {
+  const { data: settings } = useSettings();
+  const currency = settings?.currency || '₹';
+
   const { wishlistItems, removeFromWishlist, clearWishlist, wishlistCount, isLoading } =
     useWishlist();
 
@@ -46,6 +50,18 @@ const WishlistSlider: React.FC<WishlistSliderProps> = ({
   if (isLoading) {
     return null;
   }
+
+  const formatInr = (
+    num: number,
+    { showDecimal = false }: { showDecimal?: boolean } = {},
+  ): string => {
+    return new Intl.NumberFormat("en-IN", {
+      minimumFractionDigits: showDecimal ? 2 : 0,
+      maximumFractionDigits: showDecimal ? 2 : 0,
+      useGrouping: true,
+    }).format(num);
+  };
+
 
   return (
     <>
@@ -115,7 +131,7 @@ const WishlistSlider: React.FC<WishlistSliderProps> = ({
                     </Link>
                     <div className="flex-1 p-2">
                       <p className="font-semibold">{item.product_name}</p>
-                      <p className="text-gray-700 font-bold">${item.price.toFixed(2)}</p>
+                      <p className="text-gray-700 font-bold">{currency}{formatInr(item.price)}</p>
                     </div>
                     <Button
                       variant="destructive"

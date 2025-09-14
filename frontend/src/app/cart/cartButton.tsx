@@ -2,12 +2,25 @@
 
 import React, { useState, useEffect } from 'react';
 import { useShoppingCart } from './useShoppingCart';
+import { ShoppingCart } from 'lucide-react';
+
+function cn(...classes: (string | undefined | null | false)[]) {
+  return classes.filter(Boolean).join(' ');
+}
 
 interface CartButtonProps {
   productId: string;
+  size?: 'sm' | 'md' | 'lg';
+  variant?: 'icon' | 'button';
+  className?: string;
 }
 
-export const CartButton: React.FC<CartButtonProps> = ({ productId }) => {
+export const CartButton: React.FC<CartButtonProps> = ({ 
+  productId,
+  size = 'md',
+  variant = 'button',
+  className 
+}) => {
   const { 
     cartItems,
     isLoading,
@@ -62,14 +75,47 @@ export const CartButton: React.FC<CartButtonProps> = ({ productId }) => {
     }
   };
 
-  // Show loading state while cart data is being fetched
+  const iconSizes = {
+    sm: 'h-4 w-4',
+    md: 'h-5 w-5',
+    lg: 'h-6 w-6',
+  };
+
   if (isLoading) {
     return (
-      <div className="absolute bottom-0 right-0 z-10">
-        <div className="px-3 py-1 bg-gray-200 text-gray-500 text-sm">
-          ...
-        </div>
+      <div className="px-3 py-1 bg-gray-200 text-gray-500 text-sm">
+        ...
       </div>
+    );
+  }
+
+  if (variant === 'icon') {
+    return (
+      <button
+        onClick={localQuantity === 0 ? handleAddToCart : handleIncrement}
+        disabled={isAdding || isUpdating}
+        className={cn(
+          'relative rounded-full p-2 transition-all duration-200',
+          'hover:bg-gray-100 active:scale-95',
+          'disabled:opacity-50 disabled:cursor-not-allowed',
+          className
+        )}
+        aria-label={localQuantity === 0 ? 'Add to cart' : 'Add one more'}
+      >
+        <ShoppingCart
+          className={cn(
+            iconSizes[size],
+            localQuantity > 0
+              ? 'fill-blue-500 text-white'
+              : 'text-gray-400 hover:text-blue-500'
+          )}
+        />
+        {localQuantity > 0 && (
+          <span className="absolute -top-1 -right-1 bg-blue-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
+            {localQuantity}
+          </span>
+        )}
+      </button>
     );
   }
 

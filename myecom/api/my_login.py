@@ -20,7 +20,8 @@ def ecom_login(usr: str = None, pwd: str = None, visitor_id: str = None):
                 visitor_id = None
 
         if visitor_id:
-            for doctype in ["Shopping Cart", "Wishlist"]:
+
+            for doctype in ["Shopping Cart", "Wishlist", "Visitors"]:
                 try:
                     visitor_docs = frappe.get_all(doctype, filters={"visitor_id": visitor_id}, fields=["name"])
                 except Exception as e:
@@ -42,41 +43,47 @@ def ecom_login(usr: str = None, pwd: str = None, visitor_id: str = None):
                             frappe.log_error(message=f"could not load user {doctype} doc for {user}: {e}", title="ecommerce_login")
                             continue
 
-                        for vitem in getattr(vdoc, "items", []):
-                            if doctype == "Shopping Cart":
-                                match = next((uitem for uitem in getattr(ud, "items", []) if (uitem.product == vitem.product)), None)
-                                if match:
-                                    try:
-                                        existing_qty = int(match.qty or 0)
-                                    except Exception:
-                                        existing_qty = 0
-                                    try:
-                                        vqty = int(vitem.qty or 0)
-                                    except Exception:
-                                        vqty = 0
-                                    match.qty = existing_qty + vqty
-                                else:
-                                    ud.append("items", {
-                                        "product": vitem.product,
-                                        "product_name": getattr(vitem, "product_name", None),
-                                        "product_image": getattr(vitem, "product_image", None),
-                                        "price": getattr(vitem, "price", None),
-                                        "qty": getattr(vitem, "qty", None),
-                                        "slug": getattr(vitem, "slug", None),
-                                        "second_image": getattr(vitem, "second_image", None)
-                                    })
-                            else:
-                                match = next((uitem for uitem in getattr(ud, "items", []) if (uitem.product == vitem.product)), None)
-                                if not match:
-                                    ud.append("items", {
-                                        "product": vitem.product,
-                                        "product_name": getattr(vitem, "product_name", None),
-                                        "product_image": getattr(vitem, "product_image", None),
-                                        "price": getattr(vitem, "price", None),
-                                        "second_image": getattr(vitem, "second_image", None),
-                                        "added_on": getattr(vitem, "added_on", None),
-                                        "slug": getattr(vitem, "slug", None)
-                                    })
+                        if doctype == "Visitors":
+                            ud.visit_count = (ud.visit_count or 0) + (vdoc.visit_count or 0)
+                            ud.total_session_time = (ud.total_session_time or 0) + (vdoc.total_session_time or 0)
+                            for v_record in getattr(vdoc, "visit_records", []):
+                                ud.append("visit_records", v_record.as_dict())
+                        else:
+                            for vitem in getattr(vdoc, "items", []):
+                                if doctype == "Shopping Cart":
+                                    match = next((uitem for uitem in getattr(ud, "items", []) if (uitem.product == vitem.product)), None)
+                                    if match:
+                                        try:
+                                            existing_qty = int(match.qty or 0)
+                                        except Exception:
+                                            existing_qty = 0
+                                        try:
+                                            vqty = int(vitem.qty or 0)
+                                        except Exception:
+                                            vqty = 0
+                                        match.qty = existing_qty + vqty
+                                    else:
+                                        ud.append("items", {
+                                            "product": vitem.product,
+                                            "product_name": getattr(vitem, "product_name", None),
+                                            "product_image": getattr(vitem, "product_image", None),
+                                            "price": getattr(vitem, "price", None),
+                                            "qty": getattr(vitem, "qty", None),
+                                            "slug": getattr(vitem, "slug", None),
+                                            "second_image": getattr(vitem, "second_image", None)
+                                        })
+                                else: # Wishlist
+                                    match = next((uitem for uitem in getattr(ud, "items", []) if (uitem.product == vitem.product)), None)
+                                    if not match:
+                                        ud.append("items", {
+                                            "product": vitem.product,
+                                            "product_name": getattr(vitem, "product_name", None),
+                                            "product_image": getattr(vitem, "product_image", None),
+                                            "price": getattr(vitem, "price", None),
+                                            "second_image": getattr(vitem, "second_image", None),
+                                            "added_on": getattr(vitem, "added_on", None),
+                                            "slug": getattr(vitem, "slug", None)
+                                        })
                         try:
                             ud.save(ignore_permissions=True)
                         except Exception as e:

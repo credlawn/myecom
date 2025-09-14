@@ -7,6 +7,7 @@ import Image from 'next/image';
 import { img } from '@/myapi/apiPath';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import { useSettings } from '@/myapi/useSettings';
 
 interface CartSliderProps {
   isOpen: boolean;
@@ -19,6 +20,9 @@ const CartSlider: React.FC<CartSliderProps> = ({
   onClose,
   transitionDuration = 300,
 }) => {
+  const { data: settings } = useSettings();
+  const currency = settings?.currency || '₹';
+
   const {
     cartItems,
     removeFromCart,
@@ -49,6 +53,17 @@ const CartSlider: React.FC<CartSliderProps> = ({
   }, [isOpen, onClose]);
 
   if (isLoading) return null;
+
+  const formatInr = (
+    num: number,
+    { showDecimal = false }: { showDecimal?: boolean } = {},
+  ): string => {
+    return new Intl.NumberFormat("en-IN", {
+      minimumFractionDigits: showDecimal ? 2 : 0,
+      maximumFractionDigits: showDecimal ? 2 : 0,
+      useGrouping: true,
+    }).format(num);
+  };
 
   return (
     <>
@@ -139,7 +154,7 @@ const CartSlider: React.FC<CartSliderProps> = ({
                       <Link href={`/products/${item.slug}`} className="hover:text-blue-600">
                         <p className="font-semibold text-gray-800 line-clamp-2">{item.product_name}</p>
                       </Link>
-                      <p className="text-blue-600 font-bold text-lg mt-1">${item.price.toFixed(2)}</p>
+                      <p className="text-blue-600 font-bold text-lg mt-1">{currency}{formatInr(item.price)}</p>
                       <p className="text-gray-500 text-sm">Qty: {item.qty}</p>
                     </div>
 

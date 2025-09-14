@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useState } from "react";
 import type { ProductItem } from "@/myapi/productList";
 import { WishlistButton } from "@/app/wishlist/WishlistButton";
-import { CartButton } from "@/app/cart/cartButton";
+
 
 interface FeatureGridProps {
   products?: ProductItem[];
@@ -122,7 +122,7 @@ export default function FeatureGrid({
                       height: `calc(100% - ${mobileImageHeight}px)`,
                     }}
                   >
-                    <h3 className="mb-1">
+                    <h3 className="mb-1" style={{ minHeight: "2.8em", lineHeight: "1.4em" }}>
                       <span
                         className="text-natural-900 text-[14px] font-light tracking-wide capitalize line-clamp-2 group-hover:text-neutral-900 block"
                         style={{
@@ -167,9 +167,6 @@ export default function FeatureGrid({
                         ? `${p.discountPercent.toFixed(0)}% Instant off`
                         : p.ndText}
                     </span>
-                  </div>
-                  <div className="absolute bottom-0 right-0 z-10">
-                    <CartButton productId={p.id} />
                   </div>
                 </a>
               ))

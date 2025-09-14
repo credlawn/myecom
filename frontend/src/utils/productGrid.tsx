@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useState } from "react";
 import type { ProductItem } from "@/myapi/productList";
 import { WishlistButton } from "@/app/wishlist/WishlistButton";
-import { CartButton } from "@/app/cart/cartButton";
+
 
 interface ProductGridProps {
   products?: ProductItem[];
@@ -106,7 +106,7 @@ export default function ProducteGrid({
                       className="object-cover absolute inset-0 opacity-0 transition-transform duration-300 group-hover:opacity-100 group-hover:scale-105"
                       sizes="50vw"
                     />
-                    <div className="absolute top-1 right-1 z-10">
+                    <div className="absolute top-1 right-1 z-10 flex items-center space-x-1">
                       <WishlistButton 
                         productId={p.id} 
                         variant="icon" 
@@ -124,7 +124,7 @@ export default function ProducteGrid({
                       height: `calc(100% - ${mobileImageHeight}px)`,
                     }}
                   >
-                    <h3 className="mb-1">
+                    <h3 className="mb-1" style={{ minHeight: "2.8em", lineHeight: "1.4em" }}>
                       <span
                         className="text-natural-900 text-[14px] font-light tracking-wide capitalize line-clamp-2 group-hover:text-neutral-900 block"
                         style={{
@@ -172,9 +172,7 @@ export default function ProducteGrid({
                       </span>
                       
                     </div>
-                    <div className="absolute bottom-0 right-0 z-10">
-                      <CartButton productId={p.id} />
-                    </div>
+                    
                   </div>
                 </a>
               ))
@@ -216,7 +214,7 @@ export default function ProducteGrid({
                     className="object-cover mx-0.5 my-0.5 absolute inset-0 opacity-0 transition-transform duration-300 group-hover:opacity-100 group-hover:scale-105"
                     sizes="240px"
                   />
-                  <div className="absolute top-2 right-2 z-10">
+                  <div className="absolute top-2 right-2 z-10 flex items-center space-x-2">
                     <WishlistButton 
                       productId={p.id} 
                       variant="icon" 

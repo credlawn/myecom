@@ -17,12 +17,14 @@ import { NavItems } from "@/lib/navItems";
 import Link from "next/link";
 import { getCurrentUser } from "@/lib/auth";
 import { deleteCookie } from "cookies-next";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface HeadTopProps {
   settings: Settings;
 }
 
 export default function HeadTop({ settings }: HeadTopProps) {
+  const queryClient = useQueryClient();
   const { wishlistCount } = useWishlist();
   const { cartCount } = useShoppingCart();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -109,10 +111,14 @@ export default function HeadTop({ settings }: HeadTopProps) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const handleLoginSuccess = (res: LoginResponse) => {
+  const handleLoginSuccess = async (res: LoginResponse) => {
     if (res.status === 'success') {
       setIsLoggedIn(true);
       setUserName(res.full_name || res.user || '');
+      
+      // Invalidate all queries related to cart and wishlist to get merged data
+      await queryClient.invalidateQueries({ queryKey: ['wishlist'] });
+      await queryClient.invalidateQueries({ queryKey: ['cart'] });
     }
     setIsSigninOpen(false);
   };

@@ -1,5 +1,5 @@
 import frappe
-from frappe.utils import now, nowdate, nowtime, time_diff_in_seconds
+from frappe.utils import now, nowdate, nowtime, time_diff_in_seconds, get_datetime
 from frappe import _
 
 @frappe.whitelist(allow_guest=True)
@@ -46,30 +46,7 @@ def create_or_update_visitor():
     current_time = now()
     ip_address = frappe.local.request_ip or getattr(frappe.request, "remote_addr", None)
 
-    if user and visitor_doc:
-        if not user_doc:
-            user_doc = frappe.new_doc("Visitors")
-            user_doc.user = user
-            user_doc.visit_count = 0
-            user_doc.total_session_time = 0
-            user_doc.visit_date_time = current_time
-            user_doc.last_seen = current_time
-            user_doc.visit_ip_address = ip_address
-            user_doc.current_session_start = current_time
-
-        user_doc.visit_count += visitor_doc.visit_count or 0
-        user_doc.total_session_time += visitor_doc.total_session_time or 0
-        user_doc.last_seen = current_time
-        for record in visitor_doc.visit_records:
-            user_doc.append("visit_records", record.as_dict())
-
-        user_doc.save(ignore_permissions=True)
-        frappe.db.commit()
-        visitor_doc.delete()
-        frappe.db.commit()
-        doc = user_doc
-    else:
-        doc = user_doc or visitor_doc
+    doc = user_doc or visitor_doc
 
     if not doc:
         doc = frappe.new_doc("Visitors")
@@ -97,7 +74,7 @@ def create_or_update_visitor():
         frappe.db.commit()
         return {"status": "success", "message": "New visitor record created."}
 
-    time_diff = time_diff_in_seconds(current_time, doc.last_seen)
+    time_diff = time_diff_in_seconds(current_time, get_datetime(doc.last_seen))
     if time_diff > 1800:
         doc.visit_count += 1
         doc.current_session_start = current_time
@@ -105,7 +82,7 @@ def create_or_update_visitor():
 
     existing_record = None
     for record in doc.visit_records:
-        if record.slug == slug and record.visit_date_time >= doc.current_session_start:
+        if record.slug == slug and get_datetime(record.visit_date_time) >= get_datetime(doc.current_session_start):
             existing_record = record
             break
 
@@ -151,10 +128,10 @@ def update_session_time():
         if doc.visit_records:
             matching_records = [
                 record for record in doc.visit_records
-                if record.slug == slug and record.visit_date_time >= doc.current_session_start
+                if record.slug == slug and get_datetime(record.visit_date_time) >= get_datetime(doc.current_session_start)
             ]
             if matching_records:
-                latest_record = max(matching_records, key=lambda x: x.visit_date_time)
+                latest_record = max(matching_records, key=lambda x: get_datetime(x.visit_date_time))
                 session_duration = time_diff_in_seconds(current_time, latest_record.visit_date_time)
                 latest_record.session_time += session_duration
                 doc.total_session_time += session_duration
@@ -162,6 +139,7 @@ def update_session_time():
                 latest_record.visit_time = nowtime()
                 latest_record.visit_date_time = current_time
 
+        doc.reload()
         doc.save(ignore_permissions=True)
         frappe.db.commit()
         return {"status": "success", "message": "Session time updated successfully."}
