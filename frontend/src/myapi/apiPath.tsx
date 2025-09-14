@@ -1,14 +1,21 @@
-const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN;
+const API_PROXY_PATH = '/api/proxy';
 const API_PREFIX = process.env.NEXT_PUBLIC_API_PREFIX
 const API_PATH = process.env.NEXT_PUBLIC_API_PATH;
+const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN;
 
 
 function apiUrl(endpoint: string) {
-  return `${DOMAIN}${API_PREFIX}${API_PATH}.${endpoint}`;
+  const baseUrl = typeof window === 'undefined' 
+    ? `http://localhost:${process.env.PORT || 3000}`
+    : '';
+  return `${baseUrl}${API_PROXY_PATH}${API_PREFIX}${API_PATH}.${endpoint}`;
 }
 
 function apilogout(endpoint: string) {
-  return `${DOMAIN}${API_PREFIX}/${endpoint}`;
+  const baseUrl = typeof window === 'undefined' 
+    ? `http://localhost:${process.env.PORT || 3000}`
+    : '';
+  return `${baseUrl}${API_PROXY_PATH}${API_PREFIX}/${endpoint}`;
 }
 
 export function img(path?: string | null): string {
