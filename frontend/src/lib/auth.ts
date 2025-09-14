@@ -29,7 +29,7 @@ export const getCurrentUser = async (): Promise<User | null> => {
       return { name: user, fullName: fullName };
     }
     return null;
-  } catch (error) {
+  } catch {
     return null;
   }
 };
