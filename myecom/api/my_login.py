@@ -15,6 +15,8 @@ def ecom_login(usr: str = None, pwd: str = None, visitor_id: str = None):
             frappe.local.response["http_status_code"] = 400
             return {"status": "error", "message": "usr and pwd required"}
 
+        frappe.log_error(message=f"authenticating user: {usr}, pwd length: {len(pwd) if pwd else 0}", title="ecom_login debug")
+
         lm = LoginManager()
         lm.authenticate(user=usr, pwd=pwd)
         lm.post_login()
@@ -128,6 +130,7 @@ def ecom_login(usr: str = None, pwd: str = None, visitor_id: str = None):
         return {"status": "success", "sid": sid, "user": user, "full_name": full_name, "email": email}
     except Exception as e:
         frappe.log_error(message=f"ecommerce_login error: {e}", title="ecommerce_login")
+        frappe.log_error(message=f"ecommerce_login error type: {type(e)}", title="ecommerce_login")
         frappe.clear_messages()
         frappe.local.response["http_status_code"] = 401
         return {"status": "error", "message": str(e)}
