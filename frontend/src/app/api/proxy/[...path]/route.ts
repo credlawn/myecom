@@ -18,6 +18,8 @@ async function handler(req: NextRequest) {
     headers: headers,
     body: hasBody ? req.body : null,
     redirect: 'manual',
+    // @ts-expect-error - duplex is a new property and may not be in all type definitions
+    duplex: hasBody ? 'half' : undefined,
   });
 
   const responseHeaders = new Headers(response.headers);
