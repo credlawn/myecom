@@ -9,8 +9,10 @@ import AddToCartButton from "@/components/ui/AddToCartButton";
 interface ProductCardProps {
   product: ProductItem;
   currency?: string;
-  priColor?: string;
+  btn1Color?: string;
   bt1Color?: string;
+  btn2Color?: string;
+  bt2Color?: string;
 }
 
 const formatInr = (
@@ -27,8 +29,10 @@ const formatInr = (
 export default function ProductCard({
   product,
   currency = "₹ ",
-  priColor,
+  btn1Color,
   bt1Color,
+  btn2Color,
+  bt2Color,
 }: ProductCardProps) {
   const router = useRouter();
   const p = {
@@ -130,7 +134,7 @@ export default function ProductCard({
           className="absolute bottom-2 left-2 right-2 z-10 cursor-pointer"
           onClick={(e) => e.stopPropagation()}
         >
-          <AddToCartButton productId={p.id} buttonColor={priColor} buttonTextColor={bt1Color} />
+          <AddToCartButton productId={p.id} buttonColor={btn2Color} buttonTextColor={bt2Color} />
         </div>
       </div>
 
@@ -214,7 +218,7 @@ export default function ProductCard({
                   className="px-3 pb-1 mt-auto cursor-pointer"
                   onClick={(e) => e.stopPropagation()}
               >
-                  <AddToCartButton productId={p.id} buttonColor={priColor} buttonTextColor={bt1Color} />
+                  <AddToCartButton productId={p.id} buttonColor={btn1Color} buttonTextColor={bt1Color} />
               </div>
           </div>
       </div>

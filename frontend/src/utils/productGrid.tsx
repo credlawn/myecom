@@ -11,8 +11,10 @@ interface ProductGridProps {
   showSnap?: boolean;
   currency?: string;
   title?: string;
-  priColor?: string;
+  btn1Color?: string;
   bt1Color?: string;
+  btn2Color?: string;
+  bt2Color?: string;
 }
 
 export default function ProductGrid({
@@ -22,8 +24,10 @@ export default function ProductGrid({
   showSnap = true,
   currency = '₹ ',
   title = 'Top Selling Products',
-  priColor,
+  btn1Color,
   bt1Color,
+  btn2Color,
+  bt2Color,
 }: ProductGridProps) {
   const [isClient] = useState(true);
 
@@ -43,7 +47,15 @@ export default function ProductGrid({
               </p>
             ) : (
               products.map((p) => (
-                <ProductCard key={p.name} product={p} currency={currency} priColor={priColor} bt1Color={bt1Color} />
+                <ProductCard 
+                  key={p.name} 
+                  product={p} 
+                  currency={currency} 
+                  btn1Color={btn1Color} 
+                  bt1Color={bt1Color} 
+                  btn2Color={btn2Color} 
+                  bt2Color={bt2Color} 
+                />
               ))
             )}
           </div>
@@ -63,7 +75,14 @@ export default function ProductGrid({
                 className="flex-shrink-0"
                 style={{ width: maxCardWidth, height: maxCardHeight }}
               >
-                <ProductCard product={p} currency={currency} priColor={priColor} bt1Color={bt1Color} />
+                <ProductCard 
+                  product={p} 
+                  currency={currency} 
+                  btn1Color={btn1Color} 
+                  bt1Color={bt1Color} 
+                  btn2Color={btn2Color} 
+                  bt2Color={bt2Color} 
+                />
               </div>
             ))}
 

@@ -36,8 +36,10 @@ export default async function Page() {
           products={featuredProducts}
           currency={settings.currency}
           title="Featured Products"
-          priColor={settings.priColor}
+          btn1Color={settings.btn1Color}
           bt1Color={settings.bt1Color}
+          btn2Color={settings.btn2Color}
+          bt2Color={settings.bt2Color}
         />
       )}
 
@@ -45,8 +47,10 @@ export default async function Page() {
         <ProductGrid 
           products={newProducts} 
           currency={settings.currency} 
-          priColor={settings.btn1Color}
+          btn1Color={settings.btn1Color}
           bt1Color={settings.bt1Color}
+          btn2Color={settings.btn2Color}
+          bt2Color={settings.bt2Color}
         />
       )}
     </div>
