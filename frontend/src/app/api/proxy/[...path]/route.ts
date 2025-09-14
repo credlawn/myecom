@@ -5,15 +5,13 @@ const BACKEND_URL = process.env.NEXT_PUBLIC_DOMAIN;
 
 async function handler(req: NextRequest) {
   try {
-    console.log(`[PROXY] NEXT_PUBLIC_DOMAIN: ${process.env.NEXT_PUBLIC_DOMAIN}`);
-
     const url = new URL(req.url);
     const path = url.pathname.replace('/api/proxy', '');
     const backendUrl = `${BACKEND_URL}${path}${url.search}`;
-    console.log(`[PROXY] Forwarding to: ${backendUrl}`);
 
     const headers = new Headers(req.headers);
     headers.delete('host');
+    headers.delete('content-length');
 
     const hasBody = req.method === 'POST' || req.method === 'PUT' || req.method === 'PATCH';
 
@@ -26,13 +24,18 @@ async function handler(req: NextRequest) {
       duplex: hasBody ? 'half' : undefined,
     });
 
+    // Decompress the response body
+    const body = await response.arrayBuffer();
     const responseHeaders = new Headers(response.headers);
+    responseHeaders.delete('content-encoding');
+    responseHeaders.delete('content-length');
+
     const setCookie = response.headers.get('set-cookie');
     if (setCookie) {
       responseHeaders.set('set-cookie', setCookie);
     }
 
-    return new NextResponse(response.body, {
+    return new NextResponse(body, {
       status: response.status,
       statusText: response.statusText,
       headers: responseHeaders,
