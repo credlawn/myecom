@@ -5,17 +5,21 @@ const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN;
 
 
 function apiUrl(endpoint: string) {
-  const baseUrl = typeof window === 'undefined' 
-    ? `http://localhost:${process.env.PORT || 3000}`
-    : '';
-  return `${baseUrl}${API_PROXY_PATH}${API_PREFIX}${API_PATH}.${endpoint}`;
+  if (typeof window === 'undefined') {
+    // On the server, call the backend directly
+    return `${DOMAIN}${API_PREFIX}${API_PATH}.${endpoint}`;
+  } else {
+    // On the client, use the proxy
+    return `${API_PROXY_PATH}${API_PREFIX}${API_PATH}.${endpoint}`;
+  }
 }
 
 function apilogout(endpoint: string) {
-  const baseUrl = typeof window === 'undefined' 
-    ? `http://localhost:${process.env.PORT || 3000}`
-    : '';
-  return `${baseUrl}${API_PROXY_PATH}${API_PREFIX}/${endpoint}`;
+  if (typeof window === 'undefined') {
+    return `${DOMAIN}${API_PREFIX}/${endpoint}`;
+  } else {
+    return `${API_PROXY_PATH}${API_PREFIX}/${endpoint}`;
+  }
 }
 
 export function img(path?: string | null): string {
