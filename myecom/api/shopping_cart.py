@@ -1,6 +1,7 @@
 import frappe
 from frappe import _
 from typing import Optional
+from .utils import block_frappe_cookies
 
 def _get_request_value(name: str, default=None):
     if frappe.request and getattr(frappe.request, "json", None):
@@ -9,6 +10,7 @@ def _get_request_value(name: str, default=None):
 
 
 @frappe.whitelist(allow_guest=True)
+@block_frappe_cookies
 def _get_or_create_shopping_cart():
     try:
         user = getattr(frappe.session, 'user', None) if frappe.session else None
@@ -70,6 +72,7 @@ def _get_shopping_cart():
         return None
 
 @frappe.whitelist(allow_guest=True)
+@block_frappe_cookies
 def add_to_cart(product_id: Optional[str] = None, qty: int = 1):
     try:
         if not product_id:
@@ -135,6 +138,7 @@ def add_to_cart(product_id: Optional[str] = None, qty: int = 1):
         return {"success": False, "message": _("An error occurred while adding to cart")}
 
 @frappe.whitelist(allow_guest=True)
+@block_frappe_cookies
 def remove_from_cart(product_id: Optional[str] = None):
     try:
         if not product_id:
@@ -166,6 +170,7 @@ def remove_from_cart(product_id: Optional[str] = None):
         return {"success": False, "message": _("An error occurred while removing from cart")}
 
 @frappe.whitelist(allow_guest=True)
+@block_frappe_cookies
 def get_cart_items():
     try:
         shopping_cart = _get_shopping_cart()
@@ -192,6 +197,7 @@ def get_cart_items():
         return {"success": True, "items": [], "total": 0}
 
 @frappe.whitelist(allow_guest=True)
+@block_frappe_cookies
 def update_quantity(product_id: Optional[str] = None, qty: Optional[int] = None):
     try:
         if not product_id:
@@ -237,6 +243,7 @@ def update_quantity(product_id: Optional[str] = None, qty: Optional[int] = None)
         return {"success": False, "message": _("An error occurred while updating quantity")}
 
 @frappe.whitelist(allow_guest=True)
+@block_frappe_cookies
 def clear_cart():
     try:
         shopping_cart = _get_shopping_cart()

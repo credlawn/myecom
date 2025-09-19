@@ -1,6 +1,7 @@
 import frappe
 from frappe import _
 from typing import Optional
+from .utils import block_frappe_cookies
 
 def _get_request_value(name: str, default=None):
     if frappe.request and getattr(frappe.request, "json", None):
@@ -77,6 +78,7 @@ def _get_wishlist(user: Optional[str] = None, visitor_id: Optional[str] = None):
         return None
 
 @frappe.whitelist(allow_guest=True)
+@block_frappe_cookies
 def add_to_wishlist(product_id: Optional[str] = None):
     try:
         if not product_id:
@@ -138,6 +140,7 @@ def add_to_wishlist(product_id: Optional[str] = None):
         return {"success": False, "message": _("An error occurred while adding to wishlist")}
 
 @frappe.whitelist(allow_guest=True)
+@block_frappe_cookies
 def remove_from_wishlist(product_id: Optional[str] = None):
     try:
         if not product_id:
@@ -169,6 +172,7 @@ def remove_from_wishlist(product_id: Optional[str] = None):
         return {"success": False, "message": _("An error occurred while removing from wishlist")}
 
 @frappe.whitelist(allow_guest=True)
+@block_frappe_cookies
 def get_wishlist_items():
     try:
         wishlist = _get_wishlist()
@@ -194,6 +198,7 @@ def get_wishlist_items():
         return {"success": True, "items": [], "total": 0}
 
 @frappe.whitelist(allow_guest=True)
+@block_frappe_cookies
 def is_in_wishlist(product_id: Optional[str] = None):
     try:
         if not product_id:
@@ -214,6 +219,7 @@ def is_in_wishlist(product_id: Optional[str] = None):
         return {"success": False, "message": _("An error occurred while checking wishlist")}
 
 @frappe.whitelist(allow_guest=True)
+@block_frappe_cookies
 def clear_wishlist():
     try:
         wishlist = _get_wishlist()
