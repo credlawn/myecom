@@ -1,19 +1,22 @@
 import frappe
 from frappe import _
+try:
+    from frappe.sessions import get_session_by_sid
+except ImportError:
+    get_session_by_sid = None
+
 
 @frappe.whitelist(allow_guest=True)
 def user_details():
     try:
         sid = frappe.form_dict.get("sid")
-        frappe.log_error(f"Incoming SID: {sid}", "user_details Debug")  # debug log
 
-        if sid:
-            session = frappe.session_store.get_session_by_sid(sid)
+        if sid and get_session_by_sid:
+            session = get_session_by_sid(sid)
             if session:
                 frappe.local.session = session
                 frappe.set_user(session.user)
             else:
-                frappe.log_error(f"Invalid or expired session for SID: {sid}", "user_details Debug")
                 return {
                     "loggedIn": False,
                     "details": None,
@@ -21,7 +24,6 @@ def user_details():
                 }
 
         user_id = frappe.session.user
-        frappe.log_error(f"Current user: {user_id}", "user_details Debug")  # debug log
 
         if not user_id or user_id == "Guest":
             return {
@@ -32,11 +34,11 @@ def user_details():
 
         full_name = frappe.utils.get_fullname(user_id)
 
+        mobile_no = None
         try:
             mobile_no = frappe.db.get_value("User", user_id, "mobile_no")
-        except Exception as ex:
-            frappe.log_error(f"Error fetching mobile_no: {ex}", "user_details Debug")
-            mobile_no = None
+        except Exception:
+            pass  # agar field missing hai toh None hi return hoga
 
         return {
             "loggedIn": True,
@@ -47,7 +49,7 @@ def user_details():
             }
         }
 
-    except Exception as e:
+    except Exception:
         frappe.log_error(frappe.get_traceback(), "user_details API Error")
         return {
             "loggedIn": False,
