@@ -9,26 +9,22 @@
   "column_break_nqjk",
   "column_break_zeoe",
   "section_break_jalq",
-  "category",
+  "category_name",
+  "slug",
   "column_break_cciz",
   "parent_category",
   "column_break_sokl",
   "sequence",
   "section_break_mtds",
   "attributes",
-  "section_break_jguq",
-  "banner",
-  "cover_image",
-  "column_break_rrmv",
-  "icon"
+  "column_break_kmxl",
+  "category_image"
  ],
  "fields": [
   {
-   "fieldname": "category",
+   "fieldname": "slug",
    "fieldtype": "Data",
-   "in_list_view": 1,
-   "in_standard_filter": 1,
-   "label": "Category"
+   "label": "Slug"
   },
   {
    "fieldname": "column_break_cciz",
@@ -54,35 +50,12 @@
    "label": "Sequence"
   },
   {
-   "fieldname": "section_break_jguq",
-   "fieldtype": "Section Break"
-  },
-  {
-   "fieldname": "banner",
-   "fieldtype": "Attach Image",
-   "label": "Banner"
-  },
-  {
-   "fieldname": "column_break_rrmv",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "icon",
-   "fieldtype": "Attach Image",
-   "label": "Icon"
-  },
-  {
-   "fieldname": "cover_image",
-   "fieldtype": "Attach Image",
-   "label": "Cover Image"
-  },
-  {
    "fieldname": "section_break_mtds",
    "fieldtype": "Section Break"
   },
   {
    "fieldname": "attributes",
-   "fieldtype": "Data",
+   "fieldtype": "Small Text",
    "label": "Attributes"
   },
   {
@@ -102,13 +75,29 @@
   {
    "fieldname": "section_break_jalq",
    "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "category_image",
+   "fieldtype": "Attach Image",
+   "label": "Category Image"
+  },
+  {
+   "fieldname": "category_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Category Name"
+  },
+  {
+   "fieldname": "column_break_kmxl",
+   "fieldtype": "Column Break"
   }
  ],
  "grid_page_length": 50,
  "hide_toolbar": 1,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-08-27 14:22:05.808711",
+ "modified": "2025-09-25 13:14:33.422227",
  "modified_by": "Administrator",
  "module": "Myecom",
  "name": "Category",
@@ -140,5 +129,5 @@
  "sort_field": "creation",
  "sort_order": "DESC",
  "states": [],
- "title_field": "category"
+ "title_field": "category_name"
 }

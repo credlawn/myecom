@@ -10,6 +10,7 @@
   "product_name",
   "product_image",
   "price",
+  "price_at_add",
   "qty",
   "slug",
   "second_image"
@@ -35,6 +36,12 @@
    "fieldname": "price",
    "fieldtype": "Currency",
    "label": "Price",
+   "precision": "0"
+  },
+  {
+   "fieldname": "price_at_add",
+   "fieldtype": "Currency",
+   "label": "Price at Add",
    "precision": "0"
   },
   {

@@ -10,6 +10,12 @@ app_include_api = [
     "myecom.api"
 ]
 
+doc_events = {
+    "Product": {
+        "on_trash": "myecom.scripts.hooks.delete_related_records"
+    }
+}
+
 
 
 

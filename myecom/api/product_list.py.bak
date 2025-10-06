@@ -1,0 +1,112 @@
+import frappe
+import json
+from collections import defaultdict
+from .camel_case import dict_keys_to_camel
+from frappe.utils import get_url, fmt_money
+
+@frappe.whitelist(allow_guest=True)
+def get_product_list():
+    filters = {}
+    if frappe.request and frappe.request.data:
+        try:
+            data = json.loads(frappe.request.data)
+            if 'featured' in data:
+                filters['featured'] = data['featured']
+        except (json.JSONDecodeError, TypeError):
+            
+            pass
+
+    base_url = get_url() 
+
+    products = frappe.get_all(
+        "Product",
+        fields=[
+            "name", "product_name", "brand_name", "unit", "min_purchase_qty",
+            "discount_type", "discount_percent", "discount_amount", "price",
+            "discounted_price", "stock", "product_slug", "product_tag",
+            "product_rating", "rating_count", "nd_text", "featured", "unlisted",
+        ],
+        filters={
+            **filters,
+            'unlisted': ('!=', 1)
+        },
+        order_by="modified desc"
+    )
+
+    # Format price and discounted_price
+    for prod in products:
+        prod["price"] = fmt_money(prod["price"]) if prod.get("price") else None
+        prod["discounted_price"] = fmt_money(prod.get("discounted_price")) if prod.get("discounted_price") else None
+
+    product_names = [p["name"] for p in products]
+
+    categories = frappe.db.sql("""
+        SELECT
+            ct.parent AS product,
+            c.category AS category_name
+        FROM `tabCategory Table` ct
+        LEFT JOIN `tabCategory` c ON c.name = ct.category
+        WHERE ct.parent IN %(products)s
+    """, {"products": product_names}, as_dict=1)
+
+    cat_map = defaultdict(set)
+    for c in categories:
+        if c.get("category_name"):
+            cat_map[c["product"]].add(c["category_name"])
+
+    product_images = frappe.db.sql("""
+        SELECT
+            parent,
+            name,
+            cdn_image,
+            image_url,
+            attach_image,
+            primary_image,
+            secondary_image,
+            modified
+        FROM `tabProduct Images`
+        WHERE parent IN %(products)s
+        ORDER BY modified DESC
+    """, {"products": product_names}, as_dict=1)
+
+    image_map = defaultdict(list)
+    for img in product_images:
+        image_map[img["parent"]].append(img)
+
+    result = []
+    for prod in products:
+        images = image_map.get(prod["name"], [])
+
+        def get_image_url(img):
+            if img.get("cdn_image") and img.get("image_url"):
+                return img.get("image_url")
+            elif img.get("attach_image"):
+                return get_url(img["attach_image"])
+            return None
+
+        primary_images = [img for img in images if img.get("primary_image")]
+        if primary_images:
+            product_image_1 = get_image_url(primary_images[0]) or f"{base_url}/files/placeholder.svg"
+        elif images:
+            product_image_1 = get_image_url(images[0]) or f"{base_url}/files/placeholder.svg"
+        else:
+            product_image_1 = f"{base_url}/files/placeholder.svg"
+
+        secondary_images = [img for img in images if img.get("secondary_image")]
+        if secondary_images:
+            product_image_2 = get_image_url(secondary_images[0]) or f"{base_url}/files/placeholder.svg"
+        elif len(images) > 1:
+            product_image_2 = get_image_url(images[1]) or f"{base_url}/files/placeholder.svg"
+        else:
+            product_image_2 = f"{base_url}/files/placeholder.svg"
+
+        product_dict = {
+            **prod,
+            "productImage1": product_image_1,
+            "productImage2": product_image_2,
+            "productCategory": list(cat_map.get(prod["name"], []))
+        }
+
+        result.append(dict_keys_to_camel(product_dict))
+
+    return result

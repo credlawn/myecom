@@ -5,5 +5,5 @@
 from frappe.model.document import Document
 
 
-class Colors(Document):
+class AttributeValue(Document):
 	pass

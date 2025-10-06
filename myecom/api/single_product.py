@@ -1,4 +1,5 @@
 import frappe
+from .camel_case import dict_keys_to_camel
 
 @frappe.whitelist(allow_guest=True)
 def get_product_by_slug(slug: str):
@@ -11,8 +12,8 @@ def get_product_by_slug(slug: str):
         site_settings = frappe.get_single("Site Settings")
 
         categories = []
-        for row in product.table_multiselect_lnaq:
-            category = frappe.db.get_value("Category", row.category, ["name", "category"], as_dict=True)
+        for row in product.product_tag:
+            category = frappe.db.get_value("Tags", row.tags, ["name", "tags"], as_dict=True)
             if category:
                 categories.append({
                     "id": category.name,
@@ -80,7 +81,7 @@ def get_product_by_slug(slug: str):
             "currency": site_settings.currency,
         }
 
-        return {"data": data}
+        return dict_keys_to_camel(data)
 
     except Exception as e:
         frappe.log_error(message=frappe.get_traceback(), title="get_product_by_slug Error")

@@ -12,6 +12,7 @@
   "price_text",
   "hero_image",
   "button_text",
+  "product",
   "column_break_ygqz",
   "hero_subtitle",
   "price",
@@ -77,6 +78,12 @@
    "fieldname": "button_text",
    "fieldtype": "Data",
    "label": "Button Text"
+  },
+  {
+   "fieldname": "product",
+   "fieldtype": "Link",
+   "label": "Product",
+   "options": "Product"
   }
  ],
  "grid_page_length": 50,

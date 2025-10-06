@@ -6,6 +6,10 @@
  "engine": "InnoDB",
  "field_order": [
   "featured",
+  "column_break_uhdk",
+  "unlisted",
+  "column_break_pkfh",
+  "column_break_fdlu",
   "section_break_sxed",
   "custom_rating",
   "column_break_fckm",
@@ -31,6 +35,7 @@
   "min_purchase_qty",
   "price",
   "stock",
+  "short_description",
   "column_break_vpch",
   "brand_name",
   "discount_type",
@@ -41,14 +46,13 @@
   "unit",
   "discount_percent",
   "discount_amount",
+  "category",
   "section_break_wlxh",
   "product_img",
   "section_break_trvu",
   "quick_tag_input",
   "product_tag",
   "display_product_tags",
-  "section_break_ijsl",
-  "table_multiselect_lnaq",
   "description_tab",
   "discription"
  ],
@@ -60,10 +64,9 @@
    "label": "Product Name"
   },
   {
-   "fieldname": "table_multiselect_lnaq",
-   "fieldtype": "Table MultiSelect",
-   "label": "Product Category",
-   "options": "Category Table"
+   "fieldname": "short_description",
+   "fieldtype": "Text",
+   "label": "Short Description"
   },
   {
    "fieldname": "column_break_vpch",
@@ -73,10 +76,6 @@
    "fieldname": "brand_name",
    "fieldtype": "Data",
    "label": "Brand Name"
-  },
-  {
-   "fieldname": "section_break_ijsl",
-   "fieldtype": "Section Break"
   },
   {
    "fieldname": "column_break_bqix",
@@ -301,13 +300,37 @@
   {
    "fieldname": "display_product_tags",
    "fieldtype": "HTML"
+  },
+  {
+   "fieldname": "column_break_uhdk",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_pkfh",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_fdlu",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "unlisted",
+   "fieldtype": "Check",
+   "label": "Un-list ?"
+  },
+  {
+   "fieldname": "category",
+   "fieldtype": "Table MultiSelect",
+   "label": "Category",
+   "options": "Category Table"
   }
  ],
  "grid_page_length": 50,
  "hide_toolbar": 1,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-09-07 14:04:44.807351",
+ "modified": "2025-10-06 17:48:05.312891",
  "modified_by": "Administrator",
  "module": "Myecom",
  "name": "Product",

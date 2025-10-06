@@ -1,237 +1,260 @@
 import frappe
-from frappe import _
-from typing import Optional
-from .utils import block_frappe_cookies
+import json
+from collections import defaultdict
+from .camel_case import dict_keys_to_camel
+from frappe.utils import get_url
 
-def _get_request_value(name: str, default=None):
-    if frappe.request and getattr(frappe.request, "json", None):
-        return frappe.request.json.get(name, default)
-    return frappe.form_dict.get(name, default)
+# --- NEW: Robust Payload Parsing Helper ---
+def parse_identifiers(data):
+    if isinstance(data, list) and data:
+        data = data[0]
+    
+    identifiers = data.get('identifiers')
+    if isinstance(identifiers, dict):
+        user = identifiers.get('user')
+        guest_uid = identifiers.get('guestUid')
+    else:
+        user = data.get('user')
+        guest_uid = data.get('guestUid')
 
-def _get_auth_user():
-    user = getattr(frappe.session, 'user', None) if frappe.session else None
-    return user
+    if user == "$undefined":
+        user = None
+        
+    return user, guest_uid
 
-def _get_or_create_wishlist(user: Optional[str] = None, visitor_id: Optional[str] = None):
-    try:
-        if not user:
-            user = _get_auth_user()
+# --- Main Wishlist Helper Function ---
+def get_or_migrate_wishlist(user=None, visitor_id=None):
+    if not user and not visitor_id:
+        return None
 
-        if user and user not in ["Guest", "guest", "None", "Anonymous"]:
-            filters = {"user": user}
-            existing = frappe.db.exists("Wishlist", filters)
-            if existing:
-                return frappe.get_doc("Wishlist", existing)
-            
-            wishlist = frappe.new_doc("Wishlist")
-            wishlist.user = user
-            wishlist.insert(ignore_permissions=True)
-            frappe.db.commit()
-            return wishlist
+    user_wishlist = None
+    if user:
+        user_wishlist_name = frappe.db.exists("Wishlist", {"user": user})
+        if user_wishlist_name:
+            user_wishlist = frappe.get_doc("Wishlist", user_wishlist_name)
 
-        else:
-            if not visitor_id:
-                if frappe.request and hasattr(frappe.request, 'headers'):
-                    visitor_id = frappe.request.headers.get("X-Visitor-Id")
+    guest_wishlist = None
+    if visitor_id:
+        guest_wishlist_name = frappe.db.exists("Wishlist", {"visitor_id": visitor_id})
+        if guest_wishlist_name:
+            guest_wishlist = frappe.get_doc("Wishlist", guest_wishlist_name)
 
-            if visitor_id:
-                filters = {"visitor_id": visitor_id}
-                existing = frappe.db.exists("Wishlist", filters)
-                if existing:
-                    return frappe.get_doc("Wishlist", existing)
-
-                wishlist = frappe.new_doc("Wishlist")
-                wishlist.visitor_id = visitor_id
-                wishlist.insert(ignore_permissions=True)
+    if user:
+        if user_wishlist:
+            if guest_wishlist and guest_wishlist.name != user_wishlist.name:
+                for item in guest_wishlist.items:
+                    if not any(user_item.product == item.product for user_item in user_wishlist.items):
+                        user_wishlist.append("items", item.as_dict())
+                user_wishlist.save(ignore_permissions=True)
+                frappe.delete_doc("Wishlist", guest_wishlist.name, ignore_permissions=True)
                 frappe.db.commit()
-                return wishlist
-        
-        return None
-    
-    except Exception as e:
-        frappe.log_error(f"Error in _get_or_create_wishlist: {str(e)}")
-        return None
-
-def _get_wishlist(user: Optional[str] = None, visitor_id: Optional[str] = None):
-    """Get existing wishlist for user or visitor"""
-    try:
-        if not user:
-            user = _get_auth_user()
-
-        if user and user not in ["Guest", "guest", "None", "Anonymous"]:
-            filters = {"user": user}
+            return user_wishlist
+        elif guest_wishlist:
+            guest_wishlist.user = user
+            guest_wishlist.visitor_id = None
+            guest_wishlist.save(ignore_permissions=True)
+            frappe.db.commit()
+            return guest_wishlist
         else:
-            if not visitor_id:
-                if frappe.request and hasattr(frappe.request, 'headers'):
-                    visitor_id = frappe.request.headers.get("X-Visitor-Id")
-            
-            if visitor_id:
-                filters = {"visitor_id": visitor_id}
-            else:
-                return None
-
-        existing = frappe.db.exists("Wishlist", filters)
-        return frappe.get_doc("Wishlist", existing) if existing else None
+            new_wishlist = frappe.new_doc("Wishlist")
+            new_wishlist.user = user
+            new_wishlist.insert(ignore_permissions=True)
+            frappe.db.commit()
+            return new_wishlist
+    elif visitor_id:
+        if guest_wishlist:
+            return guest_wishlist
+        else:
+            new_wishlist = frappe.new_doc("Wishlist")
+            new_wishlist.visitor_id = visitor_id
+            new_wishlist.insert(ignore_permissions=True)
+            frappe.db.commit()
+            return new_wishlist
     
-    except Exception as e:
-        frappe.log_error(f"Error in _get_wishlist: {str(e)}")
-        return None
+    return None
+
+# --- Utility Functions ---
+def camel_response(data):
+    if isinstance(data, dict):
+        return dict_keys_to_camel(data)
+    elif isinstance(data, list):
+        return [dict_keys_to_camel(item) if isinstance(item, dict) else item for item in data]
+    return data
+
+def get_full_image_url(path):
+    if not path:
+        return get_url("/files/placeholder.svg")
+    return get_url(path)
+
+# --- API Endpoints (Now using robust parsing) ---
 
 @frappe.whitelist(allow_guest=True)
-@block_frappe_cookies
-def add_to_wishlist(product_id: Optional[str] = None):
+def add_to_wishlist():
     try:
-        if not product_id:
-            product_id = _get_request_value("product_id")
+        data = json.loads(frappe.request.data)
+        user, guest_uid = parse_identifiers(data)
         
+        # Extract product_id from the correct level
+        payload_data = data[0] if isinstance(data, list) and data else data
+        product_id = payload_data.get('productId')
+
         if not product_id:
-            return {"success": False, "message": _("Product ID required")}
+            return camel_response([])
 
-        wishlist = _get_or_create_wishlist()
+        wishlist = get_or_migrate_wishlist(user=user, visitor_id=guest_uid)
         if not wishlist:
-            return {"success": False, "message": _("Failed to create wishlist")}
+            return camel_response([])
 
-        # Check if product already in wishlist
-        existing_products = [str(getattr(item, 'product', '')) for item in wishlist.items]
-        if str(product_id) in existing_products:
-            return {"success": False, "message": _("Already in wishlist")}
+        existing = [item.product for item in wishlist.items]
+        if product_id not in existing:
+            product = frappe.get_doc("Product", product_id)
+            product_image, second_image = "", ""
+            for img in getattr(product, "product_img", []):
+                if getattr(img, "primary_image", 0):
+                    product_image = img.image_url if img.cdn_image else img.attach_image
+                    break
+            for img in getattr(product, "product_img", []):
+                if getattr(img, "secondary_image", 0):
+                    second_image = img.image_url if img.cdn_image else img.attach_image
+                    break
+            wishlist.append("items", {
+                "product": product.name,
+                "product_name": product.product_name,
+                "product_image": product_image or None,
+                "second_image": second_image or None,
+                "price": product.price,
+                "slug": product.product_slug
+            })
+            wishlist.save(ignore_permissions=True)
+            frappe.db.commit()
 
-        # Fetch product details
-        product_name = ""
-        product_image = ""
-        second_image = ""
-        price = 0
-        slug = ""
+        final_wishlist = frappe.get_doc("Wishlist", wishlist.name)
+        items_list = [
+            {
+                "product": item.product,
+                "product_name": item.product_name,
+                "product_image": get_full_image_url(item.product_image),
+                "second_image": get_full_image_url(item.second_image),
+                "price": item.price,
+                "added_on": item.added_on,
+                "slug": item.slug
+            }
+            for item in final_wishlist.items
+        ]
+        return camel_response(items_list)
 
-        try:
-            p = frappe.get_doc("Product", product_id)
-            product_name = getattr(p, "product_name", "") or getattr(p, "name", "")
-            price = getattr(p, "price", 0) or 0
-            slug = getattr(p, "product_slug", "") or ""
-            
-            images = getattr(p, "product_img", [])
-            if images:
-                primary_img = next((img for img in images if getattr(img, "primary_image", 0)), None)
-                secondary_img = next((img for img in images if getattr(img, "secondary_image", 0)), None)
-                
-                if primary_img:
-                    product_image = getattr(primary_img, "image_url", "") or getattr(primary_img, "attach_image", "")
-                if secondary_img:
-                    second_image = getattr(secondary_img, "image_url", "") or getattr(secondary_img, "attach_image", "")
-        except Exception:
-            product_name = str(product_id)
-
-        wishlist.append("items", {
-            "product": product_id,
-            "product_name": product_name,
-            "product_image": product_image or None,
-            "second_image": second_image or None,
-            "price": price,
-            "slug": slug
-        })
-
-        wishlist.save(ignore_permissions=True)
-        frappe.db.commit()
-
-        return {"success": True, "message": _("Added to wishlist"), "count": len(getattr(wishlist, 'items', []))}
-
-    except Exception as e:
-        frappe.log_error(f"Error in add_to_wishlist: {str(e)}")
-        return {"success": False, "message": _("An error occurred while adding to wishlist")}
+    except Exception:
+        frappe.log_error(title="add_to_wishlist_error", message=frappe.get_traceback())
+        return camel_response([])
 
 @frappe.whitelist(allow_guest=True)
-@block_frappe_cookies
-def remove_from_wishlist(product_id: Optional[str] = None):
+def remove_from_wishlist():
     try:
-        if not product_id:
-            product_id = _get_request_value("product_id")
+        data = json.loads(frappe.request.data)
+        user, guest_uid = parse_identifiers(data)
+
+        payload_data = data[0] if isinstance(data, list) and data else data
+        product_id = payload_data.get('productId')
 
         if not product_id:
-            return {"success": False, "message": _("Product ID required")}
+            return camel_response([])
 
-        wishlist = _get_wishlist()
+        wishlist = get_or_migrate_wishlist(user=user, visitor_id=guest_uid)
         if not wishlist:
-            return {"success": False, "message": _("Wishlist not found")}
+            return camel_response([])
 
-        removed = False
-        for item in list(getattr(wishlist, 'items', [])):
-            if str(getattr(item, 'product', '')) == str(product_id):
-                wishlist.remove(item)
-                removed = True
-                break
+        original_items = list(wishlist.items)
+        wishlist.items = [item for item in original_items if item.product != product_id]
+        
+        if len(wishlist.items) < len(original_items):
+            wishlist.save(ignore_permissions=True)
+            frappe.db.commit()
 
-        wishlist.save(ignore_permissions=True)
-        frappe.db.commit()
+        items_list = [
+            {
+                "product": item.product,
+                "product_name": item.product_name,
+                "product_image": get_full_image_url(item.product_image),
+                "second_image": get_full_image_url(item.second_image),
+                "price": item.price,
+                "added_on": item.added_on,
+                "slug": item.slug
+            }
+            for item in wishlist.items
+        ]
+        return camel_response(items_list)
 
-        if removed:
-            return {"success": True, "message": _("Removed from wishlist"), "count": len(getattr(wishlist, 'items', []))}
-        return {"success": False, "message": _("Product not found in wishlist")}
-    
-    except Exception as e:
-        frappe.log_error(f"Error in remove_from_wishlist: {str(e)}")
-        return {"success": False, "message": _("An error occurred while removing from wishlist")}
+    except Exception:
+        frappe.log_error(title="remove_from_wishlist_error", message=frappe.get_traceback())
+        return camel_response([])
 
 @frappe.whitelist(allow_guest=True)
-@block_frappe_cookies
 def get_wishlist_items():
     try:
-        wishlist = _get_wishlist()
+        data = json.loads(frappe.request.data)
+        user, guest_uid = parse_identifiers(data)
+
+        wishlist = get_or_migrate_wishlist(user=user, visitor_id=guest_uid)
         if not wishlist:
-            return {"success": True, "items": [], "total": 0}
+            return camel_response([])
 
-        items = []
-        for item in getattr(wishlist, 'items', []):
-            items.append({
-                "product": getattr(item, "product", ""),
-                "product_name": getattr(item, "product_name", ""),
-                "product_image": getattr(item, "product_image", None),
-                "second_image": getattr(item, "second_image", None),
-                "price": getattr(item, "price", 0),
-                "added_on": getattr(item, "creation", None),
-                "slug": getattr(item, "slug", ""),
-            })
+        items = [
+            {
+                "product": item.product,
+                "product_name": item.product_name,
+                "product_image": get_full_image_url(item.product_image),
+                "second_image": get_full_image_url(item.second_image),
+                "price": item.price,
+                "added_on": item.added_on,
+                "slug": item.slug
+            }
+            for item in wishlist.items
+        ]
+        return camel_response(items)
 
-        return {"success": True, "items": items, "total": len(items)}
-    
-    except Exception as e:
-        frappe.log_error(f"Error in get_wishlist_items: {str(e)}")
-        return {"success": True, "items": [], "total": 0}
+    except Exception:
+        frappe.log_error(title="get_wishlist_items_error", message=frappe.get_traceback())
+        return camel_response([])
 
 @frappe.whitelist(allow_guest=True)
-@block_frappe_cookies
-def is_in_wishlist(product_id: Optional[str] = None):
+def is_in_wishlist():
     try:
-        if not product_id:
-            product_id = _get_request_value("product_id")
+        data = json.loads(frappe.request.data)
+        user, guest_uid = parse_identifiers(data)
+
+        payload_data = data[0] if isinstance(data, list) and data else data
+        product_id = payload_data.get('productId')
 
         if not product_id:
-            return {"success": False, "message": _("Product ID required")}
+            return False
 
-        wishlist = _get_wishlist()
+        wishlist = get_or_migrate_wishlist(user=user, visitor_id=guest_uid)
         if not wishlist:
-            return {"success": True, "in_wishlist": False}
+            return False
 
-        product_ids = [str(getattr(item, 'product', '')) for item in getattr(wishlist, 'items', [])]
-        return {"success": True, "in_wishlist": str(product_id) in product_ids}
-    
-    except Exception as e:
-        frappe.log_error(f"Error in is_in_wishlist: {str(e)}")
-        return {"success": False, "message": _("An error occurred while checking wishlist")}
+        product_ids = [item.product for item in wishlist.items]
+        return product_id in product_ids
+
+    except Exception:
+        frappe.log_error(title="is_in_wishlist_error", message=frappe.get_traceback())
+        return False
 
 @frappe.whitelist(allow_guest=True)
-@block_frappe_cookies
 def clear_wishlist():
     try:
-        wishlist = _get_wishlist()
-        if not wishlist:
-            return {"success": True, "message": _("Wishlist already empty"), "count": 0}
+        data = json.loads(frappe.request.data)
+        user, guest_uid = parse_identifiers(data)
 
-        setattr(wishlist, 'items', [])
+        wishlist = get_or_migrate_wishlist(user=user, visitor_id=guest_uid)
+        if not wishlist:
+            return camel_response([])
+
+        wishlist.items = []
         wishlist.save(ignore_permissions=True)
         frappe.db.commit()
 
-        return {"success": True, "message": _("Wishlist cleared"), "count": 0}
-    
-    except Exception as e:
-        frappe.log_error(f"Error in clear_wishlist: {str(e)}")
-        return {"success": False, "message": _("An error occurred while clearing wishlist")}
+        return camel_response([])
+
+    except Exception:
+        frappe.log_error(title="clear_wishlist_error", message=frappe.get_traceback())
+        return camel_response([])

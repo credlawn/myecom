@@ -13,9 +13,9 @@ IGNORE_TEST_RECORD_DEPENDENCIES = []  # eg. ["User"]
 
 
 
-class IntegrationTestColors(IntegrationTestCase):
+class IntegrationTestSalesOrder(IntegrationTestCase):
 	"""
-	Integration tests for Colors.
+	Integration tests for SalesOrder.
 	Use this class for testing interactions between multiple components.
 	"""
 
