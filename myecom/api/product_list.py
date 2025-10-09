@@ -70,10 +70,7 @@ def get_product_list():
         page_size = int(data.get('pageSize', 10))
         limit_start = (page_num - 1) * page_size
 
-        frappe.log_error(f"Final filters list: {filters}", "Filter Debug")
-
         total_products = frappe.db.count("Product", filters=filters)
-        frappe.log_error(f"Count query result: {total_products}", "Filter Debug")
 
         products = frappe.get_all(
             "Product",
@@ -88,7 +85,6 @@ def get_product_list():
             limit_start=limit_start,
             limit_page_length=page_size
         )
-        frappe.log_error(f"Get All query result (raw): {products}", "Filter Debug")
         base_url = get_url()
         product_names = [p["name"] for p in products]
         

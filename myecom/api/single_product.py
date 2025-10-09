@@ -12,13 +12,14 @@ def get_product_by_slug(slug: str):
         site_settings = frappe.get_single("Site Settings")
 
         categories = []
-        for row in product.product_tag:
-            category = frappe.db.get_value("Tags", row.tags, ["name", "tags"], as_dict=True)
-            if category:
-                categories.append({
-                    "id": category.name,
-                    "name": category.category
-                })
+        if product.category:
+            category_ids = [row.category for row in product.category]
+            category_docs = frappe.get_all(
+                "Category",
+                filters={'name': ['in', category_ids]},
+                fields=['name', 'category_name']
+            )
+            categories = [{"id": doc.name, "name": doc.category_name} for doc in category_docs]
 
         product_images = frappe.db.sql("""
             SELECT
