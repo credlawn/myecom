@@ -76,7 +76,7 @@ def search_products(query, limit=10):
             p.unlisted != 1 AND (
                 p.product_name LIKE %(search_term)s OR
                 p.short_description LIKE %(search_term)s OR
-                p.discription LIKE %(search_term)s OR
+                p.description LIKE %(search_term)s OR
                 p.brand_name LIKE %(search_term)s OR
                 c.category_name LIKE %(search_term)s OR
                 t.tag_name LIKE %(search_term)s

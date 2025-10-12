@@ -54,7 +54,7 @@
   "product_tag",
   "display_product_tags",
   "description_tab",
-  "discription"
+  "description"
  ],
  "fields": [
   {
@@ -100,11 +100,6 @@
    "fieldname": "description_tab",
    "fieldtype": "Tab Break",
    "label": "Description"
-  },
-  {
-   "fieldname": "discription",
-   "fieldtype": "Text Editor",
-   "label": "Discription"
   },
   {
    "default": "Zero",
@@ -324,13 +319,18 @@
    "fieldtype": "Table MultiSelect",
    "label": "Category",
    "options": "Category Table"
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Text Editor",
+   "label": "Description"
   }
  ],
  "grid_page_length": 50,
  "hide_toolbar": 1,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-10-06 17:48:05.312891",
+ "modified": "2025-10-12 13:14:10.358890",
  "modified_by": "Administrator",
  "module": "Myecom",
  "name": "Product",

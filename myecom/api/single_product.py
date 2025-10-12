@@ -2,7 +2,8 @@ import frappe
 from .camel_case import dict_keys_to_camel
 
 @frappe.whitelist(allow_guest=True)
-def get_product_by_slug(slug: str):
+def get_product_by_slug():
+    slug = frappe.form_dict.get("slug")
     try:
         product_name = frappe.db.get_value("Product", {"product_slug": slug}, "name")
         if not product_name:
@@ -75,7 +76,8 @@ def get_product_by_slug(slug: str):
             "product_image_1": product_image_1,
             "product_images": all_images,
             "product_tag": product.product_tag,
-            "description": product.discription,
+            "short_description": product.short_description,
+            "description": product.description,
             "unit": product.unit,
             "featured": product.featured,
             "categories": categories,
