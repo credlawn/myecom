@@ -1,8 +1,8 @@
 import frappe
+from .camel_case import dict_keys_to_camel
 
 @frappe.whitelist(allow_guest=True)
 def get_menu_list():
-    # Fetch all parent menus
     parents = frappe.get_all(
         "My Menu",
         filters={"menu_type": "Parent"},
@@ -12,20 +12,22 @@ def get_menu_list():
 
     menu_list = []
     for parent in parents:
-        # Fetch child menus for this parent
         children = frappe.get_all(
             "My Menu",
             filters={"menu_type": "Child", "parent_name": parent["menu_name"]},
             fields=["menu_name", "child_id", "slug", "menu_type"],
             order_by="child_id asc"
         )
-        # Add parent_id to each child
+
+        
+        children_camel = []
         for child in children:
             child["parent_id"] = parent["parent_id"]
+            children_camel.append(dict_keys_to_camel(child))
 
         menu_list.append({
-            "parent": parent,
-            "children": children
+            "parent": dict_keys_to_camel(parent),
+            "children": children_camel
         })
 
-    return {"menu": menu_list}
+    return menu_list

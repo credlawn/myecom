@@ -1,7 +1,9 @@
 import frappe
+from .camel_case import dict_keys_to_camel
 
 @frappe.whitelist(allow_guest=True)
-def get_product_by_slug(slug: str):
+def get_product_by_slug():
+    slug = frappe.form_dict.get("slug")
     try:
         product_name = frappe.db.get_value("Product", {"product_slug": slug}, "name")
         if not product_name:
@@ -11,13 +13,14 @@ def get_product_by_slug(slug: str):
         site_settings = frappe.get_single("Site Settings")
 
         categories = []
-        for row in product.table_multiselect_lnaq:
-            category = frappe.db.get_value("Category", row.category, ["name", "category"], as_dict=True)
-            if category:
-                categories.append({
-                    "id": category.name,
-                    "name": category.category
-                })
+        if product.category:
+            category_ids = [row.category for row in product.category]
+            category_docs = frappe.get_all(
+                "Category",
+                filters={'name': ['in', category_ids]},
+                fields=['name', 'category_name']
+            )
+            categories = [{"id": doc.name, "name": doc.category_name} for doc in category_docs]
 
         product_images = frappe.db.sql("""
             SELECT
@@ -73,14 +76,15 @@ def get_product_by_slug(slug: str):
             "product_image_1": product_image_1,
             "product_images": all_images,
             "product_tag": product.product_tag,
-            "description": product.discription,
+            "short_description": product.short_description,
+            "description": product.description,
             "unit": product.unit,
             "featured": product.featured,
             "categories": categories,
             "currency": site_settings.currency,
         }
 
-        return {"data": data}
+        return dict_keys_to_camel(data)
 
     except Exception as e:
         frappe.log_error(message=frappe.get_traceback(), title="get_product_by_slug Error")

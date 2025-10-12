@@ -1,12 +1,14 @@
 {
  "actions": [],
  "allow_rename": 1,
+ "autoname": "field:attribute_name",
  "creation": "2025-08-26 10:35:21.473985",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
   "attribute_name",
   "column_break_rpvo",
+  "section_break_chbk",
   "attribute_value"
  ],
  "fields": [
@@ -15,28 +17,33 @@
    "fieldtype": "Data",
    "in_list_view": 1,
    "in_standard_filter": 1,
-   "label": "Attribute Name"
+   "label": "Attribute Name",
+   "unique": 1
   },
   {
    "fieldname": "column_break_rpvo",
    "fieldtype": "Column Break"
   },
   {
+   "fieldname": "section_break_chbk",
+   "fieldtype": "Section Break"
+  },
+  {
    "fieldname": "attribute_value",
-   "fieldtype": "Data",
-   "in_list_view": 1,
-   "in_standard_filter": 1,
-   "label": "Attribute Value"
+   "fieldtype": "Table",
+   "label": "Attribute Value",
+   "options": "Attribute Value"
   }
  ],
  "grid_page_length": 50,
  "hide_toolbar": 1,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-08-26 10:57:17.479967",
+ "modified": "2025-10-06 13:24:00.500270",
  "modified_by": "Administrator",
  "module": "Myecom",
  "name": "Attributes",
+ "naming_rule": "By fieldname",
  "owner": "Administrator",
  "permissions": [
   {
@@ -64,5 +71,6 @@
  "row_format": "Dynamic",
  "sort_field": "creation",
  "sort_order": "DESC",
- "states": []
+ "states": [],
+ "title_field": "attribute_name"
 }

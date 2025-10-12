@@ -1,0 +1,73 @@
+
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-05-15 11:59:03.985342",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "site_title",
+  "meta_description",
+  "meta_keywords",
+  "meta_image",
+  "favicon",
+  "gtm_id"
+ ],
+ "fields": [
+  {
+   "fieldname": "site_title",
+   "fieldtype": "Data",
+   "label": "Site Title"
+  },
+  {
+   "fieldname": "meta_description",
+   "fieldtype": "Text",
+   "label": "Meta Description"
+  },
+  {
+   "fieldname": "meta_keywords",
+   "fieldtype": "Data",
+   "label": "Meta Keywords"
+  },
+  {
+   "fieldname": "meta_image",
+   "fieldtype": "Attach Image",
+   "label": "Meta Image"
+  },
+  {
+   "fieldname": "favicon",
+   "fieldtype": "Attach Image",
+   "label": "Favicon"
+  },
+  {
+   "fieldname": "gtm_id",
+   "fieldtype": "Data",
+   "label": "GTM ID"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2024-05-15 12:00:00.0",
+ "modified_by": "Administrator",
+ "module": "Myecom",
+ "name": "SEO Settings",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

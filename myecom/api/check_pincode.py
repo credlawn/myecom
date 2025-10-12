@@ -1,5 +1,6 @@
 import frappe
 from frappe.utils import add_days, nowdate, getdate, formatdate
+from .camel_case import dict_keys_to_camel
 
 @frappe.whitelist(allow_guest=True)
 def get_delivery_time(pincode: str):
@@ -18,7 +19,7 @@ def get_delivery_time(pincode: str):
             "d MMM, EEEE"   # Example: 6 Sep, Saturday
         )
 
-        return {
+        response_data = {
             "pincode": pin.pincode,
             "city": pin.city,
             "state": pin.state,
@@ -30,6 +31,8 @@ def get_delivery_time(pincode: str):
             "extra_info": pin.extra_info,
             "last_updated_on": pin.last_updated_on,
         }
+        return dict_keys_to_camel(response_data)
+
     except frappe.DoesNotExistError:
         return {"error": "Currently out of stock in this area"}
     except Exception as e:

@@ -10,6 +10,7 @@
   "visit_count",
   "total_session_time",
   "formatted_session_duration",
+  "user",
   "column_break_fqpn",
   "visit_date_time",
   "last_seen",
@@ -75,13 +76,19 @@
    "fieldtype": "Data",
    "label": "Session Duration",
    "read_only": 1
+  },
+  {
+   "fieldname": "user",
+   "fieldtype": "Link",
+   "label": "User",
+   "options": "User"
   }
  ],
  "grid_page_length": 50,
  "hide_toolbar": 1,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-09-02 04:23:34.012803",
+ "modified": "2025-09-08 10:36:45.811627",
  "modified_by": "Administrator",
  "module": "Myecom",
  "name": "Visitors",
